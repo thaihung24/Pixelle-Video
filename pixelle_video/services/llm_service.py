@@ -169,6 +169,12 @@ class LLMService:
             or "gpt-3.5-turbo"  # Default fallback
         )
         
+        # Intercept and use Gemini CLI if requested
+        is_cli = (final_model == "gemini-cli" or (client.base_url and str(client.base_url).strip() in ("cli", "gemini-cli")))
+        if is_cli:
+            logger.info("Routing LLM call to local gemini CLI")
+            return await self._call_gemini_cli_direct(prompt, response_type)
+        
         logger.debug(f"LLM call: model={final_model}, base_url={client.base_url}, response_type={response_type}")
         
         try:
@@ -206,6 +212,45 @@ class LLMService:
         except Exception as e:
             logger.error(f"LLM call error (model={final_model}, base_url={client.base_url}): {e}")
             raise
+    
+    async def _call_gemini_cli_direct(self, prompt: str, response_type: Optional[Type[T]] = None) -> Union[str, T]:
+        """
+        Call local Gemini CLI terminal tool via subprocess.
+        Preserves the prompt, JSON schema, and parsing structures.
+        """
+        import asyncio
+        
+        enhanced_prompt = prompt
+        if response_type is not None:
+            json_schema_instruction = self._get_json_schema_instruction(response_type)
+            enhanced_prompt = f"{prompt}\n\n{json_schema_instruction}"
+        
+        logger.debug(f"Executing: gemini -p <prompt> --skip-trust -y")
+        
+        process = await asyncio.create_subprocess_exec(
+            "gemini", "-p", enhanced_prompt, "--skip-trust", "-y",
+            stdout=asyncio.subprocess.PIPE,
+            stderr=asyncio.subprocess.PIPE
+        )
+        
+        stdout, stderr = await process.communicate()
+        
+        if process.returncode != 0:
+            error_msg = stderr.decode()
+            logger.error(f"Gemini CLI failed with code {process.returncode}: {error_msg}")
+            raise RuntimeError(f"Gemini CLI execution failed: {error_msg}")
+            
+        result_text = stdout.decode().strip()
+        
+        if not result_text and stderr:
+            # Sometime CLI outputs to stderr instead if there are warnings
+            logger.warning("Gemini CLI returned empty stdout, checking stderr for content")
+            result_text = stderr.decode().strip()
+            
+        if response_type is not None:
+            return self._parse_response_as_model(result_text, response_type)
+            
+        return result_text
     
     async def _call_with_structured_output(
         self,
