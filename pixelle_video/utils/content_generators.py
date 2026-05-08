@@ -499,5 +499,6 @@ def _parse_json(text: str) -> dict:
             pass
     
     # If all fails, raise error
-    raise json.JSONDecodeError("No valid JSON found", text, 0)
-
+    error_msg = f"No valid JSON found. Raw text (first 500 chars):\n{text[:500]}"
+    logger.error(error_msg)
+    raise json.JSONDecodeError(error_msg, text, 0)

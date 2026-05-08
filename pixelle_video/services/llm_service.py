@@ -194,6 +194,11 @@ class LLMService:
                 )
                 
                 result = response.choices[0].message.content
+                if result is None:
+                    finish_reason = getattr(response.choices[0], "finish_reason", "unknown")
+                    logger.warning(f"LLM returned None content. Finish reason: {finish_reason}")
+                    result = ""
+                
                 logger.debug(f"LLM response length: {len(result)} chars")
                 
                 return result

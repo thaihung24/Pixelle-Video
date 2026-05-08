@@ -104,6 +104,22 @@ class MediaService(ComfyBaseService):
                 except Exception as e:
                     logger.error(f"Failed to parse workflow {source_name}/{filename}: {e}")
         
+        # Add FlowKit workflow if enabled
+        flowkit_config = self.core.config.get("flowkit", {}) if self.core else {}
+        if flowkit_config.get("enabled", False):
+            workflows.append({
+                "key": "flowkit/google-imagen-3",
+                "source": "flowkit",
+                "name": "Google Imagen 3",
+                "display_name": "Google Imagen 3 (via FlowKit)"
+            })
+            workflows.append({
+                "key": "flowkit/google-veo",
+                "source": "flowkit",
+                "name": "Google Veo (Video)",
+                "display_name": "Google Veo (via FlowKit)"
+            })
+            
         # Sort by key (source/name)
         return sorted(workflows, key=lambda w: w["key"])
     
@@ -195,6 +211,21 @@ class MediaService(ComfyBaseService):
             )
         """
         # 1. Resolve workflow (returns structured info)
+        
+        # Check if workflow is FlowKit
+        if workflow in ("flowkit/google-imagen-3", "flowkit/google-veo"):
+            logger.info("🎨 Routing to FlowKitMediaService")
+            from pixelle_video.services.flowkit_media import FlowKitMediaService
+            flowkit_service = FlowKitMediaService(self.core.config, self.core)
+            return await flowkit_service(
+                prompt=prompt,
+                workflow=workflow,
+                media_type=media_type,
+                width=width,
+                height=height,
+                **params
+            )
+            
         workflow_info = self._resolve_workflow(workflow=workflow)
         
         # 2. Build workflow parameters (ComfyKit config is now managed by core)

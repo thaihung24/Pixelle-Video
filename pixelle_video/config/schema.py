@@ -88,12 +88,24 @@ class TemplateConfig(BaseModel):
     )
 
 
+class FlowKitConfig(BaseModel):
+    """FlowKit integration configuration"""
+    enabled: bool = Field(default=False, description="Enable FlowKit for image generation")
+    base_url: str = Field(default="http://127.0.0.1:8100", description="FlowKit agent base URL")
+    project_id: str = Field(default="", description="Google Flow project ID")
+    orientation: str = Field(default="VERTICAL", description="Image orientation (VERTICAL/HORIZONTAL)")
+    user_paygate_tier: str = Field(default="PAYGATE_TIER_TWO", description="User paygate tier")
+    poll_interval: int = Field(default=3, description="Poll interval in seconds")
+    timeout: int = Field(default=120, description="Timeout in seconds")
+
+
 class PixelleVideoConfig(BaseModel):
     """Pixelle-Video main configuration"""
     project_name: str = Field(default="Pixelle-Video", description="Project name")
     llm: LLMConfig = Field(default_factory=LLMConfig)
     comfyui: ComfyUIConfig = Field(default_factory=ComfyUIConfig)
     template: TemplateConfig = Field(default_factory=TemplateConfig)
+    flowkit: FlowKitConfig = Field(default_factory=FlowKitConfig)
     
     def is_llm_configured(self) -> bool:
         """Check if LLM is properly configured"""

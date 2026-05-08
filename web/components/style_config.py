@@ -15,6 +15,7 @@ Style configuration components for web UI (middle column)
 """
 
 import os
+import base64
 from pathlib import Path
 
 import streamlit as st
@@ -708,11 +709,11 @@ def render_style_config(pixelle_video):
             
             # Filter workflows based on template media type
             if template_media_type == "video":
-                # Only show video_ workflows
-                workflows = [wf for wf in all_workflows if "video_" in wf["key"].lower()]
+                # Only show video_ workflows and flowkit/google-veo
+                workflows = [wf for wf in all_workflows if "video_" in wf["key"].lower() or wf["key"] == "flowkit/google-veo"]
             else:
-                # Only show image_ workflows (exclude video_)
-                workflows = [wf for wf in all_workflows if "video_" not in wf["key"].lower()]
+                # Only show image_ workflows (exclude video_ and flowkit/google-veo)
+                workflows = [wf for wf in all_workflows if "video_" not in wf["key"].lower() and wf["key"] != "flowkit/google-veo"]
         
             # Build options for selectbox
             # Display: "image_flux.json - Runninghub"

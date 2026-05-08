@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="template:media-width" content="1280">
+    <meta name="template:media-height" content="720">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        html, body {
+            width: 1920px;
+            height: 1080px;
+            overflow: hidden;
+            font-family: 'PingFang SC', 'Source Han Sans', 'Microsoft YaHei', 'Noto Sans SC', sans-serif;
+            /* TRANSPARENT background — video shows through underneath */
+            background: transparent;
+        }
+
+        .main-container {
+            position: relative;
+            width: 1920px;
+            height: 1080px;
+            /* NO background — fully transparent so Veo video shows */
+        }
+
+        /* Gradient overlay — dark at top & bottom for text readability, transparent in middle */
+        .gradient-overlay {
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(
+                to bottom,
+                rgba(0,0,0,0.55) 0%,
+                rgba(0,0,0,0.0) 25%,
+                rgba(0,0,0,0.0) 55%,
+                rgba(0,0,0,0.70) 100%
+            );
+            z-index: 2;
+        }
+
+        /* Title — top-left */
+        .video-title-wrapper {
+            position: absolute;
+            top: 36px;
+            left: 70px;
+            right: 70px;
+            z-index: 5;
+        }
+
+        .video-title {
+            font-size: 52px;
+            font-weight: 800;
+            color: #ffffff;
+            line-height: 1.25;
+            letter-spacing: 1px;
+            text-shadow:
+                0 3px 14px rgba(0,0,0,0.9),
+                -2px -2px 0 rgba(0,0,0,0.7),
+                2px  2px 0 rgba(0,0,0,0.7);
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        /* Narration subtitle — bottom center */
+        .content {
+            position: absolute;
+            bottom: 88px;
+            left: 70px;
+            right: 70px;
+            z-index: 5;
+            text-align: center;
+        }
+
+        .text {
+            font-size: 46px;
+            color: #ffffff;
+            line-height: 1.5;
+            font-weight: 600;
+            text-shadow:
+                3px 3px 8px rgba(0,0,0,0.95),
+                0 0 20px rgba(0,0,0,0.85),
+                -2px -2px 0 rgba(0,0,0,0.7),
+                2px  2px 0 rgba(0,0,0,0.7);
+        }
+
+        /* Footer bar — fully opaque at bottom */
+        .footer {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            height: 68px;
+            background: rgba(0, 0, 0, 0.60);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 56px;
+            z-index: 6;
+            border-top: 1px solid rgba(255,255,255,0.15);
+        }
+
+        .author {
+            font-size: 26px;
+            font-weight: 700;
+            color: #ffffff;
+        }
+
+        .author-desc {
+            font-size: 18px;
+            color: rgba(255,255,255,0.70);
+            font-weight: 400;
+        }
+
+        .logo {
+            font-size: 24px;
+            font-weight: 600;
+            color: rgba(255,255,255,0.90);
+            letter-spacing: 2px;
+        }
+    </style>
+</head>
+<body>
+    <div class="main-container">
+        <!-- Dark gradient for text contrast — transparent in centre so video shows -->
+        <div class="gradient-overlay"></div>
+
+        <!-- Title top -->
+        <div class="video-title-wrapper">
+            <div class="video-title">{{title}}</div>
+        </div>
+
+        <!-- Narration bottom -->
+        <div class="content">
+            <div class="text">{{text}}</div>
+        </div>
+
+        <!-- Footer bar -->
+        <div class="footer">
+            <div>
+                <div class="author">{{author=@Pixelle.AI}}</div>
+                <div class="author-desc">{{describe=Open Source Omnimodal AI Creative Agent}}</div>
+            </div>
+            <div class="logo">{{brand=Pixelle-Video}}</div>
+        </div>
+    </div>
+</body>
+</html>

@@ -203,9 +203,12 @@ class FrameProcessor:
         logger.debug(f"  2/4: Generating media for frame {frame.index}...")
         
         # Determine media type based on workflow
-        # video_ prefix in workflow name indicates video generation
+        # video_ prefix in workflow name, or specific flowkit video workflows
         workflow_name = config.media_workflow or ""
-        is_video_workflow = "video_" in workflow_name.lower()
+        is_video_workflow = (
+            "video_" in workflow_name.lower() or
+            workflow_name == "flowkit/google-veo"
+        )
         media_type = "video" if is_video_workflow else "image"
         
         logger.debug(f"  → Media type: {media_type} (workflow: {workflow_name})")
@@ -420,8 +423,18 @@ class FrameProcessor:
         media_type: str
     ) -> str:
         """Download media (image or video) from URL to local file"""
+        import os
+        import shutil
         from pixelle_video.utils.os_util import get_task_frame_path
         output_path = get_task_frame_path(task_id, frame_index, media_type)
+        
+        # If url is already a local path, just copy it
+        if not (url.startswith("http://") or url.startswith("https://")):
+            if os.path.exists(url):
+                shutil.copy2(url, output_path)
+                return output_path
+            else:
+                raise FileNotFoundError(f"Local media file not found: {url}")
         
         timeout = httpx.Timeout(connect=10.0, read=60, write=60, pool=60)
         async with httpx.AsyncClient(timeout=timeout) as client:

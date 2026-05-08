@@ -27,6 +27,7 @@ from pixelle_video.config import config_manager
 from pixelle_video.services.llm_service import LLMService
 from pixelle_video.services.tts_service import TTSService
 from pixelle_video.services.media import MediaService
+from pixelle_video.services.flowkit_media import FlowKitMediaService
 from pixelle_video.services.image_analysis import ImageAnalysisService
 from pixelle_video.services.video_analysis import VideoAnalysisService
 from pixelle_video.services.video import VideoService
@@ -196,7 +197,12 @@ class PixelleVideoCore:
         # Initialize services
         self.llm = LLMService(self.config)
         self.tts = TTSService(self.config, core=self)
+        
+        # Determine which media service to use
+        # Unified MediaService now supports both ComfyUI and FlowKit
+        logger.info("🎨 Using unified MediaService for image generation")
         self.media = MediaService(self.config, core=self)
+            
         self.image = self.media  # Alias for backward compatibility
         self.image_analysis = ImageAnalysisService(self.config, core=self)
         self.video_analysis = VideoAnalysisService(self.config, core=self)
