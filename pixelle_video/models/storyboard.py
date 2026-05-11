@@ -45,6 +45,7 @@ class StoryboardConfig:
     tts_workflow: Optional[str] = None         # TTS workflow filename (for ComfyUI mode, None = use default)
     tts_speed: Optional[float] = None          # TTS speed multiplier (0.5-2.0, 1.0 = normal)
     ref_audio: Optional[str] = None            # Reference audio for voice cloning (ComfyUI mode only)
+    ref_text: Optional[str] = None             # Reference text for voice cloning (OmniVoice mode only)
     
     # Media workflow
     media_workflow: Optional[str] = None       # Media workflow filename (image or video, None = use default)
@@ -53,6 +54,11 @@ class StoryboardConfig:
     frame_template: str = "1080x1920/default.html"  # Template path with size (e.g., "1080x1920/default.html")
     template_params: Optional[Dict[str, Any]] = None  # Custom template parameters (e.g., {"accent_color": "#ff0000"})
 
+    # Video duration handling when video is longer than audio
+    video_duration_mode: str = "natural"  # "trim": trim video to audio length | "natural": keep full video, pad audio
+
+    # Target narration duration per segment (seconds). None = use min/max_words directly.
+    target_narration_duration: Optional[float] = None  # e.g. 5.0 → word count auto-calculated
 
 @dataclass
 class StoryboardFrame:
@@ -71,6 +77,7 @@ class StoryboardFrame:
     
     # Metadata
     duration: float = 0.0                      # Frame duration (seconds, from audio or video)
+    character_media_ids: Optional[List[str]] = None  # Per-scene character reference media IDs
     created_at: Optional[datetime] = None
     
     def __post_init__(self):

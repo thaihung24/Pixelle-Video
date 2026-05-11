@@ -71,6 +71,15 @@ async def tts_synthesize(
         # Add ref_audio if specified
         if request.ref_audio:
             tts_params["ref_audio"] = request.ref_audio
+            
+        if request.ref_text:
+            tts_params["ref_text"] = request.ref_text
+            
+        if request.speed is not None:
+            tts_params["speed"] = request.speed
+            
+        if request.inference_mode:
+            tts_params["inference_mode"] = request.inference_mode
         
         # Legacy voice_id support (deprecated)
         if request.voice_id and not request.workflow:

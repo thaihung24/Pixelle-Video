@@ -169,6 +169,11 @@ class LLMService:
             or "gpt-3.5-turbo"  # Default fallback
         )
         
+        # Log toàn bộ prompt ra màn hình để User kiểm tra Role
+        logger.info("\n" + "="*50 + "\n🔥 ĐANG GỬI PROMPT CHO LLM 🔥\n" + "="*50)
+        logger.info(f"\n{prompt}\n")
+        logger.info("="*50 + "\n")
+        
         # Intercept and use Gemini CLI if requested
         is_cli = (final_model == "gemini-cli" or (client.base_url and str(client.base_url).strip() in ("cli", "gemini-cli")))
         if is_cli:
@@ -219,21 +224,29 @@ class LLMService:
         Preserves the prompt, JSON schema, and parsing structures.
         """
         import asyncio
+        import shutil
+        import tempfile
+        import os
         
         enhanced_prompt = prompt
         if response_type is not None:
             json_schema_instruction = self._get_json_schema_instruction(response_type)
             enhanced_prompt = f"{prompt}\n\n{json_schema_instruction}"
         
-        logger.debug(f"Executing: gemini -p <prompt> --skip-trust -y")
+        gemini_cmd = shutil.which("gemini")
+        if not gemini_cmd:
+            raise RuntimeError("Cannot find 'gemini' executable in system PATH.")
+            
+        logger.debug(f"Executing: {gemini_cmd} -p \"\" --skip-trust -y (passing prompt via stdin)")
         
         process = await asyncio.create_subprocess_exec(
-            "gemini", "-p", enhanced_prompt, "--skip-trust", "-y",
+            gemini_cmd, "-p", "", "--skip-trust", "-y",
+            stdin=asyncio.subprocess.PIPE,
             stdout=asyncio.subprocess.PIPE,
             stderr=asyncio.subprocess.PIPE
         )
         
-        stdout, stderr = await process.communicate()
+        stdout, stderr = await process.communicate(input=enhanced_prompt.encode('utf-8'))
         
         if process.returncode != 0:
             error_msg = stderr.decode()

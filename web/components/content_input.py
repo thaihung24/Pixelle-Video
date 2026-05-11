@@ -88,7 +88,7 @@ def render_content_input():
                 n_scenes = st.slider(
                     tr("video.frames"),
                     min_value=3,
-                    max_value=30,
+                    max_value=100,
                     value=5,
                     help=tr("video.frames_help"),
                     label_visibility="collapsed"
@@ -169,7 +169,7 @@ def render_content_input():
             n_scenes = st.slider(
                 tr("batch.n_scenes_label"),
                 min_value=3,
-                max_value=30,
+                max_value=100,
                 value=5,
                 help=tr("batch.n_scenes_help")
             )

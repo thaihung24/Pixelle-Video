@@ -410,7 +410,8 @@ Các endpoint chính:
 ```
 
 ---
-
+# CHO CHỦ ĐỀ VŨ TRỤ — photorealistic, cinematic
+prompt_prefix: "Cinematic photorealistic space scene, 8K ultra-detailed, dramatic lighting, NASA-style imagery, deep space"
 ## 📜 GIẤY PHÉP
 
 Apache License 2.0 — Xem file `LICENSE` để biết chi tiết.

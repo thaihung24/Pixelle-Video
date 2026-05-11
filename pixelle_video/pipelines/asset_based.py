@@ -222,6 +222,9 @@ class AssetBasedPipeline(LinearVideoPipeline):
             if asset_type == "image":
                 # Analyze image using ImageAnalysisService
                 analysis_source = context.request.get("source", "runninghub")
+                if analysis_source == "flowkit":
+                    # FlowKit does not support asset analysis, fallback to gemini-cli
+                    analysis_source = "gemini-cli"
                 description = await self.core.image_analysis(asset_path, source=analysis_source)
                 
                 self.asset_index[asset_path] = {
@@ -236,6 +239,9 @@ class AssetBasedPipeline(LinearVideoPipeline):
             elif asset_type == "video":
                 # Analyze video using VideoAnalysisService
                 analysis_source = context.request.get("source", "runninghub")
+                if analysis_source == "flowkit":
+                    # FlowKit does not support asset analysis, fallback to gemini-cli
+                    analysis_source = "gemini-cli"
                 try:
                     description = await self.core.video_analysis(asset_path, source=analysis_source)
                     
@@ -473,9 +479,11 @@ class AssetBasedPipeline(LinearVideoPipeline):
             min_narration_words=5,
             max_narration_words=50,
             video_fps=30,
-            tts_inference_mode="local",
+            tts_inference_mode=context.params.get("tts_inference_mode", "local"),
             voice_id=context.params.get("voice_id", "zh-CN-YunjianNeural"),
             tts_speed=context.params.get("tts_speed", 1.2),
+            ref_audio=context.params.get("ref_audio"),
+            ref_text=context.params.get("ref_text"),
             media_width=media_width,
             media_height=media_height,
             frame_template=template_name,
@@ -583,7 +591,10 @@ class AssetBasedPipeline(LinearVideoPipeline):
                     text=narration_text,
                     output_path=str(audio_path),
                     voice=config.voice_id,
-                    speed=config.tts_speed
+                    speed=config.tts_speed,
+                    inference_mode=config.tts_inference_mode,
+                    ref_audio=config.ref_audio,
+                    ref_text=config.ref_text
                 )
                 
                 narration_audios.append(str(audio_path))

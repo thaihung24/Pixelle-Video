@@ -29,6 +29,13 @@ from pixelle_video.prompts.image_generation import (
 )
 from pixelle_video.prompts.style_conversion import build_style_conversion_prompt
 
+# Anime storyboard prompts (works WITH existing prompts, not replacing them)
+from pixelle_video.prompts.anime_storyboard import (
+    build_anime_blueprint_prompt,
+    build_narration_topic_with_characters,
+    inject_character_visuals_into_narrations,
+)
+
 
 __all__ = [
     # Narration builders
@@ -39,6 +46,11 @@ __all__ = [
     # Image builders
     "build_image_prompt_prompt",
     "build_style_conversion_prompt",
+    
+    # Anime storyboard (character consistency layer on top of existing prompts)
+    "build_anime_blueprint_prompt",
+    "build_narration_topic_with_characters",
+    "inject_character_visuals_into_narrations",
     
     # Image style presets
     "IMAGE_STYLE_PRESETS",

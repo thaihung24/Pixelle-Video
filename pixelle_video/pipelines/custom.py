@@ -270,6 +270,7 @@ class CustomPipeline(BasePipeline):
             tts_workflow=final_tts_workflow,  # Use processed workflow
             tts_speed=tts_speed,
             ref_audio=ref_audio,
+            ref_text=kwargs.get("ref_text"),
             media_width=media_width,
             media_height=media_height,
             media_workflow=media_workflow,

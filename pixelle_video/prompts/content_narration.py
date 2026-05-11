@@ -32,7 +32,8 @@ The user will provide content (which may be long or short), and you need to extr
 ## Narration Specifications
 - Language consistency requirement: Strictly output copy according to the user's input language type - if input is English, output must be English, and so on
 - Purpose: For TTS to generate short video audio
-- Word count limit: Strictly control to {min_words}~{max_words} words (minimum not less than {min_words} words)
+- Word/Character count limit: Strictly control to {min_words}~{max_words} words/characters. 
+  ⚠️ CRITICAL FOR JAPANESE/CHINESE: 1 character = 1 word. If the limit is {max_words} words, your output MUST NOT exceed {max_words} characters (including punctuation). This is to ensure the audio fits the {target_duration}s duration.
 - Ending format: Do not use punctuation at the end
 - Refinement strategy:
   * If user content is long: Extract {n_storyboard} core points, remove redundant information
@@ -44,7 +45,7 @@ The user will provide content (which may be long or short), and you need to extr
 - Ending suggestion: The last storyboard provides a summary or inspiration
 - Emotion and tone: Gentle, sincere, natural, like sharing viewpoints with a friend
 - Prohibitions: No URLs, emojis, numeric numbering, no empty talk or clichés
-- Word count check: After generation, must self-verify that each segment is not less than {min_words} words
+- Word count check: After generation, you MUST self-verify the length. For Japanese/Chinese, count the characters. If it exceeds {max_words} characters, YOU MUST SHORTEN IT. If it is less than {min_words} characters, supplement it.
 
 ## Storyboard Coherence Requirements
 - {n_storyboard} storyboards should expand based on the core viewpoint of user content, forming a complete expression
@@ -95,10 +96,12 @@ def build_content_narration_prompt(
     Returns:
         Formatted prompt
     """
+    target_duration = round(max_words / 4.2)
     return CONTENT_NARRATION_PROMPT.format(
         content=content,
         n_storyboard=n_storyboard,
         min_words=min_words,
-        max_words=max_words
+        max_words=max_words,
+        target_duration=target_duration
     )
 

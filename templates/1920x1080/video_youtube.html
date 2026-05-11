@@ -2,8 +2,8 @@
 <html>
 <head>
     <meta charset="UTF-8">
-    <meta name="template:media-width" content="1280">
-    <meta name="template:media-height" content="720">
+    <meta name="template:media-width" content="1920">
+    <meta name="template:media-height" content="1080">
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
 
@@ -37,29 +37,7 @@
             z-index: 2;
         }
 
-        /* Title — top-left */
-        .video-title-wrapper {
-            position: absolute;
-            top: 36px;
-            left: 70px;
-            right: 70px;
-            z-index: 5;
-        }
-
-        .video-title {
-            font-size: 52px;
-            font-weight: 800;
-            color: #ffffff;
-            line-height: 1.25;
-            letter-spacing: 1px;
-            text-shadow:
-                0 3px 14px rgba(0,0,0,0.9),
-                -2px -2px 0 rgba(0,0,0,0.7),
-                2px  2px 0 rgba(0,0,0,0.7);
-            white-space: nowrap;
-            overflow: hidden;
-            text-overflow: ellipsis;
-        }
+        /* Title — REMOVED (title saved to script.json for YouTube upload, not shown on video) */
 
         /* Narration subtitle — bottom center */
         .content {
@@ -123,11 +101,6 @@
     <div class="main-container">
         <!-- Dark gradient for text contrast — transparent in centre so video shows -->
         <div class="gradient-overlay"></div>
-
-        <!-- Title top -->
-        <div class="video-title-wrapper">
-            <div class="video-title">{{title}}</div>
-        </div>
 
         <!-- Narration bottom -->
         <div class="content">

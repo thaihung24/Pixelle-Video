@@ -1,0 +1,439 @@
+{
+  "title": "一汁三菜 — 日本食の知恵",
+  "characters": [
+    {
+      "id": "grandma_hanako",
+      "name": "花子おばあちゃん",
+      "visual": "78-year-old Japanese woman, silver-white hair in neat traditional bun held with wooden kanzashi pin, warm brown eyes with gentle crow's feet, fair skin with subtle age spots on cheeks, petite build 148cm, wearing deep indigo cotton kimono with small white wave pattern and cream-colored obi, round tortoiseshell reading glasses perched on small nose",
+      "role": "narrator"
+    },
+    {
+      "id": "sakura_sensei",
+      "name": "桜先生",
+      "visual": "45-year-old Japanese woman, chin-length black bob with side-swept bangs, professional dark brown eyes, smooth fair skin, medium build 158cm, wearing crisp white lab coat over pastel pink blouse and navy pencil skirt, small gold stethoscope pendant necklace, carrying a tablet with health charts",
+      "role": "supporting"
+    }
+  ],
+  "scenes": [
+    {
+      "scene_number": 1,
+      "act": 1,
+      "characters": ["grandma_hanako"],
+      "setting": "Traditional Japanese kitchen at sunrise, soft golden light hitting wooden counters, steam rising from a heavy iron rice pot.",
+      "scene_brief": "朝の台所でご飯を炊く"
+    },
+    {
+      "scene_number": 2,
+      "act": 1,
+      "characters": ["grandma_hanako"],
+      "setting": "Close up of a wooden tray being set on a low table, hands carefully placing empty ceramic bowls in specific positions.",
+      "scene_brief": "一汁三菜の配膳の基本"
+    },
+    {
+      "scene_number": 3,
+      "act": 1,
+      "characters": ["grandma_hanako"],
+      "setting": "Panoramic view of a lush vegetable garden behind an old farmhouse, dew on green leaves, distant mountains in blue mist.",
+      "scene_brief": "自然の恵みに感謝する"
+    },
+    {
+      "scene_number": 4,
+      "act": 1,
+      "characters": ["grandma_hanako", "sakura_sensei"],
+      "setting": "Bright, modern medical clinic office with large windows, health posters on the wall, wooden desk with a laptop and medical books.",
+      "scene_brief": "桜先生との朝の挨拶"
+    },
+    {
+      "scene_number": 5,
+      "act": 1,
+      "characters": ["sakura_sensei"],
+      "setting": "Close-up of a tablet screen showing a colorful diagram of a balanced meal with Japanese labels for carbs, protein, and vitamins.",
+      "scene_brief": "理想的な栄養バランス"
+    },
+    {
+      "scene_number": 6,
+      "act": 1,
+      "characters": ["grandma_hanako"],
+      "setting": "Kitchen counter showing various seasonal ingredients: a small fish, green spinach, tofu, and a bowl of brown miso paste.",
+      "scene_brief": "旬の食材を揃える大切さ"
+    },
+    {
+      "scene_number": 7,
+      "act": 1,
+      "characters": ["grandma_hanako"],
+      "setting": "Indoor dining room, Hanako sitting seiza style, hands folded in prayer before the meal, steam rising from the soup.",
+      "scene_brief": "「いただきます」の心"
+    },
+    {
+      "scene_number": 8,
+      "act": 1,
+      "characters": ["sakura_sensei"],
+      "setting": "Modern laboratory setting with microscopic view of fermented food cultures, bright clean lighting, scientific equipment in the background.",
+      "scene_brief": "発酵食品の驚くべき力"
+    },
+    {
+      "scene_number": 9,
+      "act": 1,
+      "characters": ["grandma_hanako"],
+      "setting": "Old wooden porch (engawa) overlooking a zen garden, Hanako sipping tea while looking at the falling cherry blossoms.",
+      "scene_brief": "和食と四季の深いつながり"
+    },
+    {
+      "scene_number": 10,
+      "act": 1,
+      "characters": ["grandma_hanako", "sakura_sensei"],
+      "setting": "Walking along a narrow stone path between rice paddies, the sun high in the sky, dragonflies hovering above the water.",
+      "scene_brief": "健康の秘訣を語り合う"
+    },
+    {
+      "scene_number": 11,
+      "act": 1,
+      "characters": ["sakura_sensei"],
+      "setting": "Graphic illustration of the human digestive system, simplified and clean, showing how traditional fiber-rich foods help the gut.",
+      "scene_brief": "食物繊維と腸内環境"
+    },
+    {
+      "scene_number": 12,
+      "act": 1,
+      "characters": ["grandma_hanako"],
+      "setting": "A bustling local morning market (asa-ichi), colorful stalls with vegetables, interaction with local farmers in a friendly atmosphere.",
+      "scene_brief": "地域の絆と食の知恵"
+    },
+    {
+      "scene_number": 13,
+      "act": 2,
+      "characters": ["grandma_hanako"],
+      "setting": "Close-up of high-quality polished white rice flowing through fingers into a ceramic bowl, water splashing softly.",
+      "scene_brief": "お米を研ぐ丁寧な所作"
+    },
+    {
+      "scene_number": 14,
+      "act": 2,
+      "characters": ["sakura_sensei"],
+      "setting": "Informational background with floating grains of rice, showing the difference between white, brown, and germinated rice nutrition.",
+      "scene_brief": "主食としての米の役割"
+    },
+    {
+      "scene_number": 15,
+      "act": 2,
+      "characters": ["grandma_hanako"],
+      "setting": "Stove top with a pot of water, Hanako adding a piece of dried kelp (kombu), small bubbles beginning to form.",
+      "scene_brief": "出汁を取る基本の工程"
+    },
+    {
+      "scene_number": 16,
+      "act": 2,
+      "characters": ["grandma_hanako"],
+      "setting": "Close-up of Hanako shaving dried bonito flakes with a traditional wooden tool, the aromatic flakes falling like snow.",
+      "scene_brief": "鰹節が作る旨味の魔法"
+    },
+    {
+      "scene_number": 17,
+      "act": 2,
+      "characters": ["sakura_sensei"],
+      "setting": "A chalkboard in the clinic showing the word 'UMAMI' in large letters, with chemical formulas for glutamate simplified into icons.",
+      "scene_brief": "旨味が減塩を助ける理由"
+    },
+    {
+      "scene_number": 18,
+      "act": 2,
+      "characters": ["grandma_hanako"],
+      "setting": "Kitchen interior, Hanako gently stirring miso paste into the dashi using a miso-koshi strainer, the soup turning cloudy and rich.",
+      "scene_brief": "味噌汁の温度と香りの秘密"
+    },
+    {
+      "scene_number": 19,
+      "act": 2,
+      "characters": ["sakura_sensei"],
+      "setting": "A split screen showing various types of miso: white, red, and mixed, with labels indicating their regional origins across Japan.",
+      "scene_brief": "各地で愛される味噌の多様性"
+    },
+    {
+      "scene_number": 20,
+      "act": 2,
+      "characters": ["grandma_hanako"],
+      "setting": "Garden at noon, Hanako picking fresh radishes from the dark earth, shaking off the dirt, the vibrant colors of nature.",
+      "scene_brief": "土から食卓への最短距離"
+    },
+    {
+      "scene_number": 21,
+      "act": 2,
+      "characters": ["grandma_hanako"],
+      "setting": "Cutting board, Hanako skillfully slicing vegetables into precise, beautiful shapes like flowers or fans, a focused expression.",
+      "scene_brief": "包丁捌きと見た目の美しさ"
+    },
+    {
+      "scene_number": 22,
+      "act": 2,
+      "characters": ["sakura_sensei"],
+      "setting": "Clinic office, Sakura pointing to a 3D model of a heart, explaining how low-fat diets benefit cardiovascular health.",
+      "scene_brief": "和食が心臓を守る科学"
+    },
+    {
+      "scene_number": 23,
+      "act": 2,
+      "characters": ["grandma_hanako"],
+      "setting": "Grilling a small mackerel over charcoal, smoke rising, skin sizzling and turning golden brown, the aroma filling the air.",
+      "scene_brief": "主菜としての焼き魚"
+    },
+    {
+      "scene_number": 24,
+      "act": 2,
+      "characters": ["sakura_sensei"],
+      "setting": "Infographic of a fish swimming in the ocean, transforming into an Omega-3 molecule diagram with brain and heart icons.",
+      "scene_brief": "青魚の脂が脳を活性化する"
+    },
+    {
+      "scene_number": 25,
+      "act": 2,
+      "characters": ["grandma_hanako"],
+      "setting": "A small bowl of colorful pickles (tsukemono) arranged neatly: purple eggplant, yellow radish, and green cucumber.",
+      "scene_brief": "副菜が添える彩りと栄養"
+    },
+    {
+      "scene_number": 26,
+      "act": 2,
+      "characters": ["grandma_hanako"],
+      "setting": "Dark pantry with large ceramic jars, Hanako opening one to reveal fermenting pickles, the smell of tradition.",
+      "scene_brief": "数百年続く保存の知恵"
+    },
+    {
+      "scene_number": 27,
+      "act": 2,
+      "characters": ["sakura_sensei"],
+      "setting": "Bright laboratory, showing the probiotic bacteria under a microscope moving energetically, labeled as 'Good for Gut Health'.",
+      "scene_brief": "植物性乳酸菌の力"
+    },
+    {
+      "scene_number": 28,
+      "act": 2,
+      "characters": ["grandma_hanako"],
+      "setting": "Small kitchen table, Hanako preparing 'Ohitashi' (boiled spinach with dashi), gently squeezing water out of the green leaves.",
+      "scene_brief": "野菜の栄養を逃さない調理"
+    },
+    {
+      "scene_number": 29,
+      "act": 2,
+      "characters": ["sakura_sensei"],
+      "setting": "Sakura standing in front of a giant pyramid made of food bowls, explaining the 'One Soup, Three Sides' hierarchy.",
+      "scene_brief": "献立の黄金比を学ぶ"
+    },
+    {
+      "scene_number": 30,
+      "act": 2,
+      "characters": ["grandma_hanako"],
+      "setting": "Village shrine during a local festival, tables laden with traditional dishes, community members laughing and sharing food.",
+      "scene_brief": "祝祭の日の特別な献立"
+    },
+    {
+      "scene_number": 31,
+      "act": 2,
+      "characters": ["grandma_hanako"],
+      "setting": "Rainy afternoon, Hanako making warm Nimono (simmered vegetables), steam fogging up the window, cozy atmosphere.",
+      "scene_brief": "心を温める煮物の味"
+    },
+    {
+      "scene_number": 32,
+      "act": 2,
+      "characters": ["sakura_sensei"],
+      "setting": "Clinic desk, Sakura comparing a high-salt western meal with a dashi-based Japanese meal using a balance scale.",
+      "scene_brief": "減塩を叶える出汁の効能"
+    },
+    {
+      "scene_number": 33,
+      "act": 2,
+      "characters": ["grandma_hanako"],
+      "setting": "Close-up of tofu being cut into perfect cubes in the palm of Hanako's hand, then slid gently into the soup.",
+      "scene_brief": "大豆製品の多様な活用"
+    },
+    {
+      "scene_number": 34,
+      "act": 2,
+      "characters": ["sakura_sensei"],
+      "setting": "Graphic of a soybean plant growing into various foods: Natto, Tofu, Miso, Soy Sauce, and Kinako.",
+      "scene_brief": "畑の肉、大豆の驚異"
+    },
+    {
+      "scene_number": 35,
+      "act": 2,
+      "characters": ["grandma_hanako"],
+      "setting": "Under a shady tree in summer, Hanako serving cold Somen noodles with various small side dishes, cicadas buzzing.",
+      "scene_brief": "夏を乗り切る涼やかな食"
+    },
+    {
+      "scene_number": 36,
+      "act": 2,
+      "characters": ["sakura_sensei"],
+      "setting": "Sakura holding a glass of water and explaining hydration and mineral balance during hot Japanese summers.",
+      "scene_brief": "夏バテを防ぐ食事の工夫"
+    },
+    {
+      "scene_number": 37,
+      "act": 2,
+      "characters": ["grandma_hanako"],
+      "setting": "Autumn forest, Hanako gathering chestnuts and mushrooms, the ground covered in red and yellow maple leaves.",
+      "scene_brief": "秋の味覚を収穫する"
+    },
+    {
+      "scene_number": 38,
+      "act": 2,
+      "characters": ["grandma_hanako"],
+      "setting": "Kitchen at dusk, the orange glow of the sunset through the window as Hanako prepares chestnut rice.",
+      "scene_brief": "季節を慈しむ炊き込みご飯"
+    },
+    {
+      "scene_number": 39,
+      "act": 2,
+      "characters": ["sakura_sensei"],
+      "setting": "Clinic library, Sakura showing an ancient scroll depicting historical Japanese meals from the Edo period.",
+      "scene_brief": "受け継がれてきた食の歴史"
+    },
+    {
+      "scene_number": 40,
+      "act": 2,
+      "characters": ["grandma_hanako"],
+      "setting": "Winter morning with snow outside, Hanako warming her hands on a bowl of hot soup inside a heated kotatsu table.",
+      "scene_brief": "冬の寒さに耐える知恵"
+    },
+    {
+      "scene_number": 41,
+      "act": 2,
+      "characters": ["sakura_sensei"],
+      "setting": "Infographic showing body temperature rising after eating warm soup, explained through thermal imaging visuals.",
+      "scene_brief": "根菜とスープで体温上昇"
+    },
+    {
+      "scene_number": 42,
+      "act": 2,
+      "characters": ["grandma_hanako", "sakura_sensei"],
+      "setting": "A traditional tea room, Hanako and Sakura sharing a simple meal of rice balls and pickles, peaceful silence.",
+      "scene_brief": "質素な食事に宿る豊かさ"
+    },
+    {
+      "scene_number": 43,
+      "act": 2,
+      "characters": ["sakura_sensei"],
+      "setting": "Sakura in a modern kitchen, showing how to prepare a quick 'One Soup, Three Sides' meal for busy people.",
+      "scene_brief": "現代生活への取り入れ方"
+    },
+    {
+      "scene_number": 44,
+      "act": 2,
+      "characters": ["grandma_hanako"],
+      "setting": "Close-up of Hanako's weathered hands polishing an old lacquerware bowl, reflecting her gentle face.",
+      "scene_brief": "道具を大切にする心"
+    },
+    {
+      "scene_number": 45,
+      "act": 2,
+      "characters": ["grandma_hanako", "sakura_sensei"],
+      "setting": "Hilltop overlooking the village at sunset, Hanako and Sakura standing together, looking at the peaceful homes.",
+      "scene_brief": "食が支える村の健康"
+    },
+    {
+      "scene_number": 46,
+      "act": 3,
+      "characters": ["grandma_hanako"],
+      "setting": "Hanako teaching a group of young children how to roll rice balls in a bright community center kitchen.",
+      "scene_brief": "次世代へ伝える味の記憶"
+    },
+    {
+      "scene_number": 47,
+      "act": 3,
+      "characters": ["sakura_sensei"],
+      "setting": "A lecture hall, Sakura presenting data on the longevity of the Japanese population related to traditional diet.",
+      "scene_brief": "世界が注目する健康食"
+    },
+    {
+      "scene_number": 48,
+      "act": 3,
+      "characters": ["grandma_hanako"],
+      "setting": "Close-up of a steaming bowl of rice with a single pickled plum (umeboshi) in the center, looking like a rising sun.",
+      "scene_brief": "日の丸弁当の誇り"
+    },
+    {
+      "scene_number": 49,
+      "act": 3,
+      "characters": ["sakura_sensei"],
+      "setting": "Clinic office at night, Sakura writing in a journal about the spiritual connection between food and healing.",
+      "scene_brief": "医食同源の真髄を想う"
+    },
+    {
+      "scene_number": 50,
+      "act": 3,
+      "characters": ["grandma_hanako"],
+      "setting": "Hanako arranging a small altar with a bowl of fresh rice, honoring her ancestors with a grateful smile.",
+      "scene_brief": "先祖から続く命のリレー"
+    },
+    {
+      "scene_number": 51,
+      "act": 3,
+      "characters": ["grandma_hanako", "sakura_sensei"],
+      "setting": "Hanako's porch at night, fireflies glowing in the garden, the two women sharing a quiet moment of reflection.",
+      "scene_brief": "夜の静寂と和食の余韻"
+    },
+    {
+      "scene_number": 52,
+      "act": 3,
+      "characters": ["sakura_sensei"],
+      "setting": "A montage of modern families sitting down to 'One Soup, Three Sides', bridging the gap between old and new.",
+      "scene_brief": "家族の絆を深める食卓"
+    },
+    {
+      "scene_number": 53,
+      "act": 3,
+      "characters": ["grandma_hanako"],
+      "setting": "Close-up of a small green sprout pushing through the soil in Hanako's garden, symbolizing hope and growth.",
+      "scene_brief": "新芽が教える生命の輝き"
+    },
+    {
+      "scene_number": 54,
+      "act": 3,
+      "characters": ["sakura_sensei"],
+      "setting": "Sakura walking through a field of golden rice ready for harvest, the wind creating waves in the crop.",
+      "scene_brief": "実りの秋、感謝の収穫"
+    },
+    {
+      "scene_number": 55,
+      "act": 3,
+      "characters": ["grandma_hanako"],
+      "setting": "Hanako meticulously cleaning her kitchen at the end of the day, everything in its rightful place.",
+      "scene_brief": "整えることで整う心"
+    },
+    {
+      "scene_number": 56,
+      "act": 3,
+      "characters": ["grandma_hanako", "sakura_sensei"],
+      "setting": "Gathering around a large table with many villagers, a feast of 'One Soup, Three Sides' for everyone.",
+      "scene_brief": "皆で囲む喜びの食事"
+    },
+    {
+      "scene_number": 57,
+      "act": 3,
+      "characters": ["sakura_sensei"],
+      "setting": "Sakura looking directly at the camera with a warm, encouraging smile, a bright white background.",
+      "scene_brief": "今日から始める一歩"
+    },
+    {
+      "scene_number": 58,
+      "act": 3,
+      "characters": ["grandma_hanako"],
+      "setting": "Hanako standing by her gate, waving goodbye as the sun sets, her face glowing with contentment.",
+      "scene_brief": "変わらぬ日常の大切さ"
+    },
+    {
+      "scene_number": 59,
+      "act": 3,
+      "characters": ["grandma_hanako"],
+      "setting": "Close-up of the steam rising from a final, perfect bowl of miso soup, blurring into a soft white light.",
+      "scene_brief": "立ち上る湯気の温もり"
+    },
+    {
+      "scene_number": 60,
+      "act": 3,
+      "characters": ["grandma_hanako"],
+      "setting": "The phrase 'ごちそうさまでした' appearing in beautiful calligraphy over a shot of a clean, empty wooden tray.",
+      "scene_brief": "感謝で結ぶ物語"
+    }
+  ]
+}

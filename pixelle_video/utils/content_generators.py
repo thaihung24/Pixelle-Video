@@ -97,55 +97,77 @@ async def generate_narrations_from_topic(
     topic: str,
     n_scenes: int = 5,
     min_words: int = 5,
-    max_words: int = 20
+    max_words: int = 20,
+    target_duration_seconds: float | None = None,
+    tts_speed: float = 1.0,
 ) -> List[str]:
     """
     Generate narrations from topic using LLM
-    
+
     Args:
         llm_service: LLM service instance
         topic: Topic/theme to generate narrations from
         n_scenes: Number of narrations to generate
-        min_words: Minimum narration length
-        max_words: Maximum narration length
-    
+        min_words: Minimum narration length (overridden if target_duration_seconds given)
+        max_words: Maximum narration length (overridden if target_duration_seconds given)
+        target_duration_seconds: Target audio duration per narration in seconds (3-8s).
+            When set, min/max_words are auto-calculated from TTS speed and this duration.
+        tts_speed: TTS playback speed multiplier (used to calibrate word count).
+
     Returns:
         List of narration texts
     """
     from pixelle_video.prompts import build_topic_narration_prompt
-    
-    logger.info(f"Generating {n_scenes} narrations from topic: {topic}")
-    
+    from pixelle_video.prompts.topic_narration import duration_to_word_range
+
+    # Auto-calculate word range from target duration if provided
+    if target_duration_seconds is not None:
+        actual_words_per_second = 4.2 * tts_speed
+        min_words, max_words = duration_to_word_range(target_duration_seconds, actual_words_per_second)
+        logger.info(
+            f"Target duration: {target_duration_seconds}s → word range [{min_words}~{max_words}] "
+            f"(tts_speed={tts_speed}x, words/s={actual_words_per_second:.1f})"
+        )
+
+    logger.info(f"Generating {n_scenes} narrations from topic: {topic[:80]}...")
+
+    # AUDIT: Show which prompt module is being called
+    from pixelle_video.prompts import topic_narration as _tn_mod
+    logger.info(f"📎 [AUDIT] Calling Alibaba prompt: {_tn_mod.__file__}")
+    logger.info(f"📎 [AUDIT] Function: build_topic_narration_prompt(topic=..., n={n_scenes}, min={min_words}, max={max_words})")
+
     prompt = build_topic_narration_prompt(
         topic=topic,
         n_storyboard=n_scenes,
         min_words=min_words,
-        max_words=max_words
+        max_words=max_words,
     )
-    
+    logger.info(f"📎 [AUDIT] Prompt generated: {len(prompt)} chars")
+    logger.debug(f"📎 [AUDIT] Prompt first 200 chars: {prompt[:200]}...")
+
     response = await llm_service(
         prompt=prompt,
         temperature=0.8,
         max_tokens=2000
     )
-    
+
     logger.debug(f"LLM response: {response[:200]}...")
-    
+
     # Parse JSON
     result = _parse_json(response)
-    
+
     if "narrations" not in result:
         raise ValueError("Invalid response format: missing 'narrations' key")
-    
+
     narrations = result["narrations"]
-    
+
     # Validate count
     if len(narrations) > n_scenes:
         logger.warning(f"Got {len(narrations)} narrations, taking first {n_scenes}")
         narrations = narrations[:n_scenes]
     elif len(narrations) < n_scenes:
         raise ValueError(f"Expected {n_scenes} narrations, got only {len(narrations)}")
-    
+
     logger.info(f"Generated {len(narrations)} narrations successfully")
     return narrations
 
@@ -293,6 +315,11 @@ async def generate_image_prompts(
     from pixelle_video.prompts import build_image_prompt_prompt
     
     logger.info(f"Generating image prompts for {len(narrations)} narrations (batch_size={batch_size})")
+
+    # AUDIT: Show which prompt module is being called
+    from pixelle_video.prompts import image_generation as _ig_mod
+    logger.info(f"📎 [AUDIT] Calling Alibaba prompt: {_ig_mod.__file__}")
+    logger.info(f"📎 [AUDIT] Function: build_image_prompt_prompt(narrations=..., min={min_words}, max={max_words})")
     
     # Split narrations into batches
     batches = [narrations[i:i + batch_size] for i in range(0, len(narrations), batch_size)]
@@ -394,8 +421,13 @@ async def generate_video_prompts(
         List of video prompts (base prompts, without prefix applied)
     """
     from pixelle_video.prompts.video_generation import build_video_prompt_prompt
-    
+
     logger.info(f"Generating video prompts for {len(narrations)} narrations (batch_size={batch_size})")
+
+    # AUDIT: Show which prompt module is being called
+    from pixelle_video.prompts import video_generation as _vg_mod
+    logger.info(f"📎 [AUDIT] Calling Alibaba prompt: {_vg_mod.__file__}")
+    logger.info(f"📎 [AUDIT] Function: build_video_prompt_prompt(narrations=..., min={min_words}, max={max_words})")
     
     # Split narrations into batches
     batches = [narrations[i:i + batch_size] for i in range(0, len(narrations), batch_size)]

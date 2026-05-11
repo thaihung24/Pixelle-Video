@@ -72,6 +72,8 @@ class TTSService(ComfyBaseService):
         # TTS parameters
         voice: Optional[str] = None,
         speed: Optional[float] = None,
+        ref_audio: Optional[str] = None,
+        ref_text: Optional[str] = None,
         # Inference mode override
         inference_mode: Optional[str] = None,
         # Output path
@@ -113,12 +115,20 @@ class TTSService(ComfyBaseService):
         """
         # Determine inference mode (param > config)
         mode = inference_mode or self.config.get("inference_mode", "local")
-        
+
         # Route to appropriate implementation
         if mode == "local":
             return await self._call_local_tts(
                 text=text,
                 voice=voice,
+                speed=speed,
+                output_path=output_path
+            )
+        elif mode == "omnivoice":
+            return await self._call_omnivoice_tts(
+                text=text,
+                ref_audio=ref_audio,
+                ref_text=ref_text,
                 speed=speed,
                 output_path=output_path
             )
@@ -192,6 +202,56 @@ class TTSService(ComfyBaseService):
         
         except Exception as e:
             logger.error(f"Local TTS generation error: {e}")
+            raise
+
+    async def _call_omnivoice_tts(
+        self,
+        text: str,
+        ref_audio: Optional[str] = None,
+        ref_text: Optional[str] = None,
+        speed: Optional[float] = None,
+        output_path: Optional[str] = None,
+    ) -> str:
+        """
+        Generate speech using OmniVoice local model
+        """
+        if not ref_audio or not ref_text:
+            raise ValueError("OmniVoice requires both 'ref_audio' and 'ref_text'.")
+
+        final_speed = speed if speed is not None else 1.2
+        logger.info(f"🎙️ Using OmniVoice TTS: speed={final_speed}x, ref_audio={ref_audio}")
+
+        if not output_path:
+            unique_id = uuid.uuid4().hex
+            output_path = f"output/{unique_id}.wav"
+            Path("output").mkdir(parents=True, exist_ok=True)
+
+        try:
+            import torch
+            import soundfile as sf
+            from omnivoice import OmniVoice
+            
+            # Use cached model if possible
+            if not hasattr(self, '_omnivoice_model'):
+                logger.info("Loading OmniVoice model (This will download weights if not cached)...")
+                self._omnivoice_model = OmniVoice.from_pretrained("k2-fsa/OmniVoice", device_map="cpu", dtype=torch.float32)
+                logger.info("OmniVoice model loaded successfully!")
+
+            audio = self._omnivoice_model.generate(
+                text=text,
+                ref_audio=ref_audio,
+                ref_text=ref_text,
+                speed=final_speed
+            )
+            
+            # audio returns a tensor or list of tensors. Assuming audio[0] is the numpy array or tensor
+            sf.write(output_path, audio[0], 24000)
+            
+            logger.info(f"✅ Generated audio (OmniVoice): {output_path}")
+            return output_path
+            
+        except Exception as e:
+            logger.error(f"OmniVoice generation error: {e}")
             raise
     
     async def _call_comfyui_workflow(

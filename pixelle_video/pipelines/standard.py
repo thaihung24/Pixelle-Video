@@ -118,7 +118,9 @@ class StandardPipeline(LinearVideoPipeline):
                 topic=text,
                 n_scenes=n_scenes,
                 min_words=min_words,
-                max_words=max_words
+                max_words=max_words,
+                target_duration_seconds=ctx.params.get("target_narration_duration"),
+                tts_speed=ctx.params.get("tts_speed") or 1.0,
             )
             logger.info(f"✅ Generated {len(ctx.narrations)} narrations")
         else:  # fixed
@@ -127,6 +129,9 @@ class StandardPipeline(LinearVideoPipeline):
             ctx.narrations = await split_narration_script(text, split_mode=split_mode)
             logger.info(f"✅ Split script into {len(ctx.narrations)} segments (mode={split_mode})")
             logger.info(f"   Note: n_scenes={n_scenes} is ignored in fixed mode")
+
+        # Save narrations to task directory for thumbnail/SEO reuse
+        await self._save_script(ctx)
 
     async def determine_title(self, ctx: PipelineContext):
         """Step 3: Determine or generate video title."""
@@ -265,11 +270,14 @@ class StandardPipeline(LinearVideoPipeline):
             tts_workflow=final_tts_workflow,
             tts_speed=ctx.params.get("tts_speed", 1.2),
             ref_audio=ctx.params.get("ref_audio"),
+            ref_text=ctx.params.get("ref_text"),
             media_width=ctx.params.get("media_width"),
             media_height=ctx.params.get("media_height"),
             media_workflow=ctx.params.get("media_workflow"),
             frame_template=ctx.params.get("frame_template") or "1080x1920/default.html",
-            template_params=ctx.params.get("template_params")
+            template_params=ctx.params.get("template_params"),
+            video_duration_mode=ctx.params.get("video_duration_mode", "natural"),
+            target_narration_duration=ctx.params.get("target_narration_duration"),
         )
         
         # Create storyboard
@@ -515,3 +523,49 @@ class StandardPipeline(LinearVideoPipeline):
         except Exception as e:
             logger.error(f"Failed to persist task data: {e}")
             # Don't raise - persistence failure shouldn't break video generation
+
+    async def _save_script(self, ctx: PipelineContext):
+        """
+        Save generated narrations to task directory as script.md and script.json.
+        This allows downstream tools (thumbnail, SEO) to read the script.
+        """
+        try:
+            task_dir = Path(ctx.task_dir)
+            task_dir.mkdir(parents=True, exist_ok=True)
+
+            topic = ctx.input_text
+            narrations = getattr(ctx, "narrations", [])
+
+            # --- script.md (human-readable markdown) ---
+            md_lines = []
+            md_lines.append(f"# {ctx.params.get('title') or topic}")
+            md_lines.append("")
+            md_lines.append(f"**Chủ đề:** {topic}")
+            md_lines.append("")
+            md_lines.append("## Kịch bản")
+            md_lines.append("")
+            for idx, narration in enumerate(narrations, 1):
+                md_lines.append(f"### Cảnh {idx}")
+                md_lines.append(narration)
+                md_lines.append("")
+
+            script_md_path = task_dir / "script.md"
+            script_md_path.write_text("\n".join(md_lines), encoding="utf-8")
+            logger.info(f"📝 Saved script.md → {script_md_path}")
+
+            # --- script.json (machine-readable) ---
+            import json
+            script_data = {
+                "topic": topic,
+                "n_scenes": len(narrations),
+                "narrations": narrations,
+            }
+            script_json_path = task_dir / "script.json"
+            script_json_path.write_text(
+                json.dumps(script_data, ensure_ascii=False, indent=2),
+                encoding="utf-8"
+            )
+            logger.info(f"📝 Saved script.json → {script_json_path}")
+
+        except Exception as e:
+            logger.warning(f"Failed to save script (non-fatal): {e}")

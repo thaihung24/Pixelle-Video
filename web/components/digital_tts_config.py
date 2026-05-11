@@ -43,12 +43,16 @@ def render_style_config(pixelle_video):
         tts_config = comfyui_config["tts"]
         
         # Inference mode selection
+        def format_mode(x):
+            if x == "omnivoice": return "OmniVoice (AI Clone)"
+            return tr(f"tts.mode.{x}") if tr(f"tts.mode.{x}") != f"tts.mode.{x}" else x.capitalize()
+
         tts_mode = st.radio(
             tr("tts.inference_mode"),
-            ["local", "comfyui"],
+            ["local", "comfyui", "omnivoice"],
             horizontal=True,
-            format_func=lambda x: tr(f"tts.mode.{x}"),
-            index=0 if tts_config.get("inference_mode", "local") == "local" else 1,
+            format_func=format_mode,
+            index=0 if tts_config.get("inference_mode", "local") == "local" else (1 if tts_config.get("inference_mode", "local") == "comfyui" else 2),
             key="digital_tts_inference_mode"
         )
         
@@ -121,7 +125,7 @@ def render_style_config(pixelle_video):
         # ================================================================
         # ComfyUI Mode UI
         # ================================================================
-        else:  # comfyui mode
+        elif tts_mode == "comfyui":
             tts_workflow_key = "runninghub/tts_index2.json"  # fallback
             
             # Reference audio upload (optional, for voice cloning)
@@ -148,6 +152,52 @@ def render_style_config(pixelle_video):
             # Variables for video generation
             selected_voice = None
             tts_speed = None
+            ref_text = None
+
+        # ================================================================
+        # OmniVoice Mode UI
+        # ================================================================
+        elif tts_mode == "omnivoice":
+            st.info("🎙️ OmniVoice: Local high-quality AI voice cloning.")
+            
+            # Reference audio
+            ref_audio_file = st.file_uploader(
+                tr("tts.ref_audio") + " (Required)",
+                type=["mp3", "wav", "flac", "m4a", "aac", "ogg"],
+                help=tr("tts.ref_audio_help"),
+                key="digital_omnivoice_ref_audio"
+            )
+            
+            ref_audio_path = None
+            if ref_audio_file is not None:
+                st.audio(ref_audio_file)
+                temp_dir = Path("temp")
+                temp_dir.mkdir(exist_ok=True)
+                ref_audio_path = temp_dir / f"ref_audio_{ref_audio_file.name}"
+                with open(ref_audio_path, "wb") as f:
+                    f.write(ref_audio_file.getbuffer())
+            
+            # Reference text
+            ref_text = st.text_area(
+                "Reference Text (Required)",
+                placeholder="The exact transcript of the reference audio.",
+                height=100,
+                key="digital_omnivoice_ref_text"
+            )
+            
+            # Speed
+            tts_speed = st.slider(
+                tr("tts.speed"),
+                min_value=0.5,
+                max_value=2.0,
+                value=1.0,
+                step=0.1,
+                format="%.1fx",
+                key="digital_omnivoice_speed"
+            )
+            
+            selected_voice = None
+            tts_workflow_key = None
         
         # ================================================================
         # TTS Preview (works for both modes)
@@ -174,10 +224,17 @@ def render_style_config(pixelle_video):
                         if tts_mode == "local":
                             tts_params["voice"] = selected_voice
                             tts_params["speed"] = tts_speed
-                        else:  # comfyui
+                        elif tts_mode == "comfyui":
                             tts_params["workflow"] = tts_workflow_key
                             if ref_audio_path:
                                 tts_params["ref_audio"] = str(ref_audio_path)
+                        elif tts_mode == "omnivoice":
+                            if not ref_audio_path or not ref_text:
+                                st.error("Reference Audio and Reference Text are required for OmniVoice.")
+                                st.stop()
+                            tts_params["ref_audio"] = str(ref_audio_path)
+                            tts_params["ref_text"] = ref_text
+                            tts_params["speed"] = tts_speed
                         
                         audio_path = run_async(pixelle_video.tts(**tts_params))
                         
@@ -203,7 +260,8 @@ def render_style_config(pixelle_video):
     return {
         "tts_inference_mode": tts_mode,
         "tts_voice": selected_voice if tts_mode == "local" else None,
-        "tts_speed": tts_speed if tts_mode == "local" else None,
+        "tts_speed": tts_speed if tts_mode in ("local", "omnivoice") else None,
         "tts_workflow": tts_workflow_key if tts_mode == "comfyui" else None,
         "ref_audio": str(ref_audio_path) if ref_audio_path else None,
+        "ref_text": ref_text if tts_mode == "omnivoice" else None,
     }

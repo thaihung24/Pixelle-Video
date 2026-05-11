@@ -1,0 +1,148 @@
+{
+  "series_title": "すこやかライフ — 日本の健康の知恵",
+  "series_title_vi": "Sukoyaka Life — Trí tuệ sức khỏe Nhật Bản",
+  "channel": "sukoyaka_life",
+  "author": "@sukoyaka.life1",
+  "description": "健康長寿の知恵",
+  "brand": "健康長寿の知恵",
+  "language": "Japanese",
+  "style": "Warm anime cel-shaded, Studio Ghibli-inspired, soft watercolor backgrounds, gentle lighting",
+  "template": "1920x1080/video_youtube.html",
+
+  "voice": {
+    "tts_mode": "omnivoice",
+    "ref_audio": "C:\\Users\\ADMIN\\Dev\\tool\\flowkit\\output\\_shared\\tts_templates\\mina.WAV",
+    "ref_text": "私の声は誰にとっても聞きやすい落ち着い。心地よい音です",
+    "speed": 1.0
+  },
+
+  "characters": [
+    {
+      "id": "grandma_hanako",
+      "name": "花子おばあちゃん",
+      "name_vi": "Bà Hanako",
+      "visual": "78-year-old Japanese woman, silver-white hair in neat traditional bun held with wooden kanzashi pin, warm brown eyes with gentle crow's feet, fair skin with subtle age spots on cheeks, petite build 148cm, wearing deep indigo cotton kimono with small white wave pattern and cream-colored obi, round tortoiseshell reading glasses perched on small nose",
+      "role": "narrator",
+      "personality": "Wise, warm, storyteller. Opens each episode with a life observation."
+    },
+    {
+      "id": "grandpa_kenji",
+      "name": "健二おじいちゃん",
+      "name_vi": "Ông Kenji",
+      "visual": "82-year-old Japanese man, short thinning white hair neatly groomed, bright energetic hazel eyes behind thin silver wire-rimmed glasses, tanned weathered skin, lean athletic build 165cm, wearing navy blue athletic track jacket with white stripes over light gray polo shirt, khaki hiking trousers, black smartwatch on left wrist, sturdy gray sneakers",
+      "role": "protagonist",
+      "personality": "Active, curious, always trying new exercises and outdoor activities."
+    },
+    {
+      "id": "sakura_sensei",
+      "name": "桜先生",
+      "name_vi": "Cô Sakura",
+      "visual": "45-year-old Japanese woman, chin-length black bob with side-swept bangs, professional dark brown eyes, smooth fair skin, medium build 158cm, wearing crisp white lab coat over pastel pink blouse and navy pencil skirt, small gold stethoscope pendant necklace, carrying a tablet with health charts",
+      "role": "supporting",
+      "personality": "Local doctor, provides scientific explanations for health topics."
+    },
+    {
+      "id": "ryu_grandson",
+      "name": "龍くん",
+      "name_vi": "Cháu Ryu",
+      "visual": "16-year-old Japanese boy, messy dark brown hair with slight wave, curious wide brown eyes, light skin with slight tan, athletic slim build 170cm, wearing oversized forest green hoodie with small leaf logo, faded blue jeans, white canvas sneakers, always carrying a vintage film camera around his neck",
+      "role": "supporting",
+      "personality": "Teenager learning traditions from grandparents, bridges modern and traditional."
+    }
+  ],
+
+  "recurring_locations": [
+    "Traditional Japanese village with wooden houses and mountain backdrop",
+    "Local community health center with tatami mats and calligraphy scrolls",
+    "Peaceful Shinto shrine courtyard with stone steps and maple trees",
+    "Morning market with colorful vegetable stalls and fish vendors",
+    "Kenji's home garden with tomatoes, herbs, and a wooden bench"
+  ],
+
+  "episodes": [
+    {
+      "ep": 1,
+      "topic": "朝の習慣 — 健康な一日の始まり",
+      "topic_vi": "Thói quen buổi sáng — Khởi đầu ngày mới khỏe mạnh",
+      "characters": ["grandma_hanako", "grandpa_kenji"],
+      "scenes": 60
+    },
+    {
+      "ep": 2,
+      "topic": "一汁三菜 — 日本食の知恵",
+      "topic_vi": "Một canh ba món — Trí tuệ ẩm thực Nhật",
+      "characters": ["grandma_hanako", "sakura_sensei"],
+      "scenes": 60
+    },
+    {
+      "ep": 3,
+      "topic": "歩く健康法 — 毎日の散歩の力",
+      "topic_vi": "Sức khỏe từ đi bộ — Sức mạnh của tản bộ mỗi ngày",
+      "characters": ["grandpa_kenji", "ryu_grandson"],
+      "scenes": 60
+    },
+    {
+      "ep": 4,
+      "topic": "心の平和 — 瞑想と呼吸の技術",
+      "topic_vi": "Bình yên tâm hồn — Kỹ thuật thiền và hít thở",
+      "characters": ["grandma_hanako", "grandpa_kenji"],
+      "scenes": 60
+    },
+    {
+      "ep": 5,
+      "topic": "温泉の力 — 入浴と健康の関係",
+      "topic_vi": "Sức mạnh của onsen — Mối quan hệ tắm và sức khỏe",
+      "characters": ["grandpa_kenji", "sakura_sensei"],
+      "scenes": 60
+    },
+    {
+      "ep": 6,
+      "topic": "社会的つながり — 友情と長寿の秘密",
+      "topic_vi": "Kết nối xã hội — Bí mật tình bạn và trường thọ",
+      "characters": ["grandma_hanako", "ryu_grandson"],
+      "scenes": 60
+    },
+    {
+      "ep": 7,
+      "topic": "園芸と健康 — 庭仕事が教えてくれること",
+      "topic_vi": "Làm vườn và sức khỏe — Bài học từ khu vườn",
+      "characters": ["grandpa_kenji", "grandma_hanako"],
+      "scenes": 60
+    },
+    {
+      "ep": 8,
+      "topic": "笑いの医学 — ユーモアが体を癒す",
+      "topic_vi": "Y học của tiếng cười — Hài hước chữa lành cơ thể",
+      "characters": ["grandma_hanako", "grandpa_kenji", "sakura_sensei", "ryu_grandson"],
+      "scenes": 60
+    },
+    {
+      "ep": 9,
+      "topic": "季節の食材 — 旬を食べる暮らし",
+      "topic_vi": "Thực phẩm theo mùa — Cuộc sống ăn theo mùa",
+      "characters": ["grandma_hanako", "sakura_sensei"],
+      "scenes": 60
+    },
+    {
+      "ep": 10,
+      "topic": "体操と柔軟 — 朝のルーティンの秘密",
+      "topic_vi": "Thể dục và dẻo dai — Bí mật routine buổi sáng",
+      "characters": ["grandpa_kenji", "ryu_grandson"],
+      "scenes": 60
+    },
+    {
+      "ep": 11,
+      "topic": "生きがい — 人生の目的を見つける",
+      "topic_vi": "Ikigai — Tìm mục đích cuộc sống",
+      "characters": ["grandma_hanako", "grandpa_kenji", "sakura_sensei", "ryu_grandson"],
+      "scenes": 60
+    },
+    {
+      "ep": 12,
+      "topic": "感謝の心 — 幸せに生きる知恵",
+      "topic_vi": "Lòng biết ơn — Trí tuệ sống hạnh phúc",
+      "characters": ["grandma_hanako", "grandpa_kenji", "sakura_sensei", "ryu_grandson"],
+      "scenes": 60
+    }
+  ]
+}

@@ -20,6 +20,7 @@ Key Feature:
   to ensure perfect sync between audio and video (no padding, no trimming needed)
 """
 
+import os
 from typing import Callable, Optional
 
 import httpx
@@ -160,6 +161,19 @@ class FrameProcessor:
         from pixelle_video.utils.os_util import get_task_frame_path
         output_path = get_task_frame_path(config.task_id, frame.index, "audio")
         
+        # OmniVoice uses soundfile which only supports WAV, not MP3
+        if config.tts_inference_mode == "omnivoice":
+            output_path = output_path.replace(".mp3", ".wav")
+            
+        if os.path.exists(output_path):
+            from pixelle_video.utils.tts_util import get_audio_duration
+            try:
+                duration = get_audio_duration(output_path)
+                logger.debug(f"  ✓ Using existing audio: {output_path} ({duration:.2f}s)")
+                return output_path
+            except Exception as e:
+                logger.warning(f"  Failed to read existing audio {output_path}: {e}. Regenerating...")
+
         # Build TTS params based on inference mode
         tts_params = {
             "text": frame.narration,
@@ -172,6 +186,14 @@ class FrameProcessor:
             # Local mode: pass voice and speed
             if config.voice_id:
                 tts_params["voice"] = config.voice_id
+            if config.tts_speed is not None:
+                tts_params["speed"] = config.tts_speed
+        elif config.tts_inference_mode == "omnivoice":
+            logger.debug(f"  OmniVoice config: ref_audio={config.ref_audio!r}, ref_text={config.ref_text!r}")
+            if config.ref_audio:
+                tts_params["ref_audio"] = config.ref_audio
+            if config.ref_text:
+                tts_params["ref_text"] = config.ref_text
             if config.tts_speed is not None:
                 tts_params["speed"] = config.tts_speed
         else:  # comfyui
@@ -222,6 +244,11 @@ class FrameProcessor:
             "height": config.media_height,
             "index": frame.index + 1,  # 1-based index for workflow
         }
+        
+        # Per-scene character references (only characters in this scene)
+        if frame.character_media_ids:
+            media_params["character_media_ids"] = frame.character_media_ids
+            logger.info(f"  → Using {len(frame.character_media_ids)} scene-specific character ref(s)")
         
         # For video workflows: pass audio duration as target video duration
         # This ensures video length matches audio length from the source
@@ -366,12 +393,14 @@ class FrameProcessor:
             
             # Step 2: Add narration audio to the overlaid video
             # Note: The video might have audio (replaced) or be silent (audio added)
+            trim_when_longer = (config.video_duration_mode == "trim")
             segment_path = video_service.merge_audio_video(
                 video=temp_video_with_overlay,
                 audio=frame.audio_path,
                 output=output_path,
-                replace_audio=True,  # Replace video audio with narration
-                audio_volume=1.0
+                replace_audio=True,
+                audio_volume=1.0,
+                trim_when_longer=trim_when_longer,
             )
             
             # Clean up temp file

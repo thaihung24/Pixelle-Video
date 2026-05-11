@@ -187,14 +187,21 @@ class AssetBasedPipelineUI(PipelineUI):
                 st.markdown(tr("asset_based.source.how"))
             
             source_options = {
-                "runninghub": tr("asset_based.source.runninghub"),
-                "selfhost": tr("asset_based.source.selfhost")
+                "runninghub": "☁️ RunningHub (Cloud)",
+                "selfhost": "🖥️ SelfHost (Local)",
+                "flowkit": "🎬 FlowKit / Google Veo 3"
             }
             
             # Check if RunningHub API key is configured
             comfyui_config = config_manager.get_comfyui_config()
             has_runninghub = bool(comfyui_config.get("runninghub_api_key"))
             has_selfhost = bool(comfyui_config.get("comfyui_url"))
+
+            # Check if FlowKit is configured
+            flowkit_config = config_manager.config.flowkit if hasattr(config_manager.config, 'flowkit') else {}
+            has_flowkit = bool(
+                (flowkit_config.get("base_url") if isinstance(flowkit_config, dict) else getattr(flowkit_config, 'base_url', None))
+            )
             
             # Default to runninghub always
             default_source_index = 0
@@ -215,6 +222,30 @@ class AssetBasedPipelineUI(PipelineUI):
                     st.warning(tr("asset_based.source.runninghub_not_configured"))
                 else:
                     st.info(tr("asset_based.source.runninghub_hint"))
+            elif source == "flowkit":
+                st.info("🎬 Google Veo 3 qua FlowKit — sinh video chuyển động AI cho từng cảnh.")
+                if not has_flowkit:
+                    st.warning("⚠️ FlowKit chưa được cấu hình. Vào System Configuration để nhập FlowKit URL.")
+                # Workflow selector for FlowKit video
+                all_workflows = pixelle_video.media.list_workflows()
+                veo_workflows = [
+                    wf for wf in all_workflows
+                    if "flowkit" in wf["key"].lower() or "veo" in wf["key"].lower() or "video" in wf["key"].lower()
+                ]
+                if not veo_workflows:
+                    # Fallback: add default FlowKit workflow
+                    veo_workflows = [{"key": "flowkit/google-veo", "display_name": "Google Veo (FlowKit)"}]
+                
+                veo_wf_labels = [wf["display_name"] for wf in veo_workflows]
+                veo_wf_keys   = [wf["key"]          for wf in veo_workflows]
+                selected_veo_wf = st.selectbox(
+                    "Video Workflow",
+                    veo_wf_labels,
+                    index=0,
+                    key="asset_veo_workflow"
+                )
+                veo_workflow_key = veo_wf_keys[veo_wf_labels.index(selected_veo_wf)]
+                st.session_state["asset_flowkit_workflow"] = veo_workflow_key
             else:
                 if not has_selfhost:
                     st.warning(tr("asset_based.source.selfhost_not_configured"))
@@ -227,61 +258,113 @@ class AssetBasedPipelineUI(PipelineUI):
         # TTS configuration
         with st.container(border=True):
             st.markdown(f"**{tr('section.tts')}**")
-            
+
+            # TTS Mode selector
+            tts_mode = st.radio(
+                "Synthesis Mode",
+                options=["local", "omnivoice"],
+                format_func=lambda x: {
+                    "local": "🔊 Local Synthesis (Edge TTS)",
+                    "omnivoice": "🎙️ OmniVoice (AI Clone)"
+                }[x],
+                horizontal=True,
+                key="asset_tts_mode"
+            )
+
             # Import voice configuration
             from pixelle_video.tts_voices import EDGE_TTS_VOICES, get_voice_display_name
-            
+
             # Get saved voice from config
             comfyui_config = config_manager.get_comfyui_config()
             tts_config = comfyui_config.get("tts", {})
             local_config = tts_config.get("local", {})
             saved_voice = local_config.get("voice", "zh-CN-YunjianNeural")
             saved_speed = local_config.get("speed", 1.2)
-            
-            # Build voice options with i18n
-            voice_options = []
-            voice_ids = []
-            default_voice_index = 0
-            
-            for idx, voice_config in enumerate(EDGE_TTS_VOICES):
-                voice_id = voice_config["id"]
-                display_name = get_voice_display_name(voice_id, tr, get_language())
-                voice_options.append(display_name)
-                voice_ids.append(voice_id)
-                
-                if voice_id == saved_voice:
-                    default_voice_index = idx
-            
-            # Two-column layout
-            voice_col, speed_col = st.columns([1, 1])
-            
-            with voice_col:
-                selected_voice_display = st.selectbox(
-                    tr("tts.voice_selector"),
-                    voice_options,
-                    index=default_voice_index,
-                    key="asset_tts_voice"
+
+            # Defaults
+            voice_id = saved_voice
+            tts_speed = saved_speed
+            ref_audio_path = None
+            ref_text = None
+
+            if tts_mode == "local":
+                # Build voice options
+                voice_options = []
+                voice_ids = []
+                default_voice_index = 0
+                for idx, vc in enumerate(EDGE_TTS_VOICES):
+                    vid = vc["id"]
+                    display_name = get_voice_display_name(vid, tr, get_language())
+                    voice_options.append(display_name)
+                    voice_ids.append(vid)
+                    if vid == saved_voice:
+                        default_voice_index = idx
+
+                voice_col, speed_col = st.columns([1, 1])
+                with voice_col:
+                    selected_voice_display = st.selectbox(
+                        tr("tts.voice_selector"),
+                        voice_options,
+                        index=default_voice_index,
+                        key="asset_tts_voice"
+                    )
+                    voice_id = voice_ids[voice_options.index(selected_voice_display)]
+                with speed_col:
+                    tts_speed = st.slider(
+                        tr("tts.speed"),
+                        min_value=0.5, max_value=2.0,
+                        value=saved_speed, step=0.1,
+                        format="%.1fx",
+                        key="asset_tts_speed"
+                    )
+                    st.caption(tr("tts.speed_label", speed=f"{tts_speed:.1f}"))
+
+            else:  # omnivoice
+                st.info("🎙️ OmniVoice: Upload a reference audio to clone the voice for all narrations.")
+                ref_audio_file = st.file_uploader(
+                    "Reference Audio (Required)",
+                    type=["mp3", "wav", "flac", "m4a", "aac", "ogg"],
+                    help="Upload a clear ~10s audio sample of the target voice.",
+                    key="asset_omnivoice_ref_audio"
                 )
-                selected_voice_index = voice_options.index(selected_voice_display)
-                voice_id = voice_ids[selected_voice_index]
-            
-            with speed_col:
+                if ref_audio_file is not None:
+                    st.audio(ref_audio_file)
+                    temp_dir = Path("temp")
+                    temp_dir.mkdir(exist_ok=True)
+                    ref_audio_path = temp_dir / f"ref_audio_{ref_audio_file.name}"
+                    with open(ref_audio_path, "wb") as f:
+                        f.write(ref_audio_file.getbuffer())
+
+                ref_text = st.text_area(
+                    "Reference Text (Required)",
+                    placeholder="The exact transcript of the reference audio.",
+                    height=80,
+                    key="asset_omnivoice_ref_text"
+                )
                 tts_speed = st.slider(
                     tr("tts.speed"),
-                    min_value=0.5,
-                    max_value=2.0,
-                    value=saved_speed,
-                    step=0.1,
+                    min_value=0.5, max_value=2.0,
+                    value=1.0, step=0.1,
                     format="%.1fx",
-                    key="asset_tts_speed"
+                    key="asset_omnivoice_speed"
                 )
-                st.caption(tr("tts.speed_label", speed=f"{tts_speed:.1f}"))
-        
+                voice_id = None  # Not used in OmniVoice mode
+
+        # Resolve media_workflow for FlowKit source
+        media_workflow = None
+        tts_inference_mode = tts_mode  # "local" or "omnivoice"
+        if source == "flowkit":
+            media_workflow = st.session_state.get("asset_flowkit_workflow", "flowkit/google-veo")
+
         return {
             "duration": duration,
             "source": source,
             "voice_id": voice_id,
-            "tts_speed": tts_speed
+            "tts_speed": tts_speed,
+            "tts_inference_mode": tts_inference_mode,
+            "ref_audio": str(ref_audio_path) if ref_audio_path else None,
+            "ref_text": ref_text if ref_text else None,
+            "media_workflow": media_workflow,
         }
     
     def _render_output_preview(self, pixelle_video: Any, video_params: dict):
@@ -389,6 +472,10 @@ class AssetBasedPipelineUI(PipelineUI):
                         bgm_mode=video_params.get("bgm_mode", "loop"),
                         voice_id=video_params.get("voice_id", "zh-CN-YunjianNeural"),
                         tts_speed=video_params.get("tts_speed", 1.2),
+                        tts_inference_mode=video_params.get("tts_inference_mode", "local"),
+                        ref_audio=video_params.get("ref_audio"),
+                        ref_text=video_params.get("ref_text"),
+                        media_workflow=video_params.get("media_workflow"),
                         progress_callback=update_progress
                     ))
                     

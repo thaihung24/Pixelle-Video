@@ -297,6 +297,41 @@ class VideoService:
             logger.warning(f"Failed to probe video audio streams: {e}, assuming no audio")
             return False
     
+    def _pad_video_to_duration(self, video: str, target_duration: float, strategy: str = "freeze") -> str:
+        """Pad video to target duration using temporary file"""
+        output_path = self._get_unique_temp_path("pad_vid", os.path.basename(video))
+        try:
+            stream = ffmpeg.input(video).video
+            if strategy == "freeze":
+                stream = stream.filter('tpad', stop_mode='clone', stop_duration=target_duration)
+            ffmpeg.output(stream, output_path, vcodec='libx264', t=target_duration).overwrite_output().run(capture_stdout=True, capture_stderr=True)
+            return output_path
+        except Exception as e:
+            logger.warning(f"Failed to pad video: {e}")
+            return video
+            
+    def _trim_video_to_duration(self, video: str, target_duration: float) -> str:
+        """Trim video to target duration using temporary file"""
+        output_path = self._get_unique_temp_path("trim_vid", os.path.basename(video))
+        try:
+            # Use stream copy for fast trimming
+            ffmpeg.input(video).output(output_path, c='copy', t=target_duration).overwrite_output().run(capture_stdout=True, capture_stderr=True)
+            return output_path
+        except Exception as e:
+            logger.warning(f"Failed to trim video: {e}")
+            return video
+            
+    def _pad_audio_to_duration(self, audio: str, target_duration: float) -> str:
+        """Pad audio to target duration using temporary file"""
+        output_path = self._get_unique_temp_path("pad_aud", os.path.basename(audio) + ".wav")
+        try:
+            # Use apad to add silence
+            ffmpeg.input(audio).audio.filter('apad', whole_dur=target_duration).output(output_path, acodec='pcm_s16le', t=target_duration).overwrite_output().run(capture_stdout=True, capture_stderr=True)
+            return output_path
+        except Exception as e:
+            logger.warning(f"Failed to pad audio: {e}")
+            return audio
+
     def merge_audio_video(
         self,
         video: str,
@@ -305,9 +340,10 @@ class VideoService:
         replace_audio: bool = True,
         audio_volume: float = 1.0,
         video_volume: float = 0.0,
-        pad_strategy: str = "freeze",  # "freeze" (freeze last frame) or "black" (black screen)
-        auto_adjust_duration: bool = True,  # Automatically adjust video duration to match audio
-        duration_tolerance: float = 0.3,  # Tolerance for video being longer than audio (seconds)
+        pad_strategy: str = "freeze",
+        auto_adjust_duration: bool = True,
+        duration_tolerance: float = 0.3,
+        trim_when_longer: bool = False,  # False = natural (pad audio), True = trim video
     ) -> str:
         """
         Merge audio with video with intelligent duration adjustment
@@ -368,18 +404,24 @@ class VideoService:
                 # Video shorter than audio → Must pad to avoid black screen
                 logger.warning(f"⚠️ Video shorter than audio by {abs(diff):.2f}s, padding required")
                 video = self._pad_video_to_duration(video, audio_duration, pad_strategy)
-                video_duration = audio_duration  # Update duration after padding
+                video_duration = audio_duration
                 logger.info(f"📌 Padded video to {audio_duration:.2f}s")
-            
+
             elif diff > duration_tolerance:
-                # Video significantly longer than audio → Trim
-                logger.info(f"⚠️ Video longer than audio by {diff:.2f}s (tolerance: {duration_tolerance}s)")
-                video = self._trim_video_to_duration(video, audio_duration)
-                video_duration = audio_duration  # Update duration after trimming
-                logger.info(f"✂️ Trimmed video to {audio_duration:.2f}s")
-            
+                if trim_when_longer:
+                    # Trim mode: cắt video khp với audio
+                    logger.info(f"⚠️ Video longer than audio by {diff:.2f}s → Trim mode")
+                    video = self._trim_video_to_duration(video, audio_duration)
+                    video_duration = audio_duration
+                    logger.info(f"✂️ Trimmed video to {audio_duration:.2f}s")
+                else:
+                    # Natural mode: giữ nguyên video, pad audio bằng im lặng
+                    logger.info(f"⚠️ Video longer than audio by {diff:.2f}s → Natural mode (keep full video)")
+                    audio = self._pad_audio_to_duration(audio, video_duration)
+                    audio_duration = video_duration
+                    logger.info(f"🔊 Padded audio to {video_duration:.2f}s")
+
             else:  # 0 <= diff <= duration_tolerance
-                # Video slightly longer but within tolerance → Keep as-is
                 logger.info(f"✅ Duration acceptable: video={video_duration:.2f}s, audio={audio_duration:.2f}s (diff={diff:.2f}s)")
         
         # Determine target duration (max of both)

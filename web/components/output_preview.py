@@ -56,6 +56,7 @@ def render_single_output(pixelle_video, video_params):
     tts_speed = video_params.get("tts_speed")
     tts_workflow_key = video_params.get("tts_workflow")
     ref_audio_path = video_params.get("ref_audio")
+    ref_text = video_params.get("ref_text")
     
     frame_template = video_params.get("frame_template")
     custom_values_for_video = video_params.get("template_params", {})
@@ -139,6 +140,8 @@ def render_single_output(pixelle_video, video_params):
                     "progress_callback": update_progress,
                     "media_width": st.session_state.get('template_media_width'),
                     "media_height": st.session_state.get('template_media_height'),
+                    "video_duration_mode": video_params.get("video_duration_mode", "natural"),
+                    "target_narration_duration": video_params.get("target_narration_duration"),
                 }
                 
                 # Add TTS parameters based on mode
@@ -146,10 +149,15 @@ def render_single_output(pixelle_video, video_params):
                 if tts_mode == "local":
                     video_params["tts_voice"] = selected_voice
                     video_params["tts_speed"] = tts_speed
-                else:  # comfyui
+                elif tts_mode == "comfyui":
                     video_params["tts_workflow"] = tts_workflow_key
                     if ref_audio_path:
                         video_params["ref_audio"] = str(ref_audio_path)
+                elif tts_mode == "omnivoice":
+                    if ref_audio_path:
+                        video_params["ref_audio"] = str(ref_audio_path)
+                    video_params["ref_text"] = ref_text
+                    video_params["tts_speed"] = tts_speed
                 
                 # Add custom template parameters if any
                 if custom_values_for_video:
@@ -257,6 +265,8 @@ def render_batch_output(pixelle_video, video_params):
                 "tts_inference_mode": video_params.get("tts_inference_mode") or "local",
                 "media_width": video_params.get("media_width"),
                 "media_height": video_params.get("media_height"),
+                "video_duration_mode": video_params.get("video_duration_mode", "natural"),
+                "target_narration_duration": video_params.get("target_narration_duration"),
             }
             
             # Add TTS parameters based on mode (only add non-None values)
@@ -267,13 +277,23 @@ def render_batch_output(pixelle_video, video_params):
                     shared_config["tts_voice"] = tts_voice
                 if tts_speed:
                     shared_config["tts_speed"] = tts_speed
-            else:  # comfyui
+            elif shared_config["tts_inference_mode"] == "comfyui":
                 tts_workflow = video_params.get("tts_workflow")
                 if tts_workflow:
                     shared_config["tts_workflow"] = tts_workflow
                 ref_audio = video_params.get("ref_audio")
                 if ref_audio:
                     shared_config["ref_audio"] = str(ref_audio)
+            elif shared_config["tts_inference_mode"] == "omnivoice":
+                ref_audio = video_params.get("ref_audio")
+                ref_text = video_params.get("ref_text")
+                tts_speed = video_params.get("tts_speed")
+                if ref_audio:
+                    shared_config["ref_audio"] = str(ref_audio)
+                if ref_text:
+                    shared_config["ref_text"] = ref_text
+                if tts_speed:
+                    shared_config["tts_speed"] = tts_speed
             
             # Add template parameters
             if video_params.get("template_params"):

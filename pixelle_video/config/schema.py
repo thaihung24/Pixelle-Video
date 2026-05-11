@@ -95,7 +95,8 @@ class FlowKitConfig(BaseModel):
     project_id: str = Field(default="", description="Google Flow project ID")
     orientation: str = Field(default="VERTICAL", description="Image orientation (VERTICAL/HORIZONTAL)")
     user_paygate_tier: str = Field(default="PAYGATE_TIER_TWO", description="User paygate tier")
-    poll_interval: int = Field(default=3, description="Poll interval in seconds")
+    poll_interval: int = Field(default=10, description="Poll interval in seconds")
+    poll_max_attempts: int = Field(default=50, description="Maximum number of polling attempts before timeout")
     timeout: int = Field(default=120, description="Timeout in seconds")
 
 

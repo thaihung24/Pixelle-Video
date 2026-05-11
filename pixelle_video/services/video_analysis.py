@@ -111,7 +111,71 @@ class VideoAnalysisService(ComfyBaseService):
         video_path_obj = Path(video_path)
         if not video_path_obj.exists():
             raise FileNotFoundError(f"Video file not found: {video_path}")
-        
+            
+        # 1.5 Handle Gemini CLI explicitly via Agent
+        if source == "gemini-cli":
+            import asyncio
+            import shutil
+            import tempfile
+            import os
+            
+            gemini_cmd = shutil.which("gemini")
+            if not gemini_cmd:
+                raise RuntimeError("Cannot find 'gemini' executable in system PATH.")
+                
+            logger.info(f"Analyzing video using Gemini CLI Agent (middle frame): {video_path_obj.name}")
+            
+            # Extract 1 frame from the middle of the video using ffmpeg
+            ffmpeg_cmd = shutil.which("ffmpeg")
+            if not ffmpeg_cmd:
+                raise RuntimeError("ffmpeg not found, required for local video analysis")
+                
+            temp_dir = Path(tempfile.gettempdir())
+            frame_path = temp_dir / f"frame_{video_path_obj.stem}.jpg"
+            
+            # Simple ffmpeg command to get a frame at 1 second
+            cmd = [
+                ffmpeg_cmd, "-y", "-i", str(video_path_obj.absolute()), 
+                "-ss", "00:00:01.000", "-vframes", "1", 
+                str(frame_path)
+            ]
+            
+            process = await asyncio.create_subprocess_exec(
+                *cmd,
+                stdout=asyncio.subprocess.PIPE,
+                stderr=asyncio.subprocess.PIPE
+            )
+            _, stderr = await process.communicate()
+            
+            if not frame_path.exists():
+                logger.error(f"FFmpeg failed to extract frame: {stderr.decode()}")
+                raise RuntimeError("Failed to extract frame from video for analysis.")
+                
+            # Call Gemini CLI agent with the absolute path to the frame
+            prompt = f"Please read and analyze the image file located exactly at this absolute path: '{str(frame_path.absolute())}'. This image is a frame extracted from a video. Describe the scene in extreme detail. Focus on the main subject, environment, lighting, and style. Output only the description."
+            
+            process = await asyncio.create_subprocess_exec(
+                gemini_cmd, "-p", prompt, "--skip-trust", "-y",
+                stdout=asyncio.subprocess.PIPE,
+                stderr=asyncio.subprocess.PIPE
+            )
+            stdout, stderr = await process.communicate()
+            
+            # Clean up
+            try:
+                os.remove(frame_path)
+            except Exception:
+                pass
+                
+            if process.returncode != 0:
+                error_msg = stderr.decode()
+                logger.error(f"Gemini CLI video analysis failed: {error_msg}")
+                raise RuntimeError(f"Gemini CLI failed: {error_msg}")
+                
+            description = stdout.decode().strip()
+            logger.info(f"✅ Video analyzed (Gemini CLI): {description[:100]}...")
+            return description
+
         # 2. Resolve workflow path using convention
         if workflow is None:
             # Use standardized naming: {source}/analyse_video.json

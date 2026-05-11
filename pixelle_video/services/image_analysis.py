@@ -111,7 +111,38 @@ class ImageAnalysisService(ComfyBaseService):
         image_path_obj = Path(image_path)
         if not image_path_obj.exists():
             raise FileNotFoundError(f"Image file not found: {image_path}")
-        
+            
+        # 1.5 Handle Gemini CLI explicitly
+        if source == "gemini-cli":
+            import asyncio
+            import shutil
+            
+            gemini_cmd = shutil.which("gemini")
+            if not gemini_cmd:
+                raise RuntimeError("Cannot find 'gemini' executable in system PATH.")
+                
+            logger.info(f"Analyzing image using Gemini CLI Agent: {image_path_obj.name}")
+            
+            # Embed the path directly in the prompt so the agent can use its tools to read it
+            prompt = f"Please read and analyze the image file located exactly at this absolute path: '{str(image_path_obj.absolute())}'. Describe this image in extreme detail. Focus on the main subject, actions, environment, lighting, and style. Output only the description."
+            
+            # Call Gemini CLI with -p for non-interactive mode
+            process = await asyncio.create_subprocess_exec(
+                gemini_cmd, "-p", prompt, "--skip-trust", "-y",
+                stdout=asyncio.subprocess.PIPE,
+                stderr=asyncio.subprocess.PIPE
+            )
+            stdout, stderr = await process.communicate()
+            
+            if process.returncode != 0:
+                error_msg = stderr.decode()
+                logger.error(f"Gemini CLI image analysis failed: {error_msg}")
+                raise RuntimeError(f"Gemini CLI failed: {error_msg}")
+                
+            description = stdout.decode().strip()
+            logger.info(f"✅ Image analyzed (Gemini CLI): {description[:100]}...")
+            return description
+            
         # 2. Resolve workflow path using convention
         if workflow is None:
             # Use standardized naming: {source}/analyse_image.json

@@ -45,12 +45,16 @@ def render_style_config(pixelle_video):
         tts_config = comfyui_config["tts"]
         
         # Inference mode selection
+        def format_mode(x):
+            if x == "omnivoice": return "OmniVoice (AI Clone)"
+            return tr(f"tts.mode.{x}") if tr(f"tts.mode.{x}") != f"tts.mode.{x}" else x.capitalize()
+
         tts_mode = st.radio(
             tr("tts.inference_mode"),
-            ["local", "comfyui"],
+            ["local", "comfyui", "omnivoice"],
             horizontal=True,
-            format_func=lambda x: tr(f"tts.mode.{x}"),
-            index=0 if tts_config.get("inference_mode", "local") == "local" else 1,
+            format_func=format_mode,
+            index=0 if tts_config.get("inference_mode", "local") == "local" else (1 if tts_config.get("inference_mode", "local") == "comfyui" else 2),
             key="tts_inference_mode"
         )
         
@@ -123,7 +127,7 @@ def render_style_config(pixelle_video):
         # ================================================================
         # ComfyUI Mode UI
         # ================================================================
-        else:  # comfyui mode
+        elif tts_mode == "comfyui":
             # Get available TTS workflows
             tts_workflows = pixelle_video.tts.list_workflows()
             
@@ -179,6 +183,52 @@ def render_style_config(pixelle_video):
             # Variables for video generation
             selected_voice = None
             tts_speed = None
+            ref_text = None
+        
+        # ================================================================
+        # OmniVoice Mode UI
+        # ================================================================
+        elif tts_mode == "omnivoice":
+            st.info("🎙️ OmniVoice: Local high-quality AI voice cloning.")
+            
+            # Reference audio
+            ref_audio_file = st.file_uploader(
+                tr("tts.ref_audio") + " (Required)",
+                type=["mp3", "wav", "flac", "m4a", "aac", "ogg"],
+                help=tr("tts.ref_audio_help"),
+                key="omnivoice_ref_audio"
+            )
+            
+            ref_audio_path = None
+            if ref_audio_file is not None:
+                st.audio(ref_audio_file)
+                temp_dir = Path("temp")
+                temp_dir.mkdir(exist_ok=True)
+                ref_audio_path = temp_dir / f"ref_audio_{ref_audio_file.name}"
+                with open(ref_audio_path, "wb") as f:
+                    f.write(ref_audio_file.getbuffer())
+            
+            # Reference text
+            ref_text = st.text_area(
+                "Reference Text (Required)",
+                placeholder="The exact transcript of the reference audio.",
+                height=100,
+                key="omnivoice_ref_text"
+            )
+            
+            # Speed
+            tts_speed = st.slider(
+                tr("tts.speed"),
+                min_value=0.5,
+                max_value=2.0,
+                value=1.0,
+                step=0.1,
+                format="%.1fx",
+                key="omnivoice_speed"
+            )
+            
+            selected_voice = None
+            tts_workflow_key = None
         
         # ================================================================
         # TTS Preview (works for both modes)
@@ -205,10 +255,16 @@ def render_style_config(pixelle_video):
                         if tts_mode == "local":
                             tts_params["voice"] = selected_voice
                             tts_params["speed"] = tts_speed
-                        else:  # comfyui
+                        elif tts_mode == "comfyui":
                             tts_params["workflow"] = tts_workflow_key
                             if ref_audio_path:
                                 tts_params["ref_audio"] = str(ref_audio_path)
+                        elif tts_mode == "omnivoice":
+                            if ref_audio_path:
+                                tts_params["ref_audio"] = str(ref_audio_path)
+                            if ref_text:
+                                tts_params["ref_text"] = ref_text
+                            tts_params["speed"] = tts_speed
                         
                         audio_path = run_async(pixelle_video.tts(**tts_params))
                         
@@ -862,17 +918,62 @@ def render_style_config(pixelle_video):
             workflow_key = None
             prompt_prefix = ""
     
+    # Video duration mode (shown only when media type is video)
+    video_duration_mode = "natural"
+    target_narration_duration = None
+    if st.session_state.get('template_media_type') == "video":
+        st.markdown("---")
+        st.markdown("**🎬 Cấu hình độ dài video**")
+
+        # Narration duration slider
+        duration_options = {
+            "3s — rất ngắn gọn": 3.0,
+            "4s — ngắn": 4.0,
+            "5s — vừa phải": 5.0,
+            "6s — trung bình": 6.0,
+            "7s — dài": 7.0,
+            "8s — toàn bộ video Veo": 8.0,
+        }
+        duration_label = st.select_slider(
+            "⏱️ Độ dài mỗi đoạn lời thoại:",
+            options=list(duration_options.keys()),
+            value="5s — vừa phải",
+            key="target_narration_duration_slider",
+            help=(
+                "Hệ thống sẽ tự tính số từ cần thiết để LLM sinh narration khớp với thời lượng này.\n"
+                "VD: chọn 5s → narration ~14-22 từ (tốc độ TTS 3.7 từ/giây)."
+            ),
+        )
+        target_narration_duration = duration_options[duration_label]
+
+        # Video trim mode
+        duration_mode_map = {
+            "🎞️ Natural — giữ nguyên video, lời thoại tự nhiên": "natural",
+            "✂️ Trim — cắt video khớp với lời thoại": "trim",
+        }
+        duration_mode_label = st.radio(
+            "Khi video dài hơn audio:",
+            options=list(duration_mode_map.keys()),
+            index=0,
+            key="video_duration_mode_radio",
+            help="Natural: video giữ nguyên 8s từ Google Veo, phần cuối im lặng.\nTrim: cắt video còn đúng bằng độ dài lời thoại.",
+        )
+        video_duration_mode = duration_mode_map[duration_mode_label]
+
     # Return all style configuration parameters
     return {
         "tts_inference_mode": tts_mode,
         "tts_voice": selected_voice if tts_mode == "local" else None,
-        "tts_speed": tts_speed if tts_mode == "local" else None,
+        "tts_speed": tts_speed if tts_mode in ["local", "omnivoice"] else None,
         "tts_workflow": tts_workflow_key if tts_mode == "comfyui" else None,
         "ref_audio": str(ref_audio_path) if ref_audio_path else None,
+        "ref_text": ref_text if tts_mode == "omnivoice" else None,
         "frame_template": frame_template,
         "template_params": custom_values_for_video if custom_values_for_video else None,
         "media_workflow": workflow_key,
         "prompt_prefix": prompt_prefix if prompt_prefix else "",
         "media_width": media_width,
-        "media_height": media_height
+        "media_height": media_height,
+        "video_duration_mode": video_duration_mode,
+        "target_narration_duration": target_narration_duration,
     }

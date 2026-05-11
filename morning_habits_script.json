@@ -1,0 +1,439 @@
+{
+  "title": "朝の習慣 — 健康な一日の始まり",
+  "characters": [
+    {
+      "id": "grandma_hanako",
+      "name": "花子おばあちゃん",
+      "visual": "78-year-old Japanese woman, silver-white hair in neat traditional bun held with wooden kanzashi pin, warm brown eyes with gentle crow's feet, fair skin with subtle age spots on cheeks, petite build 148cm, wearing deep indigo cotton kimono with small white wave pattern and cream-colored obi, round tortoiseshell reading glasses perched on small nose",
+      "role": "narrator"
+    },
+    {
+      "id": "grandpa_kenji",
+      "name": "健二おじいちゃん",
+      "visual": "82-year-old Japanese man, short thinning white hair neatly groomed, bright energetic hazel eyes behind thin silver wire-rimmed glasses, tanned weathered skin, lean athletic build 165cm, wearing navy blue athletic track jacket with white stripes over light gray polo shirt, khaki hiking trousers, black smartwatch on left wrist, sturdy gray sneakers",
+      "role": "protagonist"
+    }
+  ],
+  "scenes": [
+    {
+      "scene_number": 1,
+      "act": 1,
+      "characters": ["grandma_hanako"],
+      "setting": "Peaceful Japanese mountain village at dawn, cherry blossoms, traditional wooden houses, misty mountains in the distance, soft pink and orange sky.",
+      "scene_brief": "朝の光が村を照らす風景"
+    },
+    {
+      "scene_number": 2,
+      "act": 1,
+      "characters": ["grandma_hanako"],
+      "setting": "Cozy traditional Japanese bedroom with tatami mats, soft morning light filtering through shoji screens, futon laid out neatly on the floor.",
+      "scene_brief": "花子さんの穏やかな目覚め"
+    },
+    {
+      "scene_number": 3,
+      "act": 1,
+      "characters": ["grandpa_kenji"],
+      "setting": "Bright Japanese-style room, sunlight hitting a wooden dresser, energetic atmosphere with a view of a small garden through the window.",
+      "scene_brief": "健二さんの元気な起床"
+    },
+    {
+      "scene_number": 4,
+      "act": 1,
+      "characters": ["grandma_hanako"],
+      "setting": "Wooden veranda overlooking a Zen garden, morning dew on moss, crisp fresh air, traditional architecture with sliding doors.",
+      "scene_brief": "窓を開けて空気を入れ替える"
+    },
+    {
+      "scene_number": 5,
+      "act": 1,
+      "characters": ["grandma_hanako"],
+      "setting": "Traditional Japanese veranda, Hanako standing looking at the sunrise, soft golden glow on her face, peaceful mountain silhouette.",
+      "scene_brief": "太陽の光を全身で浴びる"
+    },
+    {
+      "scene_number": 6,
+      "act": 1,
+      "characters": ["grandma_hanako"],
+      "setting": "Clean traditional bathroom with wooden accents, ceramic washbasin, morning light reflecting off a small mirror, steam from warm water.",
+      "scene_brief": "洗顔で心身を整える"
+    },
+    {
+      "scene_number": 7,
+      "act": 1,
+      "characters": ["grandpa_kenji"],
+      "setting": "Modernized traditional living room, Kenji looking at his wrist, digital interface light reflecting on his glasses, organized and tidy space.",
+      "scene_brief": "時計で健康状態を確認"
+    },
+    {
+      "scene_number": 8,
+      "act": 1,
+      "characters": ["grandma_hanako"],
+      "setting": "Simple Japanese kitchen, iron kettle on a stove, ceramic cup filled with steaming water, warm and inviting atmosphere.",
+      "scene_brief": "白湯を飲んで内臓を温める"
+    },
+    {
+      "scene_number": 9,
+      "act": 1,
+      "characters": ["grandpa_kenji"],
+      "setting": "Spacious tatami room, minimalist decor, Kenji performing fluid movements on the mat, soft shadows cast by the morning sun.",
+      "scene_brief": "室内で軽い柔軟体操をする"
+    },
+    {
+      "scene_number": 10,
+      "act": 1,
+      "characters": ["grandma_hanako"],
+      "setting": "Small Buddhist altar in a corner of the house, incense smoke rising slowly, fresh flowers, warm ambient lighting.",
+      "scene_brief": "先祖に感謝の祈りを捧げる"
+    },
+    {
+      "scene_number": 11,
+      "act": 1,
+      "characters": ["grandpa_kenji"],
+      "setting": "Entrance of a traditional house (genkan), Kenji putting on his sneakers, walking stick leaning against the wall, bright outdoor light.",
+      "scene_brief": "散歩の準備を整える"
+    },
+    {
+      "scene_number": 12,
+      "act": 1,
+      "characters": ["grandma_hanako", "grandpa_kenji"],
+      "setting": "Front of a traditional house with a beautiful gate, Hanako seeing Kenji off, morning birds singing, vibrant green trees.",
+      "scene_brief": "今日一日の始まりを告げる"
+    },
+    {
+      "scene_number": 13,
+      "act": 2,
+      "characters": ["grandpa_kenji"],
+      "setting": "Winding path through a lush forest, tall cedar trees, sunlight filtering through leaves, fresh mountain air.",
+      "scene_brief": "健二さんの早朝ウォーキング"
+    },
+    {
+      "scene_number": 14,
+      "act": 2,
+      "characters": ["grandpa_kenji"],
+      "setting": "Hilltop overlooking the village, clear blue sky, distant mountains, Kenji taking a deep breath of clean air.",
+      "scene_brief": "新鮮な空気を深く吸い込む"
+    },
+    {
+      "scene_number": 15,
+      "act": 2,
+      "characters": ["grandpa_kenji"],
+      "setting": "Forest path, focus on small flowers and insects, macro shots of nature, vibrant colors of the morning.",
+      "scene_brief": "自然の音に耳を澄ませる"
+    },
+    {
+      "scene_number": 16,
+      "act": 2,
+      "characters": ["grandpa_kenji"],
+      "setting": "Small stone bridge over a clear stream, Kenji waving to an unseen neighbor, sparkling water reflections.",
+      "scene_brief": "近所の人と挨拶を交わす"
+    },
+    {
+      "scene_number": 17,
+      "act": 2,
+      "characters": ["grandma_hanako"],
+      "setting": "Bright kitchen with wooden counters, Hanako wearing an apron, various fresh vegetables on a cutting board.",
+      "scene_brief": "花子さんの朝食作り"
+    },
+    {
+      "scene_number": 18,
+      "act": 2,
+      "characters": ["grandma_hanako"],
+      "setting": "Close-up of Hanako's hands cutting a radish, rhythmic sound of the knife, traditional Japanese kitchen tools.",
+      "scene_brief": "丁寧に野菜を刻む作業"
+    },
+    {
+      "scene_number": 19,
+      "act": 2,
+      "characters": ["grandma_hanako"],
+      "setting": "Miso soup pot on the stove, steam rising in swirls, golden dashi stock visible, aromatic kitchen atmosphere.",
+      "scene_brief": "味噌汁の湯気と香りの演出"
+    },
+    {
+      "scene_number": 20,
+      "act": 2,
+      "characters": ["grandma_hanako"],
+      "setting": "Kitchen counter with small bowls of natto and pickles, Hanako explaining nutritional benefits with a gentle smile.",
+      "scene_brief": "発酵食品の大切さを学ぶ"
+    },
+    {
+      "scene_number": 21,
+      "act": 2,
+      "characters": ["grandpa_kenji"],
+      "setting": "Small village park with a few cherry trees, Kenji joined by other seniors, public radio playing in the background.",
+      "scene_brief": "公園でのラジオ体操"
+    },
+    {
+      "scene_number": 22,
+      "act": 2,
+      "characters": ["grandpa_kenji"],
+      "setting": "Close-up of Kenji's focused expression and precise limb movements, showing agility and strength for his age.",
+      "scene_brief": "正しい姿勢で体を動かす"
+    },
+    {
+      "scene_number": 23,
+      "act": 2,
+      "characters": ["grandma_hanako"],
+      "setting": "Vibrant vegetable garden behind the house, Hanako with a watering can, sunlight creating small rainbows in the mist.",
+      "scene_brief": "庭の草木に水をやる日課"
+    },
+    {
+      "scene_number": 24,
+      "act": 2,
+      "characters": ["grandma_hanako"],
+      "setting": "Hanako touching a green leaf, close-up of earth and plants, connection between human and nature.",
+      "scene_brief": "植物との対話を楽しむ"
+    },
+    {
+      "scene_number": 25,
+      "act": 2,
+      "characters": ["grandpa_kenji"],
+      "setting": "Gravel path leading to the house entrance, Kenji looking refreshed, wiping sweat with a small towel.",
+      "scene_brief": "散歩から帰宅する健二さん"
+    },
+    {
+      "scene_number": 26,
+      "act": 2,
+      "characters": ["grandma_hanako", "grandpa_kenji"],
+      "setting": "Low wooden table (chabudai) set with a complete Japanese breakfast, steaming rice, grilled fish, and miso soup.",
+      "scene_brief": "二人で囲む朝食の時間"
+    },
+    {
+      "scene_number": 27,
+      "act": 2,
+      "characters": ["grandma_hanako", "grandpa_kenji"],
+      "setting": "Top-down view of the balanced meal, colors representing different nutrients, harmonious plate arrangement.",
+      "scene_brief": "栄養バランスの取れた食事"
+    },
+    {
+      "scene_number": 28,
+      "act": 2,
+      "characters": ["grandma_hanako"],
+      "setting": "Close-up of Hanako eating, focusing on the act of chewing, calm and mindful facial expression.",
+      "scene_brief": "よく噛んで味わうことの重要性"
+    },
+    {
+      "scene_number": 29,
+      "act": 2,
+      "characters": ["grandpa_kenji"],
+      "setting": "Kenji showing his step count on his watch to Hanako, both looking satisfied and happy.",
+      "scene_brief": "歩数計の記録を確認する"
+    },
+    {
+      "scene_number": 30,
+      "act": 2,
+      "characters": ["grandma_hanako"],
+      "setting": "Sunlit hallway (engawa), Hanako wiping the wooden floor with a cloth, dust motes dancing in the light.",
+      "scene_brief": "拭き掃除を運動として行う"
+    },
+    {
+      "scene_number": 31,
+      "act": 2,
+      "characters": ["grandma_hanako"],
+      "setting": "Hanako cleaning a window, showing the physical effort as a positive health benefit, bright outdoor view.",
+      "scene_brief": "家事の中に動きを取り入れる"
+    },
+    {
+      "scene_number": 32,
+      "act": 2,
+      "characters": ["grandpa_kenji"],
+      "setting": "Comfortable chair by the window, Kenji holding a newspaper, reading glasses on, focused look.",
+      "scene_brief": "新聞を読んで脳を活性化する"
+    },
+    {
+      "scene_number": 33,
+      "act": 2,
+      "characters": ["grandpa_kenji"],
+      "setting": "Close-up of Kanji characters in the newspaper, Kenji's eyes moving, mental stimulation in the morning.",
+      "scene_brief": "情報の収集と考える習慣"
+    },
+    {
+      "scene_number": 34,
+      "act": 2,
+      "characters": ["grandma_hanako"],
+      "setting": "Vanity mirror in a traditional room, Hanako adjusting her hair bun and kanzashi, graceful movements.",
+      "scene_brief": "身だしなみを整える心の余裕"
+    },
+    {
+      "scene_number": 35,
+      "act": 2,
+      "characters": ["grandma_hanako"],
+      "setting": "Hanako applying a small amount of cream to her cheeks, looking in the mirror with self-respect.",
+      "scene_brief": "自分を大切にする朝の時間"
+    },
+    {
+      "scene_number": 36,
+      "act": 2,
+      "characters": ["grandma_hanako", "grandpa_kenji"],
+      "setting": "Engawa (veranda) with tea, both sitting together, looking at the sky, soft wind blowing through bamboo.",
+      "scene_brief": "日光浴をしながらお茶を飲む"
+    },
+    {
+      "scene_number": 37,
+      "act": 2,
+      "characters": ["grandpa_kenji"],
+      "setting": "Small workshop or shed, Kenji organizing gardening tools, staying active with hobbies.",
+      "scene_brief": "趣味の道具を手入れする"
+    },
+    {
+      "scene_number": 38,
+      "act": 2,
+      "characters": ["grandma_hanako", "grandpa_kenji"],
+      "setting": "Laughter shared over a joke, warm interaction, focus on emotional health and social bonding.",
+      "scene_brief": "会話と笑いで心を元気に"
+    },
+    {
+      "scene_number": 39,
+      "act": 2,
+      "characters": ["grandma_hanako"],
+      "setting": "Hanako sitting in a seiza position, eyes closed, focus on rhythmic breathing, serene environment.",
+      "scene_brief": "呼吸を整えて心を落ち着ける"
+    },
+    {
+      "scene_number": 40,
+      "act": 2,
+      "characters": ["grandpa_kenji"],
+      "setting": "Kenji drinking a glass of water, illustrating the importance of staying hydrated throughout the morning.",
+      "scene_brief": "こまめな水分補給のすすめ"
+    },
+    {
+      "scene_number": 41,
+      "act": 2,
+      "characters": ["grandma_hanako"],
+      "setting": "Small notebook on a desk, Hanako writing down the day's schedule, organized and purposeful.",
+      "scene_brief": "一日の予定を書き出す"
+    },
+    {
+      "scene_number": 42,
+      "act": 2,
+      "characters": ["grandma_hanako", "grandpa_kenji"],
+      "setting": "View of the clock showing mid-morning, regular routine creating a sense of security and rhythm.",
+      "scene_brief": "規則正しい生活のリズム"
+    },
+    {
+      "scene_number": 43,
+      "act": 2,
+      "characters": ["grandma_hanako"],
+      "setting": "Hanako looking at an old black and white photo, reminiscing with a gentle smile, gratitude for the past.",
+      "scene_brief": "過去を振り返り感謝する"
+    },
+    {
+      "scene_number": 44,
+      "act": 2,
+      "characters": ["grandpa_kenji"],
+      "setting": "Kenji looking at the vibrant green hills, feeling strong and capable, sense of empowerment.",
+      "scene_brief": "動ける体があることの喜び"
+    },
+    {
+      "scene_number": 45,
+      "act": 2,
+      "characters": ["grandma_hanako", "grandpa_kenji"],
+      "setting": "Garden path, the two walking side by side, transition from morning rituals to daily life.",
+      "scene_brief": "朝の習慣が作る健やかな心"
+    },
+    {
+      "scene_number": 46,
+      "act": 3,
+      "characters": ["grandma_hanako"],
+      "setting": "Close-up of Hanako's wise and gentle eyes, reflecting on the importance of small daily choices.",
+      "scene_brief": "小さな習慣が未来を作る"
+    },
+    {
+      "scene_number": 47,
+      "act": 3,
+      "characters": ["grandma_hanako"],
+      "setting": "Golden fields of rice waving in the wind, a metaphor for a life well-lived and healthy aging.",
+      "scene_brief": "心の健康を保つ秘訣"
+    },
+    {
+      "scene_number": 48,
+      "act": 3,
+      "characters": ["grandpa_kenji"],
+      "setting": "Kenji standing tall against a background of mountains, symbolizing resilience and vitality.",
+      "scene_brief": "いつまでも現役でいるために"
+    },
+    {
+      "scene_number": 49,
+      "act": 3,
+      "characters": ["grandma_hanako", "grandpa_kenji"],
+      "setting": "Village community center, a few other seniors arriving, morning social connection.",
+      "scene_brief": "地域のつながりと朝の挨拶"
+    },
+    {
+      "scene_number": 50,
+      "act": 3,
+      "characters": ["grandma_hanako", "grandpa_kenji"],
+      "setting": "Warm group interaction, smiles and friendly gestures, focus on the power of community.",
+      "scene_brief": "笑顔で繋がる健やかな村"
+    },
+    {
+      "scene_number": 51,
+      "act": 3,
+      "characters": ["grandma_hanako"],
+      "setting": "Hanako's face as she speaks directly to the camera, a look of profound peace and wisdom.",
+      "scene_brief": "今日を大切に生きる知恵"
+    },
+    {
+      "scene_number": 52,
+      "act": 3,
+      "characters": ["grandpa_kenji"],
+      "setting": "Kenji giving a thumbs up or a determined look, encouraging viewers to start their own habits.",
+      "scene_brief": "一歩踏み出す勇気を届ける"
+    },
+    {
+      "scene_number": 53,
+      "act": 3,
+      "characters": ["grandma_hanako", "grandpa_kenji"],
+      "setting": "Beautiful sunset (flash forward or metaphorical), warm colors, peaceful ending of a productive morning.",
+      "scene_brief": "朝の光が照らす輝く人生"
+    },
+    {
+      "scene_number": 54,
+      "act": 3,
+      "characters": ["grandma_hanako"],
+      "setting": "Close-up of a blooming flower in the garden, symbol of growth and vitality at any age.",
+      "scene_brief": "命の輝きを慈しむ"
+    },
+    {
+      "scene_number": 55,
+      "act": 3,
+      "characters": ["grandpa_kenji"],
+      "setting": "Kenji looking at the horizon, eyes bright with hope and plans for the future.",
+      "scene_brief": "明日への希望を抱いて"
+    },
+    {
+      "scene_number": 56,
+      "act": 3,
+      "characters": ["grandma_hanako"],
+      "setting": "Interior of the house, clean and peaceful, reflecting a balanced and harmonious lifestyle.",
+      "scene_brief": "日常の中に幸せを見つける"
+    },
+    {
+      "scene_number": 57,
+      "act": 3,
+      "characters": ["grandma_hanako", "grandpa_kenji"],
+      "setting": "The two characters standing together in their garden, looking at the viewers with kindness.",
+      "scene_brief": "共に歩む健康な道"
+    },
+    {
+      "scene_number": 58,
+      "act": 3,
+      "characters": ["grandma_hanako"],
+      "setting": "A single tea cup with steam rising, simple and elegant, a moment of final reflection.",
+      "scene_brief": "静かな感動を共有する"
+    },
+    {
+      "scene_number": 59,
+      "act": 3,
+      "characters": ["grandma_hanako", "grandpa_kenji"],
+      "setting": "Wide shot of the village under a bright morning sun, peaceful and vibrant community.",
+      "scene_brief": "村の平和な朝の終わり"
+    },
+    {
+      "scene_number": 60,
+      "act": 3,
+      "characters": ["grandma_hanako"],
+      "setting": "Final close-up of Hanako smiling gently, screen fading to a soft white light.",
+      "scene_brief": "最高の目覚めと一日の始まり"
+    }
+  ]
+}
