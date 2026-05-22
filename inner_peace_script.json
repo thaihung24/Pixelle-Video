@@ -1,0 +1,499 @@
+{
+  "title": "心の平和 — 瞑想と呼吸の技術",
+  "characters": [
+    {
+      "id": "grandma_hanako",
+      "name": "花子おばあちゃん",
+      "visual": "78-year-old Japanese woman, silver-white hair in neat traditional bun held with wooden kanzashi pin, warm brown eyes with gentle crow's feet, fair skin with subtle age spots on cheeks, petite build 148cm, wearing deep indigo cotton kimono with small white wave pattern and cream-colored obi, round tortoiseshell reading glasses perched on small nose",
+      "role": "narrator"
+    },
+    {
+      "id": "grandpa_kenji",
+      "name": "健二おじいちゃん",
+      "visual": "82-year-old Japanese man, short thinning white hair neatly groomed, bright energetic hazel eyes behind thin silver wire-rimmed glasses, tanned weathered skin, lean athletic build 165cm, wearing navy blue athletic track jacket with white stripes over light gray polo shirt, khaki hiking trousers, black smartwatch on left wrist, sturdy gray sneakers",
+      "role": "protagonist"
+    }
+  ],
+  "scenes": [
+    {
+      "scene_number": 1,
+      "act": 1,
+      "characters": ["grandma_hanako"],
+      "location_id": "village",
+      "setting": "A quiet Japanese mountain village at dawn. Mist clings to the thatched roofs and cherry blossoms sway in the gentle morning breeze.",
+      "scene_brief": "夜明けの村の静寂を紹介"
+    },
+    {
+      "scene_number": 2,
+      "act": 1,
+      "characters": ["grandma_hanako"],
+      "location_id": "home_entrance",
+      "setting": "The wooden engawa porch of a traditional house. Hanako sits calmly, watching the first light of the sun touch the garden stones.",
+      "scene_brief": "縁側で静かに座る花子"
+    },
+    {
+      "scene_number": 3,
+      "act": 1,
+      "characters": ["grandpa_kenji"],
+      "location_id": "park_path",
+      "setting": "A paved path in a local park lined with vibrant green trees. Kenji is walking at a very fast, determined pace.",
+      "scene_brief": "早歩きで散歩する健二"
+    },
+    {
+      "scene_number": 4,
+      "act": 1,
+      "characters": ["grandpa_kenji"],
+      "location_id": "community_park",
+      "setting": "A park bench under a large willow tree. Kenji stops walking, leaning over with his hands on his knees, breathing heavily.",
+      "scene_brief": "息を切らして立ち止まる"
+    },
+    {
+      "scene_number": 5,
+      "act": 1,
+      "characters": ["grandma_hanako"],
+      "location_id": "garden",
+      "setting": "A small zen garden with raked sand and moss-covered rocks. Hanako gently waters a bonsai tree with a small wooden ladle.",
+      "scene_brief": "庭仕事をする花子の余裕"
+    },
+    {
+      "scene_number": 6,
+      "act": 1,
+      "characters": ["grandma_hanako", "grandpa_kenji"],
+      "location_id": "home_entrance",
+      "setting": "The entrance to Hanako's house. Kenji arrives, looking slightly frazzled and wiping sweat from his forehead with a small towel.",
+      "scene_brief": "健二が花子を訪ねる"
+    },
+    {
+      "scene_number": 7,
+      "act": 1,
+      "characters": ["grandma_hanako"],
+      "location_id": "home",
+      "setting": "Inside a cozy tatami room with a low wooden table. A scroll with calligraphy hangs on the wall behind Hanako.",
+      "scene_brief": "心の平和の大切さを説く"
+    },
+    {
+      "scene_number": 8,
+      "act": 1,
+      "characters": ["grandpa_kenji"],
+      "location_id": "home",
+      "setting": "Close up on Kenji's face in the tatami room. He looks thoughtful and slightly confused about the concept of inner peace.",
+      "scene_brief": "心の平和に首をかしげる"
+    },
+    {
+      "scene_number": 9,
+      "act": 1,
+      "characters": ["grandma_hanako"],
+      "location_id": "village",
+      "setting": "A wide shot of the village forest. The wind moves through the bamboo grove, creating a rhythmic, soothing whispering sound.",
+      "scene_brief": "自然界の呼吸を感じる"
+    },
+    {
+      "scene_number": 10,
+      "act": 1,
+      "characters": ["grandma_hanako", "grandpa_kenji"],
+      "location_id": "home",
+      "setting": "Hanako places a hand on her lower abdomen, demonstrating where the breath should originate for deep, calming relaxation.",
+      "scene_brief": "呼吸の源を意識させる"
+    },
+    {
+      "scene_number": 11,
+      "act": 1,
+      "characters": ["grandpa_kenji"],
+      "location_id": "home",
+      "setting": "Kenji tries to mimic Hanako's hand placement, but his shoulders are still hunched and tense from his busy morning.",
+      "scene_brief": "健二が呼吸法に挑戦する"
+    },
+    {
+      "scene_number": 12,
+      "act": 1,
+      "characters": ["grandma_hanako"],
+      "location_id": "garden",
+      "setting": "The garden at mid-morning. Sunlight filters through the leaves, creating dancing patterns of light and shadow on the ground.",
+      "scene_brief": "呼吸法の学びの始まり"
+    },
+    {
+      "scene_number": 13,
+      "act": 2,
+      "characters": ["grandma_hanako", "grandpa_kenji"],
+      "location_id": "garden",
+      "setting": "Hanako and Kenji sit on cushions on the engawa. Hanako explains the rhythm of inhaling through the nose slowly.",
+      "scene_brief": "鼻から吸う基本の呼吸"
+    },
+    {
+      "scene_number": 14,
+      "act": 2,
+      "characters": ["grandpa_kenji"],
+      "location_id": "garden",
+      "setting": "Macro shot of Kenji's nostrils as he takes a deep breath. His silver glasses reflect the greenery of the garden.",
+      "scene_brief": "深く息を吸い込む健二"
+    },
+    {
+      "scene_number": 15,
+      "act": 2,
+      "characters": ["grandma_hanako"],
+      "location_id": "garden",
+      "setting": "Hanako demonstrates exhaling through pursed lips, as if gently blowing out a candle without making it flicker.",
+      "scene_brief": "ゆっくりと息を吐くコツ"
+    },
+    {
+      "scene_number": 16,
+      "act": 2,
+      "characters": ["grandpa_kenji"],
+      "location_id": "garden",
+      "setting": "Kenji's face as he exhales. His expression begins to soften, and the tension in his jaw visibly starts to disappear.",
+      "scene_brief": "健二の表情が和らぐ"
+    },
+    {
+      "scene_number": 17,
+      "act": 2,
+      "characters": ["grandma_hanako"],
+      "location_id": "garden",
+      "setting": "An abstract visualization of air moving through the lungs. It looks like golden light filling a pair of delicate wings.",
+      "scene_brief": "肺に満ちる光のイメージ"
+    },
+    {
+      "scene_number": 18,
+      "act": 2,
+      "characters": ["grandma_hanako", "grandpa_kenji"],
+      "location_id": "garden",
+      "setting": "Hanako explains 'Hara' breathing. Both place their hands on their bellies, feeling the rise and fall with each breath.",
+      "scene_brief": "腹式呼吸でお腹を感じる"
+    },
+    {
+      "scene_number": 19,
+      "act": 2,
+      "characters": ["grandpa_kenji"],
+      "location_id": "garden",
+      "setting": "Kenji closes his eyes. He is fully focused now, no longer looking at his smartwatch or worrying about the time.",
+      "scene_brief": "雑念を捨て集中する健二"
+    },
+    {
+      "scene_number": 20,
+      "act": 2,
+      "characters": ["grandma_hanako"],
+      "location_id": "garden",
+      "setting": "Hanako smiles warmly. She tells him that each breath is a way to return to the present moment.",
+      "scene_brief": "今この瞬間に戻る大切さ"
+    },
+    {
+      "scene_number": 21,
+      "act": 2,
+      "characters": ["grandpa_kenji"],
+      "location_id": "forest_trail",
+      "setting": "The forest trail in the afternoon. Kenji is walking again, but this time his pace is slow and deliberate.",
+      "scene_brief": "歩きながらの呼吸法実践"
+    },
+    {
+      "scene_number": 22,
+      "act": 2,
+      "characters": ["grandpa_kenji"],
+      "location_id": "forest_trail",
+      "setting": "A close shot of Kenji's feet in sneakers. He takes four steps for every inhale and four steps for every exhale.",
+      "scene_brief": "歩数に合わせて呼吸する"
+    },
+    {
+      "scene_number": 23,
+      "act": 2,
+      "characters": ["grandpa_kenji"],
+      "location_id": "forest_trail",
+      "setting": "Kenji notices the texture of the tree bark and the sound of a distant woodpecker, things he missed before.",
+      "scene_brief": "五感で自然を感じ始める"
+    },
+    {
+      "scene_number": 24,
+      "act": 2,
+      "characters": ["grandpa_kenji"],
+      "location_id": "hilltop",
+      "setting": "The hilltop overlooking the village. Kenji stands tall, his navy jacket open, looking out at the vast horizon.",
+      "scene_brief": "高台で感じる解放感"
+    },
+    {
+      "scene_number": 25,
+      "act": 2,
+      "characters": ["grandma_hanako"],
+      "location_id": "shrine",
+      "setting": "A quiet Shinto shrine with a large stone torii gate. Hanako is standing near the purification fountain.",
+      "scene_brief": "神社の静寂に身を置く"
+    },
+    {
+      "scene_number": 26,
+      "act": 2,
+      "characters": ["grandma_hanako", "grandpa_kenji"],
+      "location_id": "shrine",
+      "setting": "Kenji joins Hanako. They bow together. Hanako explains how meditation is simply observing the thoughts like passing clouds.",
+      "scene_brief": "思考を雲のように眺める"
+    },
+    {
+      "scene_number": 27,
+      "act": 2,
+      "characters": ["grandma_hanako", "grandpa_kenji"],
+      "location_id": "shrine",
+      "setting": "They sit on the steps of the shrine. The only sound is the rustling of pine needles in the wind.",
+      "scene_brief": "静寂の中で瞑想を始める"
+    },
+    {
+      "scene_number": 28,
+      "act": 2,
+      "characters": ["grandpa_kenji"],
+      "location_id": "shrine",
+      "setting": "Close up of Kenji's hands resting on his thighs. They are still and relaxed, no longer fidgeting.",
+      "scene_brief": "健二の指先まで緩む"
+    },
+    {
+      "scene_number": 29,
+      "act": 2,
+      "characters": ["grandma_hanako"],
+      "location_id": "shrine",
+      "setting": "Abstract visual of a ripples in a pond settling until the water becomes a perfect mirror, reflecting the sky.",
+      "scene_brief": "静まる心の湖面の比喩"
+    },
+    {
+      "scene_number": 30,
+      "act": 2,
+      "characters": ["grandma_hanako", "grandpa_kenji"],
+      "location_id": "shrine",
+      "setting": "Kenji opens his eyes. He looks at Hanako and nods, a look of profound peace on his face.",
+      "scene_brief": "瞑想後の澄んだ瞳"
+    },
+    {
+      "scene_number": 31,
+      "act": 2,
+      "characters": ["grandpa_kenji"],
+      "location_id": "market",
+      "setting": "A bustling village market. Vendors are shouting and people are moving quickly through the narrow aisles.",
+      "scene_brief": "賑やかな市場の喧騒"
+    },
+    {
+      "scene_number": 32,
+      "act": 2,
+      "characters": ["grandpa_kenji"],
+      "location_id": "market",
+      "setting": "Kenji is in the middle of the crowd. He feels a moment of agitation as someone bumps into him.",
+      "scene_brief": "人混みで感じるイライラ"
+    },
+    {
+      "scene_number": 33,
+      "act": 2,
+      "characters": ["grandpa_kenji"],
+      "location_id": "market",
+      "setting": "Kenji pauses. He takes one conscious, deep 'Hara' breath right there among the shoppers.",
+      "scene_brief": "街中で一呼吸置く健二"
+    },
+    {
+      "scene_number": 34,
+      "act": 2,
+      "characters": ["grandpa_kenji"],
+      "location_id": "market",
+      "setting": "Kenji smiles at the person who bumped him and continues his shopping with a calm, friendly expression.",
+      "scene_brief": "余裕を持って接する"
+    },
+    {
+      "scene_number": 35,
+      "act": 2,
+      "characters": ["grandma_hanako"],
+      "location_id": "home",
+      "setting": "Hanako is preparing matcha tea. Her movements are slow, rhythmic, and perfectly mindful.",
+      "scene_brief": "お茶を点てる瞑想の時間"
+    },
+    {
+      "scene_number": 36,
+      "act": 2,
+      "characters": ["grandma_hanako", "grandpa_kenji"],
+      "location_id": "home",
+      "setting": "Hanako serves tea to Kenji. She explains that even drinking tea can be a form of meditation.",
+      "scene_brief": "日常の動作も瞑想になる"
+    },
+    {
+      "scene_number": 37,
+      "act": 2,
+      "characters": ["grandpa_kenji"],
+      "location_id": "home",
+      "setting": "Kenji smells the tea, feeling the warmth of the bowl. He takes a sip and exhales a long, satisfied 'Aaah'.",
+      "scene_brief": "お茶の香りと味に集中"
+    },
+    {
+      "scene_number": 38,
+      "act": 2,
+      "characters": ["grandma_hanako"],
+      "location_id": "garden",
+      "setting": "Hanako is pulling weeds from the moss. She focuses on each small weed, one at a time, with full attention.",
+      "scene_brief": "草むしりに没頭する花子"
+    },
+    {
+      "scene_number": 39,
+      "act": 2,
+      "characters": ["grandpa_kenji"],
+      "location_id": "garden",
+      "setting": "Kenji joins her. He is no longer rushing to finish. He enjoys the feeling of the cool earth on his fingers.",
+      "scene_brief": "健二も土の感触を楽しむ"
+    },
+    {
+      "scene_number": 40,
+      "act": 2,
+      "characters": ["grandma_hanako", "grandpa_kenji"],
+      "location_id": "garden",
+      "setting": "They work in silence for a while. The sun begins to dip lower in the sky, casting long shadows.",
+      "scene_brief": "沈黙の中で共有する平穏"
+    },
+    {
+      "scene_number": 41,
+      "act": 2,
+      "characters": ["grandma_hanako"],
+      "location_id": "riverside",
+      "setting": "A sparkling river flowing over smooth stones. Hanako explains that life, like the river, should flow without resistance.",
+      "scene_brief": "川の流れと心のあり方"
+    },
+    {
+      "scene_number": 42,
+      "act": 2,
+      "characters": ["grandpa_kenji"],
+      "location_id": "riverside",
+      "setting": "Kenji watches a leaf floating on the water. It navigates around rocks easily, never getting stuck.",
+      "scene_brief": "流れる葉に自分を重ねる"
+    },
+    {
+      "scene_number": 43,
+      "act": 2,
+      "characters": ["grandma_hanako"],
+      "location_id": "riverside",
+      "setting": "Hanako talks about the 'vagus nerve' and how breathing sends a signal of safety to the entire body.",
+      "scene_brief": "呼吸が体に送る安心信号"
+    },
+    {
+      "scene_number": 44,
+      "act": 2,
+      "characters": ["grandpa_kenji"],
+      "location_id": "riverside",
+      "setting": "Kenji closes his eyes and listens to the water. He feels a deep sense of safety and belonging.",
+      "scene_brief": "水の音に包まれる安心感"
+    },
+    {
+      "scene_number": 45,
+      "act": 2,
+      "characters": ["grandma_hanako", "grandpa_kenji"],
+      "location_id": "riverside",
+      "setting": "The sky turns orange. They stand by the river, two figures in harmony with the natural world around them.",
+      "scene_brief": "夕暮れの川辺での調和"
+    },
+    {
+      "scene_number": 46,
+      "act": 3,
+      "characters": ["grandpa_kenji"],
+      "location_id": "village",
+      "setting": "A minor accident occurs in the village—a cart of vegetables has tipped over. People are shouting and stressed.",
+      "scene_brief": "村での小さなトラブル"
+    },
+    {
+      "scene_number": 47,
+      "act": 3,
+      "characters": ["grandpa_kenji"],
+      "location_id": "village",
+      "setting": "Kenji approaches the scene. His first instinct is to rush in and panic, but he catches himself.",
+      "scene_brief": "慌てそうになる自分を制止"
+    },
+    {
+      "scene_number": 48,
+      "act": 3,
+      "characters": ["grandpa_kenji"],
+      "location_id": "village",
+      "setting": "Kenji takes three slow breaths. His mind clears, and he sees exactly how to help efficiently.",
+      "scene_brief": "呼吸で冷静さを取り戻す"
+    },
+    {
+      "scene_number": 49,
+      "act": 3,
+      "characters": ["grandpa_kenji"],
+      "location_id": "village",
+      "setting": "Kenji leads the cleanup calmly. His peaceful demeanor starts to influence the others, and the shouting stops.",
+      "scene_brief": "冷静な対応が周囲に伝播"
+    },
+    {
+      "scene_number": 50,
+      "act": 3,
+      "characters": ["grandma_hanako"],
+      "location_id": "home",
+      "setting": "Hanako watches the scene from a distance. She smiles, seeing that Kenji has truly understood the lesson.",
+      "scene_brief": "健二の成長を見守る花子"
+    },
+    {
+      "scene_number": 51,
+      "act": 3,
+      "characters": ["grandma_hanako", "grandpa_kenji"],
+      "location_id": "home",
+      "setting": "Later that evening, Kenji tells Hanako about the day. He realizes he feels less tired than usual.",
+      "scene_brief": "心の疲れが少ないと気づく"
+    },
+    {
+      "scene_number": 52,
+      "act": 3,
+      "characters": ["grandma_hanako"],
+      "location_id": "home",
+      "setting": "Hanako explains that fighting stress wastes energy, while peace preserves it for the things we love.",
+      "scene_brief": "平穏が活力を守るという話"
+    },
+    {
+      "scene_number": 53,
+      "act": 3,
+      "characters": ["grandpa_kenji"],
+      "location_id": "hilltop",
+      "setting": "Night has fallen. Kenji is back on the hilltop, looking at the stars. The sky is clear and vast.",
+      "scene_brief": "星空の下で深呼吸する"
+    },
+    {
+      "scene_number": 54,
+      "act": 3,
+      "characters": ["grandpa_kenji"],
+      "location_id": "hilltop",
+      "setting": "Kenji feels a connection between his own breath and the vastness of the universe. He feels small but significant.",
+      "scene_brief": "宇宙との繋がりを感じる"
+    },
+    {
+      "scene_number": 55,
+      "act": 3,
+      "characters": ["grandma_hanako"],
+      "location_id": "village",
+      "setting": "A montage of village life: people greeting each other, children playing, elderly people walking slowly.",
+      "scene_brief": "穏やかな村の日常の輝き"
+    },
+    {
+      "scene_number": 56,
+      "act": 3,
+      "characters": ["grandma_hanako"],
+      "location_id": "home",
+      "setting": "Hanako is brushing her hair before bed. Her movements are a final act of meditation for the day.",
+      "scene_brief": "一日を締めくくる静かな時"
+    },
+    {
+      "scene_number": 57,
+      "act": 3,
+      "characters": ["grandma_hanako", "grandpa_kenji"],
+      "location_id": "garden",
+      "setting": "The next morning. Kenji is in his own garden, sitting in silence before his morning walk.",
+      "scene_brief": "自ら瞑想を始める健二"
+    },
+    {
+      "scene_number": 58,
+      "act": 3,
+      "characters": ["grandpa_kenji"],
+      "location_id": "garden",
+      "setting": "A bird lands near Kenji. He doesn't move, just breathes. The bird stays, sensing his stillness.",
+      "scene_brief": "小鳥も寄ってくる静寂"
+    },
+    {
+      "scene_number": 59,
+      "act": 3,
+      "characters": ["grandma_hanako"],
+      "location_id": "village",
+      "setting": "Hanako walks through the village. She looks directly at the camera with a gentle, knowing smile.",
+      "scene_brief": "視聴者へ微笑む花子"
+    },
+    {
+      "scene_number": 60,
+      "act": 3,
+      "characters": ["grandma_hanako"],
+      "location_id": "village",
+      "setting": "The sun rises again over the mountain. The village is peaceful. A single white petal falls slowly to the ground.",
+      "scene_brief": "永遠に続く心の平和"
+    }
+  ]
+}

@@ -1,0 +1,26 @@
+{
+  "id": "psychology_podcast",
+  "channel": "psychology_podcast",
+  "series_bible": "series_bible.json",
+  "output_root": "../../output/series_psychology_podcast",
+  "template": "1920x1080/video_youtube.html",
+  "language": "Vietnamese",
+  "template_params": {
+    "author": "@psychology.podcast",
+    "describe": "Tam ly ung dung va doi song noi tam",
+    "brand": "Psychology Podcast"
+  },
+  "style_prompt_prefix": "calm reflective podcast visuals, warm therapy-inspired studio lighting, soft cinematic realism, abstract emotional metaphors, journals, plants, gentle shadows, no clinical diagnosis imagery, no horror, no readable text in the image",
+  "style_prompt_audio": "",
+  "thumbnail_style": "calm psychology podcast thumbnail, warm cinematic studio mood, expressive but non-dramatic, no readable text rendered in the image",
+  "voice": {
+    "tts_mode": "local",
+    "voice": "vi-VN-HoaiMyNeural",
+    "speed": 0.95
+  },
+  "render": {
+    "audio_layer": true,
+    "audio_bgm_volume": 0.10,
+    "audio_sfx_volume": 0.02
+  }
+}

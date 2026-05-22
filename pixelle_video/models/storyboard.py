@@ -65,7 +65,8 @@ class StoryboardFrame:
     """Single storyboard frame"""
     index: int                                 # Frame index (0-based)
     narration: str                             # Narration text
-    image_prompt: str                          # Image generation prompt (can be None for text-only or video)
+    image_prompt: str                          # Video motion prompt (passed to Veo)
+    seed_image_prompt: Optional[str] = None    # Static image prompt (passed to Imagen 3 for seed image)
     
     # Generated resource paths
     audio_path: Optional[str] = None           # Audio file path (narration)

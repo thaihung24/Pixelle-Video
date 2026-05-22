@@ -20,7 +20,9 @@ Key Feature:
   to ensure perfect sync between audio and video (no padding, no trimming needed)
 """
 
+import asyncio
 import os
+import re
 from typing import Callable, Optional
 
 import httpx
@@ -41,6 +43,52 @@ class FrameProcessor:
             pixelle_video_core: PixelleVideoCore instance
         """
         self.core = pixelle_video_core
+
+    def _subtitle_chunks_enabled(self, config: StoryboardConfig) -> bool:
+        params = config.template_params or {}
+        value = params.get("subtitle_chunks") or params.get("subtitle_chunking")
+        if isinstance(value, bool):
+            return value
+        return str(value).strip().lower() in {"1", "true", "yes", "on"}
+
+    async def _punctuate_subtitle_text(self, text: str, language: str = "Vietnamese") -> str:
+        text = " ".join((text or "").split())
+        if not text:
+            return text
+
+        prompt = f"""# Role
+You are a punctuation restorer for short-video subtitles.
+
+# Task
+Add natural punctuation to the text below in {language}.
+
+# Rules
+1. Keep the original words and word order.
+2. Do not summarize, rewrite, translate, or add new ideas.
+3. Add only punctuation and capitalization if needed.
+4. Use commas and periods to create natural short subtitle phrases.
+5. Output only the punctuated text. No quotes, no markdown, no explanation.
+
+<TEXT>
+{text}
+</TEXT>
+"""
+        try:
+            result = await self.core.llm(prompt)
+            punctuated = " ".join((result or "").strip().strip('"').strip("'").split())
+            return punctuated or text
+        except Exception as exc:
+            logger.warning(f"Subtitle punctuation LLM failed, using original text: {exc}")
+            return text
+
+    def _split_subtitle_chunks(self, text: str, max_words: int | None = None) -> list[str]:
+        text = " ".join((text or "").split())
+        if not text:
+            return []
+
+        parts = re.findall(r"[^,.!?…。！？，;；]+(?:\.{3}|[,.!?…。！？，;；])?", text)
+        chunks = [p.strip() for p in parts if p.strip()]
+        return chunks or [text]
     
     async def __call__(
         self,
@@ -105,7 +153,22 @@ class FrameProcessor:
                         step=2,
                         action="media"
                     ))
-                await self._step_generate_media(frame, config)
+                
+                # Retry loop cho bước sinh media (đặc biệt là video hay bị lỗi 500 từ Google)
+                max_retries = 3
+                for attempt in range(max_retries):
+                    try:
+                        await self._step_generate_media(frame, config)
+                        break  # Thành công thì thoát loop
+                    except Exception as e:
+                        if attempt < max_retries - 1:
+                            wait_sec = 10 * (attempt + 1)
+                            logger.warning(f"  ⚠️ Lỗi sinh media (lần {attempt+1}/{max_retries}): {e}")
+                            logger.info(f"  ⏳ Đang đợi {wait_sec}s để thử lại...")
+                            await asyncio.sleep(wait_sec)
+                        else:
+                            logger.error(f"  ❌ Lỗi sinh media thất bại hoàn toàn sau {max_retries} lần: {e}")
+                            raise  # Hết lượt retry thì đành crash để caller bắt
             elif has_existing_media:
                 # Log appropriate message based on media type
                 if frame.video_path:
@@ -238,6 +301,7 @@ class FrameProcessor:
         # Build media generation parameters
         media_params = {
             "prompt": frame.image_prompt,
+            "seed_image_prompt": frame.seed_image_prompt,
             "workflow": config.media_workflow,  # Pass workflow from config (None = use default)
             "media_type": media_type,
             "width": config.media_width,
@@ -357,8 +421,75 @@ class FrameProcessor:
             ext=ext,
             output_path=output_path
         )
+
+        if self._subtitle_chunks_enabled(config):
+            frame.subtitle_chunk_overlays = await self._compose_subtitle_chunk_overlays(
+                frame=frame,
+                storyboard=storyboard,
+                config=config,
+                media_path=media_path,
+            )
         
         return composed_path
+
+    async def _compose_subtitle_chunk_overlays(
+        self,
+        frame: StoryboardFrame,
+        storyboard: 'Storyboard',
+        config: StoryboardConfig,
+        media_path: str,
+    ) -> list[dict]:
+        """Render separate transparent subtitle overlays for short timed chunks."""
+        from pixelle_video.services.frame_html import HTMLFrameGenerator
+        from pixelle_video.utils.template_util import resolve_template_path
+        from pixelle_video.utils.os_util import get_task_path
+
+        params = config.template_params or {}
+        punctuate_with_llm = params.get("subtitle_punctuate_with_llm", True)
+        if isinstance(punctuate_with_llm, str):
+            punctuate_with_llm = punctuate_with_llm.strip().lower() not in {"0", "false", "no", "off"}
+        min_duration = float(params.get("subtitle_chunk_min_seconds", 1.1) or 1.1)
+        language = str(params.get("subtitle_language") or params.get("language") or "Vietnamese")
+        subtitle_text = frame.narration
+        if punctuate_with_llm:
+            subtitle_text = await self._punctuate_subtitle_text(subtitle_text, language=language)
+        chunks = self._split_subtitle_chunks(subtitle_text)
+        if len(chunks) <= 1:
+            return []
+
+        duration = frame.duration or (await self._get_audio_duration(frame.audio_path) if frame.audio_path else 0.0)
+        if duration <= 0:
+            duration = max(len(chunks) * min_duration, 1.0)
+        raw_chunk_duration = duration / len(chunks)
+        chunk_duration = max(raw_chunk_duration, min_duration)
+
+        template_path = resolve_template_path(config.frame_template)
+        generator = HTMLFrameGenerator(template_path)
+
+        ext = {"index": frame.index + 1}
+        if config.template_params:
+            ext.update(config.template_params)
+
+        overlays = []
+        for chunk_index, chunk in enumerate(chunks):
+            start = min(duration, chunk_index * raw_chunk_duration)
+            end = duration if chunk_index == len(chunks) - 1 else min(duration, start + chunk_duration)
+            output_path = get_task_path(
+                config.task_id,
+                "frames",
+                f"{frame.index + 1:02d}_composed_{chunk_index + 1:02d}.png"
+            )
+            chunk_path = await generator.generate_frame(
+                title=storyboard.title,
+                text=chunk,
+                image=media_path,
+                ext=ext,
+                output_path=output_path
+            )
+            overlays.append({"image": chunk_path, "start": start, "end": end, "text": chunk})
+
+        logger.info(f"Generated {len(overlays)} subtitle chunk overlays for frame {frame.index + 1}")
+        return overlays
     
     async def _step_create_video_segment(
         self,
@@ -384,23 +515,64 @@ class FrameProcessor:
             # The composed_image_path contains the rendered HTML with transparent background
             temp_video_with_overlay = get_task_frame_path(config.task_id, frame.index, "video") + "_overlay.mp4"
             
-            video_service.overlay_image_on_video(
-                video=frame.video_path,
-                overlay_image=frame.composed_image_path,
-                output=temp_video_with_overlay,
-                scale_mode="contain"  # Scale video to fit template size (contain mode)
-            )
+            subtitle_chunk_overlays = getattr(frame, "subtitle_chunk_overlays", None)
+            if subtitle_chunk_overlays:
+                params = config.template_params or {}
+                video_crf = int(params.get("video_crf") or 23)
+                video_preset = str(params.get("video_preset") or "medium")
+                scale_flags = str(params.get("video_scale_flags") or "lanczos")
+                sharpen = params.get("video_sharpen", False)
+                if isinstance(sharpen, str):
+                    sharpen = sharpen.strip().lower() in {"1", "true", "yes", "on"}
+                video_service.overlay_images_on_video_timed(
+                    video=frame.video_path,
+                    overlays=subtitle_chunk_overlays,
+                    output=temp_video_with_overlay,
+                    scale_mode="contain",
+                    video_crf=video_crf,
+                    video_preset=video_preset,
+                    scale_flags=scale_flags,
+                    sharpen=bool(sharpen),
+                )
+            else:
+                params = config.template_params or {}
+                video_crf = int(params.get("video_crf") or 23)
+                video_preset = str(params.get("video_preset") or "medium")
+                scale_flags = str(params.get("video_scale_flags") or "lanczos")
+                sharpen = params.get("video_sharpen", False)
+                if isinstance(sharpen, str):
+                    sharpen = sharpen.strip().lower() in {"1", "true", "yes", "on"}
+                video_service.overlay_image_on_video(
+                    video=frame.video_path,
+                    overlay_image=frame.composed_image_path,
+                    output=temp_video_with_overlay,
+                    scale_mode="contain",  # Scale video to fit template size (contain mode)
+                    video_crf=video_crf,
+                    video_preset=video_preset,
+                    scale_flags=scale_flags,
+                    sharpen=bool(sharpen),
+                )
             
             # Step 2: Add narration audio to the overlaid video
             # Note: The video might have audio (replaced) or be silent (audio added)
             trim_when_longer = (config.video_duration_mode == "trim")
+            params = config.template_params or {}
+            keep_original_audio = params.get("keep_original_video_audio", False)
+            if isinstance(keep_original_audio, str):
+                keep_original_audio = keep_original_audio.strip().lower() in {"1", "true", "yes", "on"}
+            video_audio_volume = float(params.get("original_video_audio_volume", 0.25) or 0.25)
+            video_crf = int(params.get("video_crf") or 23)
+            video_preset = str(params.get("video_preset") or "medium")
             segment_path = video_service.merge_audio_video(
                 video=temp_video_with_overlay,
                 audio=frame.audio_path,
                 output=output_path,
-                replace_audio=True,
+                replace_audio=not keep_original_audio,
                 audio_volume=1.0,
+                video_volume=video_audio_volume if keep_original_audio else 0.0,
                 trim_when_longer=trim_when_longer,
+                video_crf=video_crf,
+                video_preset=video_preset,
             )
             
             # Clean up temp file

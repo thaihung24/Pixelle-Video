@@ -1,0 +1,499 @@
+{
+  "title": "歩く健康法 — 毎日の散歩の力",
+  "characters": [
+    {
+      "id": "grandpa_kenji",
+      "name": "健二おじいちゃん",
+      "visual": "82-year-old Japanese man, short thinning white hair neatly groomed, bright energetic hazel eyes behind thin silver wire-rimmed glasses, tanned weathered skin, lean athletic build 165cm, wearing navy blue athletic track jacket with white stripes over light gray polo shirt, khaki hiking trousers, black smartwatch on left wrist, sturdy gray sneakers",
+      "role": "protagonist"
+    },
+    {
+      "id": "ryu_grandson",
+      "name": "龍くん",
+      "visual": "16-year-old Japanese boy, messy dark brown hair with slight wave, curious wide brown eyes, light skin with slight tan, athletic slim build 170cm, wearing oversized forest green hoodie with small leaf logo, faded blue jeans, white canvas sneakers, always carrying a vintage film camera around his neck",
+      "role": "supporting"
+    }
+  ],
+  "scenes": [
+    {
+      "scene_number": 1,
+      "act": 1,
+      "characters": ["grandpa_kenji"],
+      "location_id": "home",
+      "setting": "A traditional Japanese living room filled with soft morning light, tatami mats, and a low wooden table with tea",
+      "scene_brief": "健二の朝の準備風景"
+    },
+    {
+      "scene_number": 2,
+      "act": 1,
+      "characters": ["grandpa_kenji"],
+      "location_id": "home_entrance",
+      "setting": "Genkan entrance of a traditional house, sunlight hitting polished wood, neatly arranged sneakers and a walking stick",
+      "scene_brief": "散歩靴を丁寧に履く"
+    },
+    {
+      "scene_number": 3,
+      "act": 1,
+      "characters": ["grandpa_kenji"],
+      "location_id": "village_path",
+      "setting": "Quiet morning street in a rural village, cherry blossom petals on the pavement, distant sound of a temple bell",
+      "scene_brief": "清々しい一歩を踏み出す"
+    },
+    {
+      "scene_number": 4,
+      "act": 1,
+      "characters": ["grandpa_kenji"],
+      "location_id": "garden",
+      "setting": "A lush vegetable garden at dawn, morning dew glistening on leaves, the scent of damp earth and greenery",
+      "scene_brief": "近所の庭を眺め歩く"
+    },
+    {
+      "scene_number": 5,
+      "act": 1,
+      "characters": ["grandpa_kenji"],
+      "location_id": "shrine_steps",
+      "setting": "Stone steps leading to a local shrine, moss-covered lanterns, towering cedar trees casting long shadows in the morning light",
+      "scene_brief": "階段を一歩ずつ登る"
+    },
+    {
+      "scene_number": 6,
+      "act": 1,
+      "characters": ["grandpa_kenji"],
+      "location_id": "shrine",
+      "setting": "The main hall of a peaceful shrine, wooden architecture, a simple offering box, and the sound of rustling leaves",
+      "scene_brief": "一日の健康を祈る"
+    },
+    {
+      "scene_number": 7,
+      "act": 1,
+      "characters": ["grandpa_kenji", "ryu_grandson"],
+      "location_id": "park_entrance",
+      "setting": "Entrance to a community park with a large wooden sign, Ryu waiting with his vintage camera around his neck",
+      "scene_brief": "孫の龍くんと合流する"
+    },
+    {
+      "scene_number": 8,
+      "act": 1,
+      "characters": ["grandpa_kenji", "ryu_grandson"],
+      "location_id": "park_path",
+      "setting": "Wide walking path lined with seasonal flowers, gentle breeze blowing Ryu's hair as he holds his camera ready",
+      "scene_brief": "二人の散歩が始まる"
+    },
+    {
+      "scene_number": 9,
+      "act": 1,
+      "characters": ["ryu_grandson"],
+      "location_id": "park_path",
+      "setting": "Close up of Ryu's vintage camera lens reflecting the green surroundings, his finger poised over the shutter button",
+      "scene_brief": "龍が健二を撮影する"
+    },
+    {
+      "scene_number": 10,
+      "act": 1,
+      "characters": ["grandpa_kenji", "ryu_grandson"],
+      "location_id": "riverside",
+      "setting": "Sparkling river flowing through the village, green banks with wildflowers, white cranes standing elegantly in the shallow water",
+      "scene_brief": "川沿いをゆっくり歩く"
+    },
+    {
+      "scene_number": 11,
+      "act": 1,
+      "characters": ["grandpa_kenji"],
+      "location_id": "riverside",
+      "setting": "Close-up of Kenji's energetic hazel eyes behind silver glasses, looking at the distant horizon with a bright smile",
+      "scene_brief": "散歩の喜びを語る健二"
+    },
+    {
+      "scene_number": 12,
+      "act": 1,
+      "characters": ["grandpa_kenji", "ryu_grandson"],
+      "location_id": "village_bridge",
+      "setting": "A small arched wooden bridge over a stream, the sound of rushing water, mountains visible in the far distance",
+      "scene_brief": "歩く目的を問いかける"
+    },
+    {
+      "scene_number": 13,
+      "act": 2,
+      "characters": ["grandpa_kenji"],
+      "location_id": "health_center",
+      "setting": "Modern health center hallway with educational posters about blood circulation, bright clean interior with natural wood accents",
+      "scene_brief": "血行促進の効果を解説"
+    },
+    {
+      "scene_number": 14,
+      "act": 2,
+      "characters": ["grandpa_kenji", "ryu_grandson"],
+      "location_id": "village_path",
+      "setting": "A slightly sloped path through the village, traditional houses on both sides, small stone statues of Jizo nearby",
+      "scene_brief": "心臓を鍛えるリズム歩行"
+    },
+    {
+      "scene_number": 15,
+      "act": 2,
+      "characters": ["grandpa_kenji"],
+      "location_id": "village_path",
+      "setting": "Close-up of Kenji's sturdy sneakers hitting the ground firmly, rhythmic movement illustrating a healthy pace for the elderly",
+      "scene_brief": "正しい歩幅を意識する"
+    },
+    {
+      "scene_number": 16,
+      "act": 2,
+      "characters": ["ryu_grandson"],
+      "location_id": "village_path",
+      "setting": "Ryu following Kenji, trying to match his stride, looking curious and slightly out of breath in his hoodie",
+      "scene_brief": "龍が歩き方を真似る"
+    },
+    {
+      "scene_number": 17,
+      "act": 2,
+      "characters": ["grandpa_kenji", "ryu_grandson"],
+      "location_id": "community_park",
+      "setting": "A park area with simple wooden benches and an open space where elders are doing gentle stretching exercises",
+      "scene_brief": "筋肉と骨の健康を学ぶ"
+    },
+    {
+      "scene_number": 18,
+      "act": 2,
+      "characters": ["grandpa_kenji"],
+      "location_id": "community_park",
+      "setting": "Kenji demonstrating a simple leg stretch using a park bench, his lean athletic build showing through his jacket",
+      "scene_brief": "散歩中のストレッチ紹介"
+    },
+    {
+      "scene_number": 19,
+      "act": 2,
+      "characters": ["ryu_grandson"],
+      "location_id": "community_park",
+      "setting": "Ryu filming the stretching demonstration, capturing the focused expression on Kenji's weathered but energetic face",
+      "scene_brief": "龍が健康法を記録する"
+    },
+    {
+      "scene_number": 20,
+      "act": 2,
+      "characters": ["grandpa_kenji", "ryu_grandson"],
+      "location_id": "forest_trail",
+      "setting": "Sunlight filtering through thick tree canopies, the ground covered in soft pine needles and small forest flowers",
+      "scene_brief": "森林浴と深い呼吸の効果"
+    },
+    {
+      "scene_number": 21,
+      "act": 2,
+      "characters": ["grandpa_kenji"],
+      "location_id": "forest_trail",
+      "setting": "Kenji standing still under a giant tree, eyes closed, taking a deep breath of the fresh forest air",
+      "scene_brief": "脳をリフレッシュさせる"
+    },
+    {
+      "scene_number": 22,
+      "act": 2,
+      "characters": ["ryu_grandson"],
+      "location_id": "forest_trail",
+      "setting": "Ryu noticing the changing light on the leaves, his camera clicking softly as he captures the serene atmosphere",
+      "scene_brief": "心の落ち着きを感じる龍"
+    },
+    {
+      "scene_number": 23,
+      "act": 2,
+      "characters": ["grandpa_kenji", "ryu_grandson"],
+      "location_id": "bamboo_grove",
+      "setting": "Towering green bamboo stalks swaying in the wind, a narrow stone path winding through the dense grove",
+      "scene_brief": "ストレス解消のメカニズム"
+    },
+    {
+      "scene_number": 24,
+      "act": 2,
+      "characters": ["grandpa_kenji"],
+      "location_id": "bamboo_grove",
+      "setting": "Kenji walking with a steady gaze, explaining how walking reduces anxiety and brings mental clarity to his life",
+      "scene_brief": "歩く瞑想の時間を語る"
+    },
+    {
+      "scene_number": 25,
+      "act": 2,
+      "characters": ["grandpa_kenji", "ryu_grandson"],
+      "location_id": "village_outskirts",
+      "setting": "Edge of the village where rice fields meet the forest, traditional farmhouses with tiled roofs in the background",
+      "scene_brief": "五感を使って歩く大切さ"
+    },
+    {
+      "scene_number": 26,
+      "act": 2,
+      "characters": ["ryu_grandson"],
+      "location_id": "village_outskirts",
+      "setting": "Ryu recording the sounds of insects and birds with a small microphone attached to his camera setup",
+      "scene_brief": "自然の音に耳を澄ませる"
+    },
+    {
+      "scene_number": 27,
+      "act": 2,
+      "characters": ["grandpa_kenji", "ryu_grandson"],
+      "location_id": "market",
+      "setting": "A small outdoor market with colorful stalls selling local vegetables, bustling with friendly local residents and elders",
+      "scene_brief": "近所の人との挨拶と交流"
+    },
+    {
+      "scene_number": 28,
+      "act": 2,
+      "characters": ["grandpa_kenji"],
+      "location_id": "market",
+      "setting": "Kenji laughing and talking with an elderly shopkeeper, showing the social side of a daily walking routine",
+      "scene_brief": "社会的な繋がりを保つ"
+    },
+    {
+      "scene_number": 29,
+      "act": 2,
+      "characters": ["ryu_grandson"],
+      "location_id": "market",
+      "setting": "Ryu observing the warm interactions from a distance, realizing the importance of community for his grandfather's happiness",
+      "scene_brief": "コミュニティの絆を知る"
+    },
+    {
+      "scene_number": 30,
+      "act": 2,
+      "characters": ["grandpa_kenji", "ryu_grandson"],
+      "location_id": "small_temple",
+      "setting": "A quiet temple courtyard with a Zen rock garden, perfectly raked sand forming patterns around mossy stones",
+      "scene_brief": "一歩一歩の重みを感じる"
+    },
+    {
+      "scene_number": 31,
+      "act": 2,
+      "characters": ["grandpa_kenji"],
+      "location_id": "small_temple",
+      "setting": "Close-up of Kenji's smartwatch showing a high step count, glowing softly against his weathered skin in the shade",
+      "scene_brief": "目標設定の楽しさを解説"
+    },
+    {
+      "scene_number": 32,
+      "act": 2,
+      "characters": ["ryu_grandson"],
+      "location_id": "small_temple",
+      "setting": "Ryu checking his own phone for steps, smiling as he realizes they've already walked several kilometers today",
+      "scene_brief": "達成感を共有する二人"
+    },
+    {
+      "scene_number": 33,
+      "act": 2,
+      "characters": ["grandpa_kenji", "ryu_grandson"],
+      "location_id": "hilltop",
+      "setting": "A grassy hill overlooking the entire village, the wind blowing gently through the long grass and wildflowers",
+      "scene_brief": "季節の変化を楽しむ歩き"
+    },
+    {
+      "scene_number": 34,
+      "act": 2,
+      "characters": ["grandpa_kenji"],
+      "location_id": "hilltop",
+      "setting": "Kenji pointing at the changing colors of the mountain trees, his eyes bright with appreciation for the seasons",
+      "scene_brief": "移ろう四季を肌で感じる"
+    },
+    {
+      "scene_number": 35,
+      "act": 2,
+      "characters": ["ryu_grandson"],
+      "location_id": "hilltop",
+      "setting": "Ryu taking a panoramic photo of the valley, the golden light of the late afternoon hitting the camera lens",
+      "scene_brief": "龍が絶景をカメラに収める"
+    },
+    {
+      "scene_number": 36,
+      "act": 2,
+      "characters": ["grandpa_kenji", "ryu_grandson"],
+      "location_id": "forest_clearing",
+      "setting": "An open space in the woods with a small stream, old wooden stumps perfect for a short rest and hydration",
+      "scene_brief": "適切な水分補給の重要性"
+    },
+    {
+      "scene_number": 37,
+      "act": 2,
+      "characters": ["grandpa_kenji"],
+      "location_id": "forest_clearing",
+      "setting": "Kenji drinking water from a reusable bottle, explaining how hydration keeps the body running smoothly during walks",
+      "scene_brief": "健やかな体のための習慣"
+    },
+    {
+      "scene_number": 38,
+      "act": 2,
+      "characters": ["ryu_grandson"],
+      "location_id": "forest_clearing",
+      "setting": "Ryu handing a towel to Kenji, noticing the lack of fatigue on his grandfather's face despite the long walk",
+      "scene_brief": "健二の若々しさに驚く龍"
+    },
+    {
+      "scene_number": 39,
+      "act": 2,
+      "characters": ["grandpa_kenji", "ryu_grandson"],
+      "location_id": "village_path",
+      "setting": "A narrow alleyway with stone walls and overflowing flower pots, sunlight creating high-contrast patterns on the ground",
+      "scene_brief": "歩行中の安全への配慮"
+    },
+    {
+      "scene_number": 40,
+      "act": 2,
+      "characters": ["grandpa_kenji"],
+      "location_id": "village_path",
+      "setting": "Kenji demonstrating how to look both ways and use a walking stick for balance on uneven village stones",
+      "scene_brief": "安全に歩き続ける知恵"
+    },
+    {
+      "scene_number": 41,
+      "act": 2,
+      "characters": ["ryu_grandson"],
+      "location_id": "village_path",
+      "setting": "Ryu recording a video message about safety for his school project, using the village scenery as a backdrop",
+      "scene_brief": "龍が学んだことをまとめる"
+    },
+    {
+      "scene_number": 42,
+      "act": 2,
+      "characters": ["grandpa_kenji", "ryu_grandson"],
+      "location_id": "park_exit",
+      "setting": "The far end of the park where the trail meets a quiet road, sunset colors beginning to appear in the sky",
+      "scene_brief": "継続することの難しさと喜び"
+    },
+    {
+      "scene_number": 43,
+      "act": 2,
+      "characters": ["grandpa_kenji"],
+      "location_id": "park_exit",
+      "setting": "Kenji's face in warm orange light, reflecting on the days he didn't want to walk and how he overcame it",
+      "scene_brief": "三日坊主を防ぐコツ"
+    },
+    {
+      "scene_number": 44,
+      "act": 2,
+      "characters": ["ryu_grandson"],
+      "location_id": "park_exit",
+      "setting": "Ryu listening intently, his camera lowered, feeling a deep connection to his grandfather's life philosophy",
+      "scene_brief": "継続の力を心に刻む龍"
+    },
+    {
+      "scene_number": 45,
+      "act": 2,
+      "characters": ["grandpa_kenji", "ryu_grandson"],
+      "location_id": "village_bridge",
+      "setting": "The wooden bridge now bathed in golden hour light, long shadows stretching across the wooden planks",
+      "scene_brief": "今日の散歩の総括をする"
+    },
+    {
+      "scene_number": 46,
+      "act": 3,
+      "characters": ["grandpa_kenji", "ryu_grandson"],
+      "location_id": "hilltop",
+      "setting": "Highest point of the village at sunset, panoramic view of golden rice fields and blue mountains under a purple sky",
+      "scene_brief": "散歩のゴールに到達する"
+    },
+    {
+      "scene_number": 47,
+      "act": 3,
+      "characters": ["grandpa_kenji"],
+      "location_id": "hilltop",
+      "setting": "Kenji standing tall against the sunset, his silhouette showing a strong and healthy posture for his age",
+      "scene_brief": "歩き続ける人生の美しさ"
+    },
+    {
+      "scene_number": 48,
+      "act": 3,
+      "characters": ["ryu_grandson"],
+      "location_id": "hilltop",
+      "setting": "Ryu capturing the final shot of the day, a beautiful portrait of Kenji with the sunset in the background",
+      "scene_brief": "最高の写真を撮影する"
+    },
+    {
+      "scene_number": 49,
+      "act": 3,
+      "characters": ["grandpa_kenji", "ryu_grandson"],
+      "location_id": "village_path",
+      "setting": "The path back to the house, warm lights beginning to glow in the windows of the traditional homes",
+      "scene_brief": "心地よい疲れと共に帰路へ"
+    },
+    {
+      "scene_number": 50,
+      "act": 3,
+      "characters": ["grandpa_kenji"],
+      "location_id": "village_path",
+      "setting": "Kenji's steady hands holding his walking stick, the sound of rhythmic tapping on the evening pavement",
+      "scene_brief": "明日の散歩を心待ちにする"
+    },
+    {
+      "scene_number": 51,
+      "act": 3,
+      "characters": ["ryu_grandson"],
+      "location_id": "village_path",
+      "setting": "Ryu walking beside Kenji, no longer out of breath, enjoying the peaceful evening atmosphere of the village",
+      "scene_brief": "龍の心境の変化を描く"
+    },
+    {
+      "scene_number": 52,
+      "act": 3,
+      "characters": ["grandpa_kenji", "ryu_grandson"],
+      "location_id": "home_entrance",
+      "setting": "The warm glow of the home entrance, Kenji's shoes being placed back in their spot with care",
+      "scene_brief": "無事に家に帰り着く"
+    },
+    {
+      "scene_number": 53,
+      "act": 3,
+      "characters": ["grandpa_kenji"],
+      "location_id": "home",
+      "setting": "Kenji sitting on the tatami, removing his smartwatch and checking the final impressive step count for the day",
+      "scene_brief": "一日の成果を確認する"
+    },
+    {
+      "scene_number": 54,
+      "act": 3,
+      "characters": ["ryu_grandson"],
+      "location_id": "home",
+      "setting": "Ryu looking through the photos on his camera screen, a smile of satisfaction on his young face",
+      "scene_brief": "散歩の記録を振り返る"
+    },
+    {
+      "scene_number": 55,
+      "act": 3,
+      "characters": ["grandpa_kenji", "ryu_grandson"],
+      "location_id": "home",
+      "setting": "Kenji and Ryu sharing a cup of hot green tea, steam rising in the dimly lit traditional room",
+      "scene_brief": "散歩後の休息のひととき"
+    },
+    {
+      "scene_number": 56,
+      "act": 3,
+      "characters": ["grandpa_kenji"],
+      "location_id": "home",
+      "setting": "Kenji's face filled with wisdom, explaining that walking is not just for the body, but for the soul",
+      "scene_brief": "歩くことの真の価値を語る"
+    },
+    {
+      "scene_number": 57,
+      "act": 3,
+      "characters": ["ryu_grandson"],
+      "location_id": "home",
+      "setting": "Close-up of Ryu's eyes, showing a new understanding and respect for the traditions his grandfather carries",
+      "scene_brief": "龍が受け取ったバトン"
+    },
+    {
+      "scene_number": 58,
+      "act": 3,
+      "characters": ["grandpa_kenji", "ryu_grandson"],
+      "location_id": "home",
+      "setting": "A shot of Kenji's sturdy sneakers and Ryu's canvas sneakers sitting side by side in the entrance hall",
+      "scene_brief": "世代を超えた散歩の象徴"
+    },
+    {
+      "scene_number": 59,
+      "act": 3,
+      "characters": ["grandpa_kenji"],
+      "location_id": "home",
+      "setting": "Kenji looking out the window at the moonlit garden, a peaceful expression on his face as he prepares for sleep",
+      "scene_brief": "心安らかな眠りへの準備"
+    },
+    {
+      "scene_number": 60,
+      "act": 3,
+      "characters": ["grandpa_kenji", "ryu_grandson"],
+      "location_id": "village",
+      "setting": "The entire village under a starlit sky, peaceful and quiet, embodying the harmony of nature and a healthy life",
+      "scene_brief": "明日へ続く散歩道"
+    }
+  ]
+}

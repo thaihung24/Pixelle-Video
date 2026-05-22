@@ -1,0 +1,47 @@
+{
+  "id": "finance_podcast",
+  "channel": "finance_podcast",
+  "series_bible": "series_bible.json",
+  "output_root": "../../output/series_finance_podcast",
+  "template": "1080x1920/video_short_reel.html",
+  "language": "Vietnamese",
+  "template_params": {
+    "author": "@finance.podcast",
+    "describe": "Tai chinh ca nhan trong 60 giay",
+    "brand": "Money Mindset",
+    "font_family": "Inter, \"Be Vietnam Pro\", \"Noto Sans\", system-ui, sans-serif",
+    "subtitle_font_size": 50,
+    "subtitle_chunks": true,
+    "subtitle_punctuate_with_llm": false,
+    "subtitle_language": "Vietnamese",
+    "subtitle_chunk_min_seconds": 1.1,
+    "keep_original_video_audio": true,
+    "original_video_audio_volume": 0.25,
+    "avatar_path": "assets/images/avt.png",
+    "avatar_size_px": 120,
+    "avatar_margin_px": 30,
+    "video_crf": 18,
+    "video_preset": "slow",
+    "video_scale_flags": "lanczos",
+    "video_sharpen": true,
+    "transition_sfx_path": "assets/audio/sfx/sfx_studio-boom-swoosh.mp3",
+    "transition_sfx_volume": 0.08,
+    "transition_duck_factor": 0.5,
+    "transition_duck_window_s": 0.25
+  },
+  "style_prompt_prefix": "minimalist black-and-white stick figure illustration, clean white background, bold simple finance doodles, salary notification, piggy bank, coins, bills, budget notebook, simple charts, high contrast, viral short-form storytelling, no readable ticker symbols, no luxury flexing, no financial advice claims",
+  "location_prompt_prefix": "minimalist black-and-white infographic scene, clean white background, bold simple finance doodles, coins, bills, budget icons, shopping bags, notebook, simple charts, no readable text, no logos, no ticker symbols, no characters",
+  "thumbnail_style": "minimalist black-and-white stick figure style, bold clean layout, no readable text rendered in the image",
+  "style_prompt_audio": "No dialogue, no voiceover, no narration, no speaking, no lip sync. Ambient environmental sounds only.",
+  "voice": {
+    "tts_mode": "omnivoice",
+    "ref_audio": "C:\\Users\\ADMIN\\Dev\\tool\\flowkit\\output\\_shared\\tts_templates\\audio_ref.WAV",
+    "ref_text": "The Nobel Prize just unlocked why it reverses brain decline, and in the next 12 minutes, you will know exactly how to use it.",
+    "speed": 1.0
+  },
+  "render": {
+    "audio_layer": true,
+    "audio_bgm_volume": 0.12,
+    "audio_sfx_volume": 0.03
+  }
+}

@@ -30,6 +30,74 @@ sys.path.append(str(Path(__file__).parent))
 from loguru import logger
 
 
+def build_series_context(bible: dict | None) -> str:
+    """Create compact channel/project context from a series bible."""
+    if not bible:
+        return ""
+
+    lines = []
+    for key in ["series_title", "channel", "description", "brand", "language", "style"]:
+        value = bible.get(key)
+        if value:
+            lines.append(f"{key}: {value}")
+
+    locations = bible.get("recurring_locations") or []
+    if locations:
+        lines.append("recurring_locations: " + "; ".join(str(x) for x in locations[:6]))
+
+    if not lines:
+        return ""
+
+    return "=== SERIES / CHANNEL CONTEXT ===\n" + "\n".join(lines)
+
+
+async def punctuate_narrations(llm_service, narrations: list[str], language: str) -> list[str]:
+    """Restore punctuation for subtitle-friendly narrations (no rewriting)."""
+    if not narrations:
+        return narrations
+
+    # Quick heuristic: if most lines already contain sentence punctuation, keep as-is.
+    has_punct = sum(1 for n in narrations if any(p in (n or "") for p in [".", "!", "?", "…", ",", ";", ":"]))
+    if has_punct >= max(1, len(narrations) // 2):
+        return narrations
+
+    payload = json.dumps({"narrations": narrations}, ensure_ascii=False, indent=2)
+    prompt = f"""# Role
+You are a punctuation restorer for short-video narration text.
+
+# Task
+Add natural punctuation to each narration in {language}.
+
+# Rules
+1. Keep the original words and word order for each narration.
+2. Do not summarize, rewrite, translate, or add new ideas.
+3. Add only punctuation and capitalization if needed.
+4. Make phrases subtitle-friendly: prefer commas and periods to break long runs.
+5. Output strictly valid JSON only.
+
+# Input
+{payload}
+
+# Output
+Return exactly:
+{{
+  "narrations": ["...", "..."]
+}}
+"""
+
+    try:
+        resp = await llm_service(prompt)
+        from pixelle_video.utils.content_generators import _parse_json
+        data = _parse_json(resp)
+        out = data.get("narrations")
+        if isinstance(out, list) and len(out) == len(narrations):
+            return [(" ".join((x or "").split())).strip() for x in out]
+    except Exception as exc:
+        logger.warning(f"Failed to punctuate narrations via LLM; keeping original: {exc}")
+
+    return narrations
+
+
 # ===========================================================================
 # Stage 1: Generate Blueprint (characters + scene outline)
 # ===========================================================================
@@ -160,15 +228,23 @@ async def stage3_video_prompts(
     llm_service,
     narrations: list,
     blueprint: dict,
+    visual_style: str = "",
 ) -> list:
     """Generate video prompts using Alibaba's video_generation prompts."""
     from pixelle_video.utils.content_generators import generate_video_prompts
+    from pixelle_video.prompts.anime_storyboard import inject_character_visuals_into_narrations
 
     logger.info(f"[Stage 3] Generating video prompts for {len(narrations)} scenes...")
+    visual_inputs = inject_character_visuals_into_narrations(
+        narrations=narrations,
+        characters=blueprint.get("characters", []),
+        scenes=blueprint.get("scenes", []),
+        visual_style=visual_style,
+    )
 
     video_prompts = await generate_video_prompts(
         llm_service=llm_service,
-        narrations=narrations,
+        narrations=visual_inputs,
     )
 
     if video_prompts:
@@ -182,6 +258,41 @@ async def stage3_video_prompts(
 
 
 # ===========================================================================
+# Stage 4: Generate Image Prompts (using Alibaba's image_generation.py)
+# ===========================================================================
+async def stage4_image_prompts(
+    llm_service,
+    narrations: list,
+    blueprint: dict,
+    visual_style: str = "",
+) -> list:
+    """Generate image prompts using Alibaba's image_generation prompts for static seed images."""
+    from pixelle_video.utils.content_generators import generate_image_prompts
+    from pixelle_video.prompts.anime_storyboard import inject_character_visuals_into_narrations
+
+    logger.info(f"[Stage 4] Generating image prompts for {len(narrations)} static seed scenes...")
+    visual_inputs = inject_character_visuals_into_narrations(
+        narrations=narrations,
+        characters=blueprint.get("characters", []),
+        scenes=blueprint.get("scenes", []),
+        visual_style=visual_style,
+    )
+
+    image_prompts = await generate_image_prompts(
+        llm_service=llm_service,
+        narrations=visual_inputs,
+    )
+
+    if image_prompts:
+        logger.success(f"[Stage 4] ✅ Done: {len(image_prompts)} image prompts generated")
+        logger.info(f"   Image prompt 1: {image_prompts[0][:80]}...")
+    else:
+        logger.error("[Stage 4] ❌ Failed to generate image prompts")
+
+    return image_prompts
+
+
+# ===========================================================================
 # Main
 # ===========================================================================
 async def main():
@@ -192,7 +303,7 @@ async def main():
     parser.add_argument("--output", type=str, default=None, help="Output directory")
     parser.add_argument("--series-bible", type=str, default=None, help="Path to series_bible.json")
     parser.add_argument("--episode-chars", nargs="*", default=None, help="Character IDs for this episode")
-    parser.add_argument("--skip-video-prompts", action="store_true", help="Skip Stage 3")
+    parser.add_argument("--skip-video-prompts", action="store_true", help="Skip Stage 3 and 4")
 
     args = parser.parse_args()
 
@@ -221,6 +332,7 @@ async def main():
 
     # Load series bible if provided
     fixed_characters = None
+    bible = None
     if args.series_bible:
         bible_path = Path(args.series_bible)
         if bible_path.exists():
@@ -238,10 +350,16 @@ async def main():
         else:
             logger.warning(f"Series bible not found: {bible_path}")
 
+    series_context = build_series_context(bible)
+    visual_style = bible.get("style", "") if bible else ""
+    effective_topic = args.topic
+    if series_context:
+        effective_topic = f"{args.topic}\n\n{series_context}"
+
     # ===== Stage 1: Blueprint =====
     blueprint = await stage1_blueprint(
         llm_service=llm_service,
-        topic=args.topic,
+        topic=effective_topic,
         n_scenes=args.scenes,
         language=args.language,
         fixed_characters=fixed_characters,
@@ -260,7 +378,7 @@ async def main():
     # ===== Stage 2: Narrations =====
     narrations = await stage2_narrations(
         llm_service=llm_service,
-        topic=args.topic,
+        topic=effective_topic,
         blueprint=blueprint,
         n_scenes=args.scenes,
         language=args.language,
@@ -270,28 +388,49 @@ async def main():
         logger.error("Narration generation failed!")
         sys.exit(1)
 
-    # ===== Stage 3: Video Prompts =====
+    # Optional: restore punctuation for subtitle friendliness (especially Vietnamese/Thai/etc.)
+    narrations = await punctuate_narrations(llm_service, narrations, args.language)
+
+    # ===== Stage 3 & 4: Video Prompts and Image Prompts =====
     video_prompts = []
+    image_prompts = []
     if not args.skip_video_prompts:
+        # Stage 3: Video
         video_prompts = await stage3_video_prompts(
             llm_service=llm_service,
             narrations=narrations,
             blueprint=blueprint,
+            visual_style=visual_style,
         )
         if not video_prompts:
             logger.warning("Video prompt generation failed, continuing without them")
             video_prompts = ["" for _ in narrations]
+            
+        # Stage 4: Image
+        image_prompts = await stage4_image_prompts(
+            llm_service=llm_service,
+            narrations=narrations,
+            blueprint=blueprint,
+            visual_style=visual_style,
+        )
+        if not image_prompts:
+            logger.warning("Image prompt generation failed, continuing without them")
+            image_prompts = ["" for _ in narrations]
     else:
-        logger.info("[Stage 3] Skipped (--skip-video-prompts)")
+        logger.info("[Stage 3/4] Skipped (--skip-video-prompts)")
         video_prompts = ["" for _ in narrations]
+        image_prompts = ["" for _ in narrations]
 
     # ===== Save script.json (final output for resume_pipeline.py) =====
     script = {
         "title": blueprint.get("title", args.topic),
+        "topic": args.topic,
+        "language": args.language,
         "characters": blueprint.get("characters", []),
         "scenes": blueprint.get("scenes", []),
         "narrations": narrations,
         "video_prompts": video_prompts,
+        "image_prompts": image_prompts,
     }
 
     script_path = output_dir / "script.json"

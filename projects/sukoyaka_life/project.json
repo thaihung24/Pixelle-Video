@@ -1,0 +1,23 @@
+{
+  "id": "sukoyaka_life",
+  "channel": "sukoyaka_life",
+  "series_bible": "../../series_bible.json",
+  "output_root": "../../output/series_sukoyaka_life",
+  "template": "1920x1080/video_youtube.html",
+  "language": "Japanese",
+  "template_params": {
+    "author": "@sukoyaka.life1",
+    "describe": "Sukoyaka Life",
+    "brand": "Sukoyaka Life"
+  },
+  "style_prompt_audio": "",
+  "voice": {
+    "tts_mode": "omnivoice",
+    "speed": 1.0
+  },
+  "render": {
+    "audio_layer": true,
+    "audio_bgm_volume": 0.15,
+    "audio_sfx_volume": 0.08
+  }
+}

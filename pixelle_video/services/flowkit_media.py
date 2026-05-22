@@ -286,6 +286,9 @@ Output ONLY the rewritten prompt:"""
                 "Bạn có thể lấy project_id bằng cách tạo project trên FlowKit."
             )
 
+        import re as _re
+        _UUID_RE = _re.compile(r'^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$', _re.I)
+
         payload = {
             "prompt": prompt,
             "project_id": self.project_id,
@@ -293,7 +296,13 @@ Output ONLY the rewritten prompt:"""
             "user_paygate_tier": self.user_paygate_tier,
         }
         if character_media_ids:
-            payload["character_media_ids"] = character_media_ids
+            # Chỉ truyền UUID thật (Google Flow media_id), bỏ qua file paths (locations/)
+            valid_ids = [m for m in character_media_ids if _UUID_RE.match(str(m))]
+            skipped = len(character_media_ids) - len(valid_ids)
+            if skipped:
+                logger.debug(f"FlowKit: Bỏ qua {skipped} file path refs (chỉ dùng UUID cho imageInputs)")
+            if valid_ids:
+                payload["character_media_ids"] = valid_ids
 
         logger.info(f"FlowKit: Gửi yêu cầu sinh ảnh | aspect={aspect_ratio} | prompt={prompt[:60]}...")
 
@@ -373,6 +382,7 @@ Output ONLY the rewritten prompt:"""
         prompt: str,
         aspect_ratio: str,
         character_media_ids: Optional[list] = None,
+        seed_image_prompt: Optional[str] = None,
     ) -> str:
         """
         Gọi FlowKit API để sinh video (Veo). Trả về URL của video đã hoàn thành.
@@ -384,7 +394,7 @@ Output ONLY the rewritten prompt:"""
         _MAX_RETRIES = 5
         for _vid_outer_attempt in range(1, _MAX_RETRIES + 2):
             try:
-                return await self._generate_video_via_flowkit_once(prompt, aspect_ratio, character_media_ids)
+                return await self._generate_video_via_flowkit_once(prompt, aspect_ratio, character_media_ids, seed_image_prompt)
             except _CaptchaRetryError as exc:
                 if _vid_outer_attempt <= _MAX_RETRIES:
                     logger.warning(
@@ -413,10 +423,17 @@ Output ONLY the rewritten prompt:"""
         prompt: str,
         aspect_ratio: str,
         character_media_ids: Optional[list] = None,
+        seed_image_prompt: Optional[str] = None,
     ) -> str:
         """Một lần thử sinh video (ảnh mồi + video). Raise _CaptchaRetryError nếu gặp CAPTCHA."""
-        # Pass character_media_ids to seed image generation for character consistency
-        img_resp = await self._generate_image_via_flowkit(prompt, aspect_ratio, character_media_ids)
+        # Pass character_media_ids to seed image for visual consistency
+        seed_prompt = seed_image_prompt or prompt
+        if seed_image_prompt:
+            logger.info(
+                "FlowKit (Video): using separate seed image prompt "
+                f"| seed={seed_prompt[:80]}... | video={prompt[:80]}..."
+            )
+        img_resp = await self._generate_image_via_flowkit(seed_prompt, aspect_ratio, character_media_ids)
         
         # Format trả về thường có media[0].name
         media_id = None
@@ -515,17 +532,7 @@ Output ONLY the rewritten prompt:"""
                 # Sử dụng _resolve_media_id_to_url để poll status
                 video_url = await self._resolve_media_id_to_url(video_media_id)
                 if video_url:
-                    logger.info(f"FlowKit (Video): Sinh video 720p hoàn tất!")
-                    
-                    # 4. Upscale to 1080p + download via CDN
-                    try:
-                        upscaled_path = await self._upscale_and_download_cdn(video_media_id)
-                        if upscaled_path:
-                            logger.success(f"FlowKit (Video): Upscale 1080p + CDN download thành công!")
-                            return upscaled_path
-                    except Exception as e:
-                        logger.warning(f"FlowKit (Video): Upscale/CDN failed ({e}), using 720p fallback")
-                    
+                    logger.info(f"FlowKit (Video): Sinh video hoàn tất!")
                     return video_url
             except Exception as e:
                 logger.warning(f"FlowKit (Video): Lỗi kết nối khi poll status: {e}")
@@ -536,146 +543,6 @@ Output ONLY the rewritten prompt:"""
                 logger.debug(f"FlowKit (Video): Đang xử lý... (đã chờ {waited_sec}s / còn tối đa {remaining_sec}s)")
                 
         raise _TimeoutRetryError("FlowKit (Video): Timeout chờ sinh video.")
-    
-    async def _upscale_and_download_cdn(self, media_id: str, timeout: int = 180) -> Optional[str]:
-        """
-        Upscale video to 1080p and download via CDN.
-        
-        1080p upscale requires an explicit API call (batchAsyncGenerateVideoUpsampleVideo)
-        but is FREE for unlimited accounts (PAYGATE_TIER_TWO).
-        Only 4K upscale costs 50 credits.
-        
-        Flow: Submit upscale (1080p) → Poll _upsampled → Download via CDN
-        
-        Args:
-            media_id: Original 720p video media_id
-            timeout: Max seconds to wait for upscale to complete
-        Returns:
-            Local file path of 1080p video, or None if failed
-        """
-        upsampled_media_id = f"{media_id}_upsampled"
-        logger.info(f"FlowKit (1080p): Submitting 1080p upscale for {media_id[:16]}...")
-        
-        # Step 1: Submit upscale request via FlowKit Agent
-        # Uses VIDEO_RESOLUTION_1080P + veo_3_1_upsampler_1080p → FREE for PAYGATE_TIER_TWO
-        try:
-            async with httpx.AsyncClient(timeout=60) as client:
-                upscale_resp = await client.post(
-                    f"{self.base_url}/api/flow/upscale-video",
-                    json={
-                        "media_id": media_id,
-                        "scene_id": "upscale_cdn",
-                        "aspect_ratio": "VIDEO_ASPECT_RATIO_LANDSCAPE",
-                        "resolution": "VIDEO_RESOLUTION_1080P"
-                    }
-                )
-            
-            if upscale_resp.status_code not in (200, 201, 202):
-                logger.warning(f"FlowKit (1080p): Submit failed (HTTP {upscale_resp.status_code}): {upscale_resp.text[:200]}")
-                return None
-            
-            logger.info(f"FlowKit (1080p): Upscale job submitted OK, polling for {upsampled_media_id[:20]}...")
-        except Exception as e:
-            logger.warning(f"FlowKit (1080p): Submit error: {e}")
-            return None
-        
-        # Step 2: Poll until 1080p upsampled version is ready
-        # Note: Google Flow returns video.encodedVideo (base64) when ready,
-        # and may NOT include mediaStatus at all for upsampled media.
-        poll_interval = 10
-        max_polls = timeout // poll_interval
-        upscaled_data = None
-        
-        for attempt in range(max_polls):
-            await asyncio.sleep(poll_interval)
-            
-            try:
-                async with httpx.AsyncClient(timeout=30) as client:
-                    status_resp = await client.get(
-                        f"{self.base_url}/api/flow/media/{upsampled_media_id}"
-                    )
-                if status_resp.status_code == 200:
-                    data = status_resp.json()
-                    
-                    # Check 1: video.encodedVideo present = READY (primary check)
-                    encoded_video = data.get("video", {}).get("encodedVideo", "")
-                    if encoded_video and len(encoded_video) > 1000:
-                        logger.info(f"FlowKit (1080p): Ready (base64 data) after {(attempt+1)*poll_interval}s!")
-                        upscaled_data = data
-                        break
-                    
-                    # Check 2: mediaStatus (may exist for some responses)
-                    gen_status = data.get("mediaStatus", {}).get("mediaGenerationStatus", "")
-                    if gen_status == "MEDIA_GENERATION_STATUS_SUCCESSFUL":
-                        logger.info(f"FlowKit (1080p): Ready (status=SUCCESSFUL) after {(attempt+1)*poll_interval}s!")
-                        upscaled_data = data
-                        break
-                    elif gen_status == "MEDIA_GENERATION_STATUS_FAILED":
-                        logger.warning(f"FlowKit (1080p): Google upscale FAILED for {media_id[:16]}")
-                        return None
-                    
-                    # Check 3: fifeUrl present = READY (CDN URL available)
-                    if data.get("fifeUrl") or data.get("servingUri"):
-                        logger.info(f"FlowKit (1080p): Ready (has URL) after {(attempt+1)*poll_interval}s!")
-                        upscaled_data = data
-                        break
-                    
-                    if attempt % 3 == 0:
-                        logger.debug(f"FlowKit (1080p): Processing... ({(attempt+1)*poll_interval}s)")
-                elif status_resp.status_code == 404:
-                    if attempt % 3 == 0:
-                        logger.debug(f"FlowKit (1080p): Not available yet ({(attempt+1)*poll_interval}s)")
-            except Exception as e:
-                logger.debug(f"FlowKit (1080p): Poll error (attempt {attempt}): {e}")
-        
-        if not upscaled_data:
-            logger.warning(f"FlowKit (1080p): Timeout after {timeout}s, using 720p fallback")
-            return None
-        
-        # Step 3: Save 1080p video — prefer base64 data (already in response), fallback to CDN
-        from pixelle_video.utils.os_util import get_output_path
-        abs_output_dir = os.path.dirname(get_output_path("dummy.mp4"))
-        os.makedirs(abs_output_dir, exist_ok=True)
-        cdn_filename = f"flowkit_{media_id[:16]}_1080p.mp4"
-        local_path = os.path.join(abs_output_dir, cdn_filename)
-        
-        # Try base64 first (fastest — data already in memory)
-        encoded_video = upscaled_data.get("video", {}).get("encodedVideo", "")
-        if encoded_video and len(encoded_video) > 1000:
-            try:
-                import base64
-                video_bytes = base64.b64decode(encoded_video)
-                with open(local_path, "wb") as f:
-                    f.write(video_bytes)
-                file_size = os.path.getsize(local_path)
-                logger.success(f"FlowKit (1080p): Saved from base64 → {local_path} ({file_size / 1024 / 1024:.1f} MB)")
-                return local_path
-            except Exception as e:
-                logger.warning(f"FlowKit (1080p): Base64 decode failed ({e}), trying CDN...")
-        
-        # Fallback: Download via CDN
-        try:
-            async with httpx.AsyncClient(timeout=180) as client:
-                cdn_resp = await client.get(
-                    f"{self.base_url}/api/flow/media/{upsampled_media_id}/download-cdn",
-                    params={
-                        "media_type": "video",
-                        "output_dir": abs_output_dir,
-                        "filename": cdn_filename,
-                    },
-                )
-            if cdn_resp.status_code == 200:
-                cdn_data = cdn_resp.json()
-                local_path = cdn_data.get("path")
-                file_size = cdn_data.get("size", 0)
-                logger.success(f"FlowKit (CDN): Downloaded 1080p → {local_path} ({file_size / 1024 / 1024:.1f} MB)")
-                return local_path
-            else:
-                logger.warning(f"FlowKit (CDN): Download failed (HTTP {cdn_resp.status_code}): {cdn_resp.text[:200]}")
-        except Exception as e:
-            logger.warning(f"FlowKit (CDN): Download error: {e}")
-        
-        return None
 
     async def _resolve_media_id_to_url(self, media_id: str) -> Optional[str]:
         """
@@ -778,6 +645,7 @@ Output ONLY the rewritten prompt:"""
         height: Optional[int] = None,
         output_path: Optional[str] = None,
         character_media_ids: Optional[list] = None,
+        seed_image_prompt: Optional[str] = None,
         # Các tham số tương thích với MediaService interface (bỏ qua)
         workflow: Optional[str] = None,
         comfyui_url: Optional[str] = None,
@@ -838,6 +706,7 @@ Output ONLY the rewritten prompt:"""
                 prompt=prompt,
                 aspect_ratio=aspect_ratio,
                 character_media_ids=effective_char_ids,
+                seed_image_prompt=seed_image_prompt,
             )
         else:
             response_data = await self._generate_image_via_flowkit(

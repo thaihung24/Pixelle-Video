@@ -26,6 +26,7 @@ Note: Requires FFmpeg to be installed on the system.
 
 import os
 import shutil
+import subprocess
 import tempfile
 import uuid
 from pathlib import Path
@@ -340,6 +341,8 @@ class VideoService:
         replace_audio: bool = True,
         audio_volume: float = 1.0,
         video_volume: float = 0.0,
+        video_crf: int = 23,
+        video_preset: str = "medium",
         pad_strategy: str = "freeze",
         auto_adjust_duration: bool = True,
         duration_tolerance: float = 0.3,
@@ -403,7 +406,7 @@ class VideoService:
             if diff < 0:
                 # Video shorter than audio → Must pad to avoid black screen
                 logger.warning(f"⚠️ Video shorter than audio by {abs(diff):.2f}s, padding required")
-                video = self._pad_video_to_duration(video, audio_duration, pad_strategy)
+                # NOTE: Padding is handled later in-graph to preserve original audio stream.
                 video_duration = audio_duration
                 logger.info(f"📌 Padded video to {audio_duration:.2f}s")
 
@@ -486,7 +489,9 @@ class VideoService:
                         video_stream,
                         audio_stream,
                         output,
-                        vcodec='libx264',  # Re-encode video if padded
+                        vcodec='libx264',
+                        crf=int(video_crf),
+                        preset=str(video_preset),
                         acodec='aac',
                         audio_bitrate='192k'
                     )
@@ -538,7 +543,9 @@ class VideoService:
                         video_stream,
                         mixed_audio,
                         output,
-                        vcodec='libx264',  # Re-encode video if padded
+                        vcodec='libx264',
+                        crf=int(video_crf),
+                        preset=str(video_preset),
                         acodec='aac',
                         audio_bitrate='192k'
                     )
@@ -558,7 +565,11 @@ class VideoService:
         video: str,
         overlay_image: str,
         output: str,
-        scale_mode: str = "contain"
+        scale_mode: str = "contain",
+        video_crf: int = 23,
+        video_preset: str = "medium",
+        scale_flags: str = "lanczos",
+        sharpen: bool = False,
     ) -> str:
         """
         Overlay a transparent image on top of video
@@ -605,33 +616,47 @@ class VideoService:
                 # Use scale filter with force_original_aspect_ratio=decrease and pad to center
                 scaled_video = (
                     input_video
-                    .filter('scale', overlay_width, overlay_height, force_original_aspect_ratio='decrease')
+                    .filter('scale', overlay_width, overlay_height, force_original_aspect_ratio='decrease', flags=scale_flags)
                     .filter('pad', overlay_width, overlay_height, '(ow-iw)/2', '(oh-ih)/2', color='black')
                 )
             elif scale_mode == "cover":
                 # Scale to cover (crop if aspect ratio differs)
                 scaled_video = (
                     input_video
-                    .filter('scale', overlay_width, overlay_height, force_original_aspect_ratio='increase')
+                    .filter('scale', overlay_width, overlay_height, force_original_aspect_ratio='increase', flags=scale_flags)
                     .filter('crop', overlay_width, overlay_height)
                 )
             else:  # stretch
                 # Stretch to exact dimensions
-                scaled_video = input_video.filter('scale', overlay_width, overlay_height)
+                scaled_video = input_video.filter('scale', overlay_width, overlay_height, flags=scale_flags)
+
+            if sharpen:
+                scaled_video = scaled_video.filter('unsharp', 5, 5, 0.8, 3, 3, 0.4)
             
             # Overlay the transparent image on top of the scaled video
             output_stream = ffmpeg.overlay(scaled_video, input_overlay)
-            
-            (
-                ffmpeg
-                .output(output_stream, output, 
-                        vcodec='libx264',
-                        pix_fmt='yuv420p',
-                        preset='medium',
-                        crf=23)
-                .overwrite_output()
-                .run(capture_stdout=True, capture_stderr=True)
-            )
+
+            # Preserve original audio when present (needed for keep_original_video_audio).
+            try:
+                has_audio = self.has_audio_stream(video)
+            except Exception:
+                has_audio = False
+
+            out_kwargs = dict(vcodec='libx264', pix_fmt='yuv420p', preset=str(video_preset), crf=int(video_crf))
+            if has_audio:
+                (
+                    ffmpeg
+                    .output(output_stream, input_video.audio, output, acodec='copy', **out_kwargs)
+                    .overwrite_output()
+                    .run(capture_stdout=True, capture_stderr=True)
+                )
+            else:
+                (
+                    ffmpeg
+                    .output(output_stream, output, **out_kwargs)
+                    .overwrite_output()
+                    .run(capture_stdout=True, capture_stderr=True)
+                )
             
             logger.success(f"Image overlaid on video: {output}")
             return output
@@ -639,6 +664,186 @@ class VideoService:
             error_msg = e.stderr.decode() if e.stderr else str(e)
             logger.error(f"FFmpeg overlay error: {error_msg}")
             raise RuntimeError(f"Failed to overlay image on video: {error_msg}")
+
+    def overlay_images_on_video_timed(
+        self,
+        video: str,
+        overlays: List[dict],
+        output: str,
+        scale_mode: str = "contain",
+        video_crf: int = 23,
+        video_preset: str = "medium",
+        scale_flags: str = "lanczos",
+        sharpen: bool = False,
+    ) -> str:
+        """
+        Overlay multiple transparent images on top of a video at timed intervals.
+
+        overlays: [{"image": path, "start": 0.0, "end": 2.0}, ...]
+        """
+        self._ensure_ffmpeg()
+        if not overlays:
+            raise ValueError("Timed overlays list cannot be empty")
+
+        logger.info(f"Overlaying {len(overlays)} timed images on video (scale_mode={scale_mode})")
+
+        try:
+            first_overlay = overlays[0]["image"]
+            overlay_probe = ffmpeg.probe(first_overlay)
+            overlay_stream = next(s for s in overlay_probe['streams'] if s['codec_type'] == 'video')
+            overlay_width = int(overlay_stream['width'])
+            overlay_height = int(overlay_stream['height'])
+
+            input_video = ffmpeg.input(video)
+            overlay_inputs = [ffmpeg.input(item["image"]) for item in overlays]
+
+            if scale_mode == "contain":
+                stream = (
+                    input_video
+                    .filter('scale', overlay_width, overlay_height, force_original_aspect_ratio='decrease', flags=scale_flags)
+                    .filter('pad', overlay_width, overlay_height, '(ow-iw)/2', '(oh-ih)/2', color='black')
+                )
+            elif scale_mode == "cover":
+                stream = (
+                    input_video
+                    .filter('scale', overlay_width, overlay_height, force_original_aspect_ratio='increase', flags=scale_flags)
+                    .filter('crop', overlay_width, overlay_height)
+                )
+            else:
+                stream = input_video.filter('scale', overlay_width, overlay_height, flags=scale_flags)
+
+            if sharpen:
+                stream = stream.filter('unsharp', 5, 5, 0.8, 3, 3, 0.4)
+
+            for overlay_input, item in zip(overlay_inputs, overlays):
+                start = max(0.0, float(item.get("start", 0.0)))
+                end = max(start, float(item.get("end", start)))
+                stream = ffmpeg.overlay(
+                    stream,
+                    overlay_input,
+                    enable=f"between(t,{start:.3f},{end:.3f})"
+                )
+
+            try:
+                has_audio = self.has_audio_stream(video)
+            except Exception:
+                has_audio = False
+
+            out_kwargs = dict(vcodec='libx264', pix_fmt='yuv420p', preset=str(video_preset), crf=int(video_crf))
+            if has_audio:
+                (
+                    ffmpeg
+                    .output(stream, input_video.audio, output, acodec='copy', **out_kwargs)
+                    .overwrite_output()
+                    .run(capture_stdout=True, capture_stderr=True)
+                )
+            else:
+                (
+                    ffmpeg
+                    .output(stream, output, **out_kwargs)
+                    .overwrite_output()
+                    .run(capture_stdout=True, capture_stderr=True)
+                )
+
+            logger.success(f"Timed images overlaid on video: {output}")
+            return output
+        except ffmpeg.Error as e:
+            error_msg = e.stderr.decode() if e.stderr else str(e)
+            logger.error(f"FFmpeg timed overlay error: {error_msg}")
+            raise RuntimeError(f"Failed to overlay timed images on video: {error_msg}")
+
+    def overlay_avatar(
+        self,
+        video: str,
+        avatar_image: str,
+        output: str,
+        size_px: int = 40,
+        margin_px: int = 24,
+        position: Literal["bottom_right", "bottom_left", "top_right", "top_left"] = "bottom_right",
+        video_crf: int = 23,
+        video_preset: str = "medium",
+    ) -> str:
+        """
+        Overlay a circular avatar image on a video while preserving audio.
+
+        Notes:
+        - Uses ffmpeg filter_complex with a circular alpha mask (no external deps).
+        - Copies the original audio stream when present.
+        """
+        self._ensure_ffmpeg()
+
+        if not os.path.exists(avatar_image):
+            raise FileNotFoundError(f"Avatar image not found: {avatar_image}")
+
+        size_px = int(size_px)
+        margin_px = int(margin_px)
+        if size_px <= 0:
+            raise ValueError("size_px must be > 0")
+        if margin_px < 0:
+            margin_px = 0
+
+        # Compute overlay coordinates
+        if position == "bottom_right":
+            x_expr = f"W-w-{margin_px}"
+            y_expr = f"H-h-{margin_px}"
+        elif position == "bottom_left":
+            x_expr = f"{margin_px}"
+            y_expr = f"H-h-{margin_px}"
+        elif position == "top_right":
+            x_expr = f"W-w-{margin_px}"
+            y_expr = f"{margin_px}"
+        else:  # top_left
+            x_expr = f"{margin_px}"
+            y_expr = f"{margin_px}"
+
+        # Circular alpha mask using geq on the avatar stream.
+        # Set alpha=255 inside radius, else 0.
+        radius_expr = "(min(W,H)/2)"
+        alpha_expr = (
+            f"if(lte((X-W/2)*(X-W/2)+(Y-H/2)*(Y-H/2),{radius_expr}*{radius_expr}),255,0)"
+        )
+
+        filter_complex = (
+            f"[1:v]scale={size_px}:{size_px},format=rgba,"
+            f"geq=r='r(X,Y)':g='g(X,Y)':b='b(X,Y)':a='{alpha_expr}'[avt];"
+            f"[0:v][avt]overlay=x='{x_expr}':y='{y_expr}'[v]"
+        )
+
+        cmd = [
+            "ffmpeg",
+            "-y",
+            "-i",
+            video,
+            "-i",
+            avatar_image,
+            "-filter_complex",
+            filter_complex,
+            "-map",
+            "[v]",
+        ]
+
+        if self.has_audio_stream(video):
+            cmd += ["-map", "0:a", "-c:a", "copy"]
+        else:
+            cmd += ["-an"]
+
+        cmd += [
+            "-c:v",
+            "libx264",
+            "-pix_fmt",
+            "yuv420p",
+            "-preset",
+            str(video_preset),
+            "-crf",
+            str(int(video_crf)),
+            output,
+        ]
+
+        result = subprocess.run(cmd, capture_output=True, text=True)
+        if result.returncode != 0 or not os.path.exists(output):
+            raise RuntimeError(f"Failed to overlay avatar: {result.stderr[-500:]}")
+
+        return output
     
     def create_video_from_image(
         self,

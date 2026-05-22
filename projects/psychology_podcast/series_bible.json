@@ -1,0 +1,43 @@
+{
+  "series_title": "Psychology Podcast",
+  "series_title_vi": "Podcast tam ly ung dung",
+  "channel": "psychology_podcast",
+  "author": "@psychology.podcast",
+  "description": "Giai thich tam ly doi song bang ngon ngu gan gui, khong chan doan va khong thay the tu van chuyen mon",
+  "brand": "Psychology Podcast",
+  "language": "Vietnamese",
+  "style": "Calm reflective podcast visuals, warm studio lighting, abstract emotional metaphors, soft cinematic atmosphere",
+  "template": "1920x1080/video_youtube.html",
+  "voice": {
+    "tts_mode": "local",
+    "voice": "vi-VN-HoaiMyNeural",
+    "speed": 0.95
+  },
+  "characters": [],
+  "recurring_locations": [
+    "Warm podcast studio with microphone, book stack, soft lamp, and neutral wall",
+    "Quiet therapy-inspired room with comfortable chair, plants, and diffused window light",
+    "Minimal abstract scene with paper notes, journal, and soft shadows",
+    "Evening desk with open notebook, tea cup, and calm ambient lighting"
+  ],
+  "episodes": [
+    {
+      "ep": 1,
+      "topic": "Vi sao chung ta tri hoan va cach bat dau bang mot buoc rat nho",
+      "characters": [],
+      "scenes": 24
+    },
+    {
+      "ep": 2,
+      "topic": "Ranh gioi ca nhan la gi va cach noi khong ma khong thay co loi",
+      "characters": [],
+      "scenes": 24
+    },
+    {
+      "ep": 3,
+      "topic": "Tu doi thoai noi tam den su binh yen trong nhung ngay ap luc",
+      "characters": [],
+      "scenes": 24
+    }
+  ]
+}

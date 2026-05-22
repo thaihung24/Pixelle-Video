@@ -45,9 +45,9 @@
       "id": "ryu_grandson",
       "name": "龍くん",
       "name_vi": "Cháu Ryu",
-      "visual": "16-year-old Japanese boy, messy dark brown hair with slight wave, curious wide brown eyes, light skin with slight tan, athletic slim build 170cm, wearing oversized forest green hoodie with small leaf logo, faded blue jeans, white canvas sneakers, always carrying a vintage film camera around his neck",
+      "visual": "22-year-old Japanese young man, messy dark brown hair with slight wave, curious wide brown eyes, light skin with slight tan, lean athletic build 172cm, wearing oversized forest green hoodie with small leaf logo, faded blue jeans, white canvas sneakers, always carrying a vintage film camera around his neck",
       "role": "supporting",
-      "personality": "Teenager learning traditions from grandparents, bridges modern and traditional."
+      "personality": "Young adult learning traditions from grandparents, bridges modern and traditional lifestyle."
     }
   ],
 
@@ -93,56 +93,56 @@
       "topic": "温泉の力 — 入浴と健康の関係",
       "topic_vi": "Sức mạnh của onsen — Mối quan hệ tắm và sức khỏe",
       "characters": ["grandpa_kenji", "sakura_sensei"],
-      "scenes": 60
+      "scenes": 66
     },
     {
       "ep": 6,
       "topic": "社会的つながり — 友情と長寿の秘密",
       "topic_vi": "Kết nối xã hội — Bí mật tình bạn và trường thọ",
       "characters": ["grandma_hanako", "ryu_grandson"],
-      "scenes": 60
+      "scenes": 65
     },
     {
       "ep": 7,
       "topic": "園芸と健康 — 庭仕事が教えてくれること",
       "topic_vi": "Làm vườn và sức khỏe — Bài học từ khu vườn",
       "characters": ["grandpa_kenji", "grandma_hanako"],
-      "scenes": 60
+      "scenes": 68
     },
     {
       "ep": 8,
       "topic": "笑いの医学 — ユーモアが体を癒す",
       "topic_vi": "Y học của tiếng cười — Hài hước chữa lành cơ thể",
       "characters": ["grandma_hanako", "grandpa_kenji", "sakura_sensei", "ryu_grandson"],
-      "scenes": 60
+      "scenes": 62
     },
     {
       "ep": 9,
       "topic": "季節の食材 — 旬を食べる暮らし",
       "topic_vi": "Thực phẩm theo mùa — Cuộc sống ăn theo mùa",
       "characters": ["grandma_hanako", "sakura_sensei"],
-      "scenes": 60
+      "scenes": 63
     },
     {
       "ep": 10,
       "topic": "体操と柔軟 — 朝のルーティンの秘密",
       "topic_vi": "Thể dục và dẻo dai — Bí mật routine buổi sáng",
       "characters": ["grandpa_kenji", "ryu_grandson"],
-      "scenes": 60
+      "scenes": 67
     },
     {
       "ep": 11,
       "topic": "生きがい — 人生の目的を見つける",
       "topic_vi": "Ikigai — Tìm mục đích cuộc sống",
       "characters": ["grandma_hanako", "grandpa_kenji", "sakura_sensei", "ryu_grandson"],
-      "scenes": 60
+      "scenes": 69
     },
     {
       "ep": 12,
       "topic": "感謝の心 — 幸せに生きる知恵",
       "topic_vi": "Lòng biết ơn — Trí tuệ sống hạnh phúc",
       "characters": ["grandma_hanako", "grandpa_kenji", "sakura_sensei", "ryu_grandson"],
-      "scenes": 60
+      "scenes": 61
     }
   ]
 }

@@ -1,0 +1,245 @@
+{
+  "_comment": "Audio Library — すこやかライフ (Sukoyaka Life Series) - Compact Version",
+  "_usage": "Đặt file âm thanh vào đúng thư mục, đặt tên CHÍNH XÁC như key.",
+  "bgm": {
+    "_folder": "assets/audio/bgm/",
+    "ghibli_piano": {
+      "main_theme.wav": "🎹 Nhạc chủ đề chính của series",
+      "hanako_theme.wav": "🎹 Theme riêng của Bà Hanako",
+      "kenji_theme.wav": "🎹 Theme riêng của Ông Kenji",
+      "morning_light.wav": "🎹 Buổi sáng bình yên",
+      "evening_reflection.wav": "🎹 Chiều tà nhẹ nhàng",
+      "memory_lane.wav": "🎹 Hồi ký / Flashback",
+      "hope_and_warmth.wav": "🎹 Hy vọng và hơi ấm",
+      "gentle_wisdom.wav": "🎹 Trí tuệ nhẹ nhàng",
+      "seasons_passing.wav": "🎹 Thời gian trôi"
+    },
+    "acoustic_folk": {
+      "countryside_road.wav": "🎸 Đường thôn quê",
+      "family_table.wav": "🎸 Quanh mâm cơm",
+      "garden_breeze.wav": "🎸 Gió vườn",
+      "harvest_festival.wav": "🎸 Lễ hội mùa màng",
+      "old_friends.wav": "🎸 Bạn cũ lâu ngày gặp",
+      "simple_happiness.wav": "🎸 Hạnh phúc giản đơn",
+      "walking_path.wav": "🎸 Con đường dạo bộ",
+      "daily_joy.wav": "🎸 Niềm vui thường ngày",
+      "village_morning.wav": "🎸 Sáng làng quê",
+      "cooking_time.wav": "🎸 Giờ vào bếp"
+    },
+    "lofi_japanese": {
+      "afternoon_tea.wav": "🎶 Giờ uống trà chiều",
+      "koto_chill.wav": "🎶 Lofi + Đàn Koto",
+      "market_morning.wav": "🎶 Chợ sáng",
+      "night_onsen.wav": "🎶 Tắm khoáng đêm",
+      "rainy_tatami.wav": "🎶 Mưa trên mái ngói",
+      "sakura_petals.wav": "🎶 Cánh hoa Sakura rụng",
+      "shakuhachi_beat.wav": "🎶 Lofi + Sáo Shakuhachi",
+      "zen_study.wav": "🎶 Zen Study Lofi"
+    },
+    "orchestral": {
+      "epic_sunrise.wav": "🎻 Bình minh hùng tráng",
+      "ikigai_anthem.wav": "🎻 Thánh ca Ikigai",
+      "life_is_beautiful.wav": "🎻 Cuộc đời tươi đẹp"
+    },
+    "zen_ambient": {
+      "autumn_temple.wav": "🌿 Chùa mùa thu",
+      "bamboo_forest.wav": "🌿 Rừng tre",
+      "water_meditation.wav": "🌿 Thiền nước"
+    }
+  },
+  "sfx": {
+    "_folder": "assets/audio/sfx/",
+    "nature": {
+      "birds_morning.wav": "🐦 Chim hót buổi sáng",
+      "cicadas_summer.wav": "🦗 Ve sầu kêu mùa hè",
+      "rain_light.wav": "🌧️ Mưa nhỏ",
+      "stream_gentle.wav": "💧 Suối nhỏ chảy"
+    },
+    "kitchen": {
+      "chopping_veg.mp3": "🔪 Thái rau củ",
+      "soup_simmering.mp3": "🍲 Súp sôi lăn tăn",
+      "pour_tea.mp3": "🍵 Rót trà",
+      "sizzling_pan.mp3": "🐟 Cá chiên xèo"
+    },
+    "indoor": {
+      "wind_chime.mp3": "🎐 Chuông gió Furin",
+      "sliding_door.mp3": "🚪 Cửa trượt shoji",
+      "fire_crackling.mp3": "🔥 Lửa crackling"
+    },
+    "outdoor": {
+      "market_ambience.mp3": "🏪 Chợ sáng",
+      "bicycle_bell.mp3": "🚲 Chuông xe đạp"
+    },
+    "transition": {
+      "whoosh_soft.mp3": "✨ Whoosh nhẹ",
+      "chime_transition.mp3": "🔔 Tiếng chuông chuyển cảnh"
+    }
+  },
+  "jingles": {
+    "_folder": "assets/audio/jingles/",
+    "intro_full.wav": "🎬 Intro đầy đủ 15s",
+    "outro_full.wav": "🎬 Outro đầy đủ 20s"
+  },
+  "episode_profiles": {
+    "ep01_morning_habits": {
+      "primary_bgm": [
+        "morning_light",
+        "village_morning",
+        "daily_joy"
+      ],
+      "ambient_sfx": [
+        "birds_morning",
+        "wind_chime"
+      ],
+      "transition": [
+        "chime_transition",
+        "whoosh_soft"
+      ]
+    },
+    "ep02_ichiju_sansai": {
+      "primary_bgm": [
+        "cooking_time",
+        "family_table",
+        "main_theme"
+      ],
+      "ambient_sfx": [
+        "chopping_veg",
+        "soup_simmering",
+        "pour_tea"
+      ],
+      "transition": [
+        "whoosh_soft"
+      ]
+    },
+    "ep03_walking": {
+      "primary_bgm": [
+        "walking_path",
+        "countryside_road",
+        "garden_breeze"
+      ],
+      "ambient_sfx": [
+        "birds_morning",
+        "bicycle_bell"
+      ],
+      "transition": [
+        "whoosh_soft"
+      ]
+    },
+    "ep04_meditation": {
+      "primary_bgm": [
+        "water_meditation",
+        "zen_study",
+        "bamboo_forest"
+      ],
+      "ambient_sfx": [
+        "wind_chime"
+      ],
+      "transition": [
+        "chime_transition"
+      ]
+    },
+    "ep05_onsen": {
+      "primary_bgm": [
+        "night_onsen",
+        "rainy_tatami"
+      ],
+      "ambient_sfx": [
+        "stream_gentle",
+        "rain_light"
+      ],
+      "transition": [
+        "whoosh_soft"
+      ]
+    },
+    "ep06_social": {
+      "primary_bgm": [
+        "old_friends",
+        "family_table",
+        "simple_happiness"
+      ],
+      "ambient_sfx": [
+        "market_ambience"
+      ],
+      "transition": [
+        "chime_transition"
+      ]
+    },
+    "ep07_gardening": {
+      "primary_bgm": [
+        "garden_breeze",
+        "harvest_festival"
+      ],
+      "ambient_sfx": [
+        "birds_morning"
+      ],
+      "transition": [
+        "whoosh_soft"
+      ]
+    },
+    "ep08_laughter": {
+      "primary_bgm": [
+        "simple_happiness",
+        "daily_joy"
+      ],
+      "ambient_sfx": [
+        "wind_chime"
+      ],
+      "transition": [
+        "whoosh_soft"
+      ]
+    },
+    "ep09_seasonal_food": {
+      "primary_bgm": [
+        "seasons_passing",
+        "cooking_time",
+        "afternoon_tea"
+      ],
+      "ambient_sfx": [
+        "chopping_veg",
+        "market_ambience"
+      ],
+      "transition": [
+        "whoosh_soft"
+      ]
+    },
+    "ep10_exercise": {
+      "primary_bgm": [
+        "epic_sunrise",
+        "walking_path"
+      ],
+      "ambient_sfx": [
+        "birds_morning"
+      ],
+      "transition": [
+        "whoosh_soft"
+      ]
+    },
+    "ep11_ikigai": {
+      "primary_bgm": [
+        "ikigai_anthem",
+        "gentle_wisdom",
+        "hope_and_warmth"
+      ],
+      "ambient_sfx": [
+        "wind_chime",
+        "autumn_temple"
+      ],
+      "transition": [
+        "chime_transition"
+      ]
+    },
+    "ep12_gratitude": {
+      "primary_bgm": [
+        "life_is_beautiful",
+        "main_theme"
+      ],
+      "ambient_sfx": [
+        "fire_crackling",
+        "wind_chime"
+      ],
+      "transition": [
+        "chime_transition"
+      ]
+    }
+  }
+}

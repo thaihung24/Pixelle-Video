@@ -425,11 +425,51 @@ class StandardPipeline(LinearVideoPipeline):
         final_video_path = video_service.concat_videos(
             videos=segment_paths,
             output=ctx.final_video_path,
-            bgm_path=ctx.params.get("bgm_path"),
-            bgm_volume=ctx.params.get("bgm_volume", 0.2),
-            bgm_mode=ctx.params.get("bgm_mode", "loop")
+            bgm_path=None,  # We will use smart audio layer or fallback later
+            bgm_volume=0,
+            bgm_mode="loop"
         )
         
+        # === Smart Audio Layer ===
+        from pixelle_video.services.smart_audio_mixer import mix_smart_audio
+        import json
+        
+        audio_dir = str(Path(__file__).parent.parent.parent / "assets" / "audio")
+        audio_layered_path = str(final_video_path).replace(".mp4", "_audio.mp4")
+        frames_dir = str(Path(ctx.task_dir) / "frames")
+        
+        # Build script_data for the mixer
+        script_data = {
+            "narrations": ctx.narrations,
+            "image_prompts": ctx.image_prompts,
+        }
+        
+        logger.info(f"🎵 Smart Audio Mixer: ghép nhạc theo từng cảnh...")
+        result_path = mix_smart_audio(
+            final_video_path=final_video_path,
+            output_path=audio_layered_path,
+            frames_dir=frames_dir,
+            script_data=script_data,
+            audio_dir=audio_dir,
+            bgm_volume=ctx.params.get("bgm_volume", 0.15),
+            sfx_volume=0.08,
+            total_scenes=len(ctx.narrations),
+        )
+        
+        if result_path:
+            final_video_path = result_path
+            logger.success(f"   BGM + SFX theo từng cảnh đã được mix vào video!")
+        elif ctx.params.get("bgm_path"):
+            # Fallback to single BGM if smart mix failed or no keywords matched
+            logger.warning(f"   Smart audio mix thất bại, dùng BGM duy nhất từ tham số.")
+            final_video_path = video_service.concat_videos(
+                videos=segment_paths,
+                output=ctx.final_video_path,
+                bgm_path=ctx.params.get("bgm_path"),
+                bgm_volume=ctx.params.get("bgm_volume", 0.15),
+                bgm_mode=ctx.params.get("bgm_mode", "loop")
+            )
+            
         storyboard.final_video_path = final_video_path
         storyboard.completed_at = datetime.now()
         

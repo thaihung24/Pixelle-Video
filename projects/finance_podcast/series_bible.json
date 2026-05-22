@@ -1,0 +1,118 @@
+{
+  "series_title": "Money Mindset - Finance Short Reels",
+  "series_title_vi": "Tu duy tien bac - Short Reel Finance",
+  "channel": "finance_podcast",
+  "author": "@tuduytienbac",
+  "description": "Tai chinh ca nhan, tam ly tien bac, thoi quen chi tieu va tu duy tu do tai chinh",
+  "brand": "Money Mindset",
+  "language": "Vietnamese",
+  "style": "Minimalist black-and-white stick figure illustration, clean white background, simple finance doodles, large Vietnamese subtitles, fast short-form storytelling",
+  "template": "1080x1920/video_short_reel.html",
+  "video_rules": {
+    "format": "facebook_reel",
+    "target_duration_seconds": 32,
+    "scene_duration_seconds": 8,
+    "recommended_scenes": 4,
+    "max_scenes": 5,
+    "hook_duration_seconds": 3,
+    "subtitle_style": "large bold Vietnamese subtitle, high contrast, 3-6 words per line"
+  },
+  "voice": {
+    "tts_mode": "omnivoice",
+    "ref_audio": "C:\\Users\\ADMIN\\Dev\\tool\\flowkit\\output\\_shared\\tts_templates\\audio_ref.WAV",
+    "ref_text": "The Nobel Prize just unlocked why it reverses brain decline, and in the next 12 minutes, you will know exactly how to use it.",
+    "speed": 1.0
+  },
+  "characters": [
+    {
+      "id": "finance_mentor",
+      "name": "Nguoi dan chuyen tai chinh",
+      "visual": "Minimalist black-and-white stick figure finance mentor, round friendly face, confident posture, one finger pointing upward, simple line art, standing beside a small upward chart and piggy bank icon",
+      "role": "narrator",
+      "personality": "Calm, direct, practical, explains money concepts in simple words"
+    },
+    {
+      "id": "young_worker",
+      "name": "Nguoi di lam tre",
+      "visual": "Minimalist black-and-white stick figure young office worker sitting at a small desk with laptop, salary notification bubble, wallet, bills, slightly confused expression, clean line art",
+      "role": "protagonist",
+      "personality": "Works hard but often loses control of spending near the end of the month"
+    },
+    {
+      "id": "money_trap",
+      "name": "Cai bay tien bac",
+      "visual": "Simple black-and-white doodle symbol made of shopping bag, phone, credit card, bills, and a loose debt chain, no face, clean icon-like line art",
+      "role": "supporting",
+      "personality": "Represents emotional spending and bad money habits"
+    }
+  ],
+  "recurring_locations": [
+    "Minimalist white background with black finance doodles",
+    "Simple office desk with laptop, salary notification, notebook, and calculator",
+    "Stick figure standing beside upward money chart and piggy bank",
+    "Clean black-and-white infographic screen with coins, bills, and budget icons",
+    "Minimal desk scene with wallet, receipt, and budget notebook"
+  ],
+  "episodes": [
+    {
+      "ep": 1,
+      "topic": "Luong cao khong lam ban giau",
+      "hook": "Luong cao khong lam ban giau",
+      "topic_vi": "Vi sao nhieu nguoi luong cao van het tien cuoi thang",
+      "characters": ["finance_mentor", "young_worker"],
+      "target_duration_seconds": 32,
+      "scene_duration_seconds": 8,
+      "scenes": 4
+    },
+    {
+      "ep": 2,
+      "topic": "Vi sao ban luon het tien cuoi thang",
+      "hook": "Ban khong ngheo vi thieu tien",
+      "topic_vi": "Thoi quen chi tieu khien ban mat kiem soat tai chinh",
+      "characters": ["finance_mentor", "young_worker", "money_trap"],
+      "target_duration_seconds": 32,
+      "scene_duration_seconds": 8,
+      "scenes": 4
+    },
+    {
+      "ep": 3,
+      "topic": "Cai bay mua do de flex",
+      "hook": "Thu lam ban ngheo khong phai mon do",
+      "topic_vi": "Tam ly mua do de chung minh ban than",
+      "characters": ["finance_mentor", "money_trap"],
+      "target_duration_seconds": 56,
+      "scene_duration_seconds": 8,
+      "scenes": 7
+    },
+    {
+      "ep": 4,
+      "topic": "Lifestyle inflation la gi",
+      "hook": "Thu nhap tang nhung tien van bien mat",
+      "topic_vi": "Khi muc song tang nhanh hon tai san",
+      "characters": ["finance_mentor", "young_worker"],
+      "target_duration_seconds": 56,
+      "scene_duration_seconds": 8,
+      "scenes": 7
+    },
+    {
+      "ep": 5,
+      "topic": "Sai lam tai chinh tuoi 20",
+      "hook": "Tuoi 20 co mot sai lam rat dat",
+      "topic_vi": "Nhung quyet dinh nho khien ban mat nhieu nam tai chinh",
+      "characters": ["finance_mentor", "young_worker"],
+      "target_duration_seconds": 56,
+      "scene_duration_seconds": 8,
+      "scenes": 7
+    },
+    {
+      "ep": 6,
+      "topic": "Tiet kiem thoi chua du",
+      "hook": "Tiet kiem la dung nhung chua du",
+      "topic_vi": "Vi sao ban can tang thu nhap va dau tu kien thuc",
+      "characters": ["finance_mentor"],
+      "target_duration_seconds": 56,
+      "scene_duration_seconds": 8,
+      "scenes": 7
+    }
+  ]
+}
